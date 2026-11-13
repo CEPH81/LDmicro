@@ -53,6 +53,7 @@ chdir %~pn1
 @IF %3 == "stm32f411" SET LIB_PATH=%EXE_PATH%LIBRARIES_FOR\ARM\STM32F4
 @IF %3 == "stm32f103c6" SET LIB_PATH=%EXE_PATH%LIBRARIES_FOR\ARM\STM32F1
 @IF %3 == "stm32l432" SET LIB_PATH=%EXE_PATH%LIBRARIES_FOR\ARM\STM32L4
+@IF %3 == "stm32g431" SET LIB_PATH=%EXE_PATH%LIBRARIES_FOR\ARM\STM32G4
 
 @rem Device options and linker script of each target
 @rem   stm32f40x   : STM32F40x/41x, default HSE_VALUE of the library
@@ -60,12 +61,16 @@ chdir %~pn1
 @rem   stm32f10x   : STM32F103C8/CB (Bluepill), 64 KB Flash, 20 KB RAM
 @rem   stm32f103c6 : STM32F103C6 (Bluepill), 32 KB Flash, 10 KB RAM
 @rem   stm32l432   : STM32L432KC (Nucleo-L432KC), internal 16 MHz oscillator, 256 KB Flash
+@rem   stm32g431   : STM32G431CB (WeAct Core Board), internal 16 MHz oscillator, 128 KB Flash
 @SET MCU_DEFS=
 @SET LN_SCRIPT=
 @SET STARTUP=CortexM4.S
 @IF %3 == "stm32l432" SET LN_SCRIPT=CortexM4_L432.ln
 @IF %3 == "stm32l432" SET STARTUP=CortexM4_L432.S
 @IF %3 == "stm32l432" SET MCU_DEFS=-DSTM32L432xx
+@IF %3 == "stm32g431" SET LN_SCRIPT=CortexM4_G431.ln
+@IF %3 == "stm32g431" SET STARTUP=CortexM4_G431.S
+@IF %3 == "stm32g431" SET MCU_DEFS=-DSTM32G431xx
 @IF %3 == "stm32f40x" SET LN_SCRIPT=CortexM4.ln
 @IF %3 == "stm32f411" SET LN_SCRIPT=CortexM4_F411.ln
 @IF %3 == "stm32f411" SET MCU_DEFS=-DSTM32F411xE -DHSE_VALUE=25000000
@@ -86,10 +91,11 @@ PATH %GCC_PATH%\BIN;%PATH%
 @IF %3 == "stm32f40x" goto STM32F4
 @IF %3 == "stm32f411" goto STM32F4
 @IF %3 == "stm32l432" goto STM32F4
+@IF %3 == "stm32g431" goto STM32F4
 goto NOT_SUPPORTED
 
 
-@rem Cortex-M4 targets: STM32F4 and STM32L4
+@rem Cortex-M4 targets: STM32F4, STM32L4 and STM32G4
 :STM32F4
 
 @rem Compile libraries

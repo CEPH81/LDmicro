@@ -117,3 +117,29 @@ NB:	ST NUCLEO-L432KC (STM32L432KC) -> target stm32l432 (STM32L4 libraries)
 	PC14/PC15 (D7/D8) are used by the 32.768 kHz crystal and are not
 	offered as I/O. Flashing: on-board ST-Link (flashMcu.bat), or copy the
 	.bin file to the USB drive created by the Nucleo.
+
+NB:	WeAct Studio STM32G431 Core Board (STM32G431CBU6) -> target stm32g431
+	(STM32G4 libraries, written on the CMSIS device headers of ST)
+
+	Clock: internal HSI16 oscillator + PLL = 80 MHz. The 8 MHz crystal and
+	the 170 MHz "boost" mode are not used; the "MCU crystal frequency"
+	value of LDmicro has no effect on the cycle time.
+
+	PLC cycle: Timer 7 (the configuration dialog shows "3").
+
+	UART:  USART2 = PA2 (TX) + PA3 (RX).
+	SPI:   SPI1 = PA5 (SCK) + PA6 (MISO) + PA7 (MOSI).
+	I2C:   I2C1 = PA15 (SCL) + PB7 (SDA), with external pull-ups.
+	PWM:   Timer 1: PA8, PA9, PA10, PA11
+	       Timer 2: PA0, PA1, PB10, PB11
+	       Timer 3: PC6 (on-board LED), PB5, PB0, PB1
+	       Timer 4: PB6, PB9
+	ADC:   ADC1: PA0, PA1, PA2, PA3, PB0, PB1, PB11, PB12, PB14
+	       ADC2: PA5, PA6, PA7, PC4, PB15            (12 bits)
+
+	LED on PC6 (active high). KEY button on PC13 (high when pressed: use
+	the input without pull-up). BOOT0 button on PB8.
+	PF0/PF1 and PC14/PC15 are used by the crystals.
+
+	Flashing (flashMcu.bat): STM32CubeProgrammer with an ST-Link on the
+	SWD pins, or through USB (DFU) holding BOOT0 while resetting.

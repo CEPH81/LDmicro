@@ -115,6 +115,15 @@ void PlcProgram::setMcu(McuIoInfo *mcu)
 
     if(mcu_ && (mcu_->core != PC_LPT_COM))
         std::sort(mcu_->pinInfo, mcu_->pinInfo + mcu_->pinCount, comparePinInfo);
+
+    // The ARM targets reserve the timer number 3 for the PLC cycle (see confdialog.cpp and ansic.cpp):
+    // set it as soon as the MCU is chosen, so that the PWM pins of the other timers can be assigned.
+    if(cycleTimer >= 0) {
+        if(mcu_->whichIsa == ISA_ARM)
+            cycleTimer = 3;
+        else if(cycleTimer == 3)
+            cycleTimer = 1;
+    }
 }
 
 int PlcProgram::mcuPWM() const

@@ -906,6 +906,10 @@ bool LoadProjectFromFile(const char *filename)
         }
     }
 
+    // The ARM targets always use the timer number 3 for the PLC cycle
+    if(Prog.mcu() && (Prog.mcu()->whichIsa == ISA_ARM) && (Prog.cycleTimer >= 0))
+        Prog.cycleTimer = 3;
+
     int rung = -2;
 
     if(strcmp(line, "PROGRAM") != 0)

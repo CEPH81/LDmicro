@@ -2676,6 +2676,103 @@ McuI2cInfo ArmSTM32L432_32UFQFPNMcuI2cInfo[] = {
 //  name, REG_CTRL, REG_STAT, REG_DATA, REG_RATE, SCL, SDA
     { "I2C1", 0, 0, 0, 0, 29, 30 },                 // I2C1 = PB6 + PB7
 };
+
+//-----------------------------------------------------------------------------
+// WeAct Studio STM32G431 Core Board (STM32G431CBU6, UFQFPN48).
+// Pin numbers and pin functions checked against the pin database of ST.
+// Pin functions follow LIBRARIES_FOR/Arm/STM32G4:
+// USART2 = PA2 (TX) + PA3 (RX), SPI1 = PA5/PA6/PA7, I2C1 = PA15 (SCL) + PB7 (SDA),
+// PWM on TIM1 (PA8..PA11), TIM2 (PA0, PA1, PB10, PB11), TIM3 (PC6, PB5, PB0, PB1) and TIM4 (PB6, PB9).
+// TIM7 is used by the PLC cycle timer. The 80 MHz clock comes from the internal HSI16.
+// PF0/PF1 (8 MHz crystal), PC14/PC15 (32.768 kHz crystal) and PA13/PA14 (SWD) are not listed.
+McuIoPinInfo ArmSTM32G431_48UFQFPNIoPinInfo[] = {
+//   port bit pin  pinName                  ArduinoPin  ArduinoName (STM32duino)
+    { 'A',   0,  8, "PA0 ADC1.1/PWM2.1"     ,  8, "PA0"           },
+    { 'A',   1,  9, "PA1 ADC1.2/PWM2.2"     ,  9, "PA1"           },
+    { 'A',   2, 10, "PA2 ADC1.3/TX2"        , 10, "PA2"           },
+    { 'A',   3, 11, "PA3 ADC1.4/RX2"        , 11, "PA3"           },
+    { 'A',   4, 12, "PA4 _SS1"              , 12, "PA4"           }, // ADC2 input 17 is not usable by the code generator
+    { 'A',   5, 13, "PA5 ADC2.13/SCK1"      , 13, "PA5"           },
+    { 'A',   6, 14, "PA6 ADC2.3/MISO1"      , 14, "PA6"           },
+    { 'A',   7, 15, "PA7 ADC2.4/MOSI1"      , 15, "PA7"           },
+    { 'A',   8, 30, "PA8 PWM1.1"            , 30, "PA8"           },
+    { 'A',   9, 31, "PA9 PWM1.2/TX1"        , 31, "PA9"           },
+    { 'A',  10, 32, "PA10 PWM1.3/RX1"       , 32, "PA10"          },
+    { 'A',  11, 33, "PA11 PWM1.4"           , 33, "PA11; //USB D-" },
+    { 'A',  12, 34, "PA12"                  , 34, "PA12; //USB D+" },
+    { 'A',  15, 38, "PA15 SCL1"             , 38, "PA15"          },
+    { 'B',   0, 17, "PB0 ADC1.15/PWM3.3"    , 17, "PB0"           },
+    { 'B',   1, 18, "PB1 ADC1.12/PWM3.4"    , 18, "PB1"           },
+    { 'B',   2, 19, "PB2"                   , 19, "PB2"           },
+    { 'B',   3, 41, "PB3"                   , 41, "PB3"           },
+    { 'B',   4, 42, "PB4"                   , 42, "PB4"           },
+    { 'B',   5, 43, "PB5 PWM3.2"            , 43, "PB5"           },
+    { 'B',   6, 44, "PB6 PWM4.1"            , 44, "PB6"           },
+    { 'B',   7, 45, "PB7 SDA1"              , 45, "PB7"           },
+    { 'B',   8, 46, "PB8 BOOT0"             , 46, "PB8; //BOOT0 key" },
+    { 'B',   9, 47, "PB9 PWM4.4"            , 47, "PB9"           },
+    { 'B',  10, 22, "PB10 PWM2.3"           , 22, "PB10"          },
+    { 'B',  11, 24, "PB11 ADC1.14/PWM2.4"   , 24, "PB11"          },
+    { 'B',  12, 25, "PB12 ADC1.11"          , 25, "PB12"          },
+    { 'B',  13, 26, "PB13"                  , 26, "PB13"          },
+    { 'B',  14, 27, "PB14 ADC1.5"           , 27, "PB14"          },
+    { 'B',  15, 28, "PB15 ADC2.15"          , 28, "PB15"          },
+    { 'C',   4, 16, "PC4 ADC2.5"            , 16, "PC4"           },
+    { 'C',   6, 29, "PC6 PWM3.1/LED"        , 29, "PC6; //LED"    },
+    { 'C',  10, 39, "PC10"                  , 39, "PC10"          },
+    { 'C',  11, 40, "PC11"                  , 40, "PC11"          },
+    { 'C',  13,  2, "PC13 KEY"              ,  2, "PC13; //KEY (active high)" }
+};
+
+McuAdcPinInfo ArmSTM32G431_48UFQFPNAdcPinInfo[] = {
+//  {pin, channel}      // the channel is the number of the ADC input
+    {  8,  1 },         // ADC1 input 1 on PA0
+    {  9,  2 },         // ADC1 input 2 on PA1
+    { 10,  3 },         // ADC1 input 3 on PA2
+    { 11,  4 },         // ADC1 input 4 on PA3
+    { 27,  5 },         // ADC1 input 5 on PB14
+    { 25, 11 },         // ADC1 input 11 on PB12
+    { 18, 12 },         // ADC1 input 12 on PB1
+    { 24, 14 },         // ADC1 input 14 on PB11
+    { 17, 15 },         // ADC1 input 15 on PB0
+    { 14,  3 },         // ADC2 input 3 on PA6
+    { 15,  4 },         // ADC2 input 4 on PA7
+    { 16,  5 },         // ADC2 input 5 on PC4
+    { 13, 13 },         // ADC2 input 13 on PA5
+    { 28, 15 }          // ADC2 input 15 on PB15
+};
+
+McuPwmPinInfo ArmSTM32G431_48UFQFPNPwmPinInfo[] = {
+//  {pin, timer, resol}
+    { 30, 1, 16 , 0, 0, 0, 0, 0, 0, 0, 0, 0, ""},       // PWM1 on PA8 to PA11
+    { 31, 1, 16 , 0, 0, 0, 0, 0, 0, 0, 0, 0, ""},
+    { 32, 1, 16 , 0, 0, 0, 0, 0, 0, 0, 0, 0, ""},
+    { 33, 1, 16 , 0, 0, 0, 0, 0, 0, 0, 0, 0, ""},
+    {  8, 2, 32 , 0, 0, 0, 0, 0, 0, 0, 0, 0, ""},       // PWM2 on PA0, PA1, PB10, PB11
+    {  9, 2, 32 , 0, 0, 0, 0, 0, 0, 0, 0, 0, ""},
+    { 22, 2, 32 , 0, 0, 0, 0, 0, 0, 0, 0, 0, ""},
+    { 24, 2, 32 , 0, 0, 0, 0, 0, 0, 0, 0, 0, ""},
+    { 29, 4, 16 , 0, 0, 0, 0, 0, 0, 0, 0, 0, ""},       // PWM3 on PC6, PB5, PB0, PB1 (see the note below)
+    { 43, 4, 16 , 0, 0, 0, 0, 0, 0, 0, 0, 0, ""},
+    { 17, 4, 16 , 0, 0, 0, 0, 0, 0, 0, 0, 0, ""},
+    { 18, 4, 16 , 0, 0, 0, 0, 0, 0, 0, 0, 0, ""},
+    { 44, 4, 16 , 0, 0, 0, 0, 0, 0, 0, 0, 0, ""},       // PWM4 on PB6, PB9
+    { 47, 4, 16 , 0, 0, 0, 0, 0, 0, 0, 0, 0, ""}
+//  NB: LDmicro reserves the timer number 3 for the PLC cycle of every ARM target and hides the PWM pins
+//  declared on it. This target uses TIM7 for the cycle, so the TIM3 outputs are declared with the
+//  timer number 4 here; the real timer comes from the pin name (PWM3.x).
+};
+
+McuSpiInfo ArmSTM32G431_48UFQFPNMcuSpiInfo[] = {
+//  name,  CTRL, STAT, DATA, MISO, MOSI, SCK, SS
+    { "SPI1", 0,    0,    0,   14,   15,  13, 12 }, // SPI1 = PA6 + PA7 + PA5 + PA4
+//  NB: SS is in fact user defined - if need be - (software SS) but a pin must be declared
+};
+
+McuI2cInfo ArmSTM32G431_48UFQFPNMcuI2cInfo[] = {
+//  name, REG_CTRL, REG_STAT, REG_DATA, REG_RATE, SCL, SDA
+    { "I2C1", 0, 0, 0, 0, 38, 45 },                 // I2C1 = PA15 + PB7
+};
 /////
 
 
@@ -4619,6 +4716,44 @@ McuIoInfo SupportedMcus_[] = {
         {{0,0}}
         #undef BASE_A
         #undef BASE_B
+    },
+    {
+        #define BASE_A 0x48000000
+        #define BASE_B 0x48000400
+        #define BASE_C 0x48000800
+        "St ARM STM32G431 48-UFQFPN / WeAct Core Board", // Name
+        "STM32G431",                                    // Target name (see buildArm.bat)
+        "WEACT-G431",
+        "",
+        "",
+        'P',                                        // Port prefix
+        { BASE_A+0x10, BASE_B+0x10, BASE_C+0x10, 0, 0, 0, 0, 0, 0, 0, 0},     // In registers (IDR)
+        { BASE_A+0x14, BASE_B+0x14, BASE_C+0x14, 0, 0, 0, 0, 0, 0, 0, 0},     // Out registers (ODR)
+        { BASE_A, BASE_B, BASE_C, 0, 0, 0, 0, 0, 0, 0, 0},                    // Dir registers (MODER)
+        64 * 1024,                                  // 128 KB Flash (STM32G431CBU6)
+        { { 0x20000000, 0x8000 } },                 // 32 KB RAM
+        ArmSTM32G431_48UFQFPNIoPinInfo,             // Pin info
+        arraylen(ArmSTM32G431_48UFQFPNIoPinInfo),
+        ArmSTM32G431_48UFQFPNAdcPinInfo,            // Adc info
+        arraylen(ArmSTM32G431_48UFQFPNAdcPinInfo),
+        4095,                                       // 12 bits ADC
+        {11, 10},                                   // UART RX + TX (USART2 = PA3 + PA2)
+        ISA_ARM,
+        CortexG4,
+        48,
+        0,
+        ArmSTM32G431_48UFQFPNPwmPinInfo,            // Pwm info
+        arraylen(ArmSTM32G431_48UFQFPNPwmPinInfo),
+        nullptr,                                    // ExtInt info
+        0,
+        ArmSTM32G431_48UFQFPNMcuSpiInfo,            // SPI info
+        arraylen(ArmSTM32G431_48UFQFPNMcuSpiInfo),
+        ArmSTM32G431_48UFQFPNMcuI2cInfo,            // I2C info
+        arraylen(ArmSTM32G431_48UFQFPNMcuI2cInfo),
+        {{0,0}}
+        #undef BASE_A
+        #undef BASE_B
+        #undef BASE_C
     },
 
 //===========================================================================

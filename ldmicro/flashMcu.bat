@@ -114,6 +114,7 @@ IF %4 == "stm32f103c6" goto STM32F1
 IF %4 == "stm32f40x" goto STM32F4
 IF %4 == "stm32f411" goto STM32F1
 IF %4 == "stm32l432" goto STM32F1
+IF %4 == "stm32g431" goto STM32CUBEPROG
 goto NOT_SUPPORTED
 
 :STM32F4
@@ -144,6 +145,19 @@ SET PATH=%PATH%;%STL_PATH%
 @rem (also used for the STM32F411 BlackPill: ST-Link on the SWD header,
 @rem  and for the Nucleo-L432KC: on-board ST-Link)
 ST-LINK_CLI.exe -c SWD -P ARMGCC\bin\%~nx2.hex -V "after_programming" -Run
+
+@GOTO exit
+
+:STM32CUBEPROG
+@rem *** STM32G4: flashed with STM32CubeProgrammer (ST-Link or USB DFU) ***
+SET CUBEPROG_PATH="%ProgramFiles%\STMicroelectronics\STM32Cube\STM32CubeProgrammer\bin"
+SET PATH=%PATH%;%CUBEPROG_PATH%
+
+@rem *** Flash with an ST-Link on the SWD pins ***
+STM32_Programmer_CLI.exe -c port=SWD -w ARMGCC\bin\%~nx2.hex -v -rst
+
+@rem *** or through USB (DFU): hold the BOOT0 key while resetting the board, then use this line instead ***
+::STM32_Programmer_CLI.exe -c port=USB1 -w ARMGCC\bin\%~nx2.hex -v -s
 
 @GOTO exit
 

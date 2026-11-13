@@ -113,3 +113,29 @@ NB:	ST NUCLEO-L432KC (STM32L432KC) -> destino stm32l432 (librerias STM32L4)
 	PC14/PC15 (D7/D8) estan ocupados por el cristal de 32.768 kHz y no se
 	ofrecen como E/S. Grabacion: ST-Link de la placa (flashMcu.bat), o
 	copiando el archivo .bin a la unidad USB que crea la Nucleo.
+
+NB:	WeAct Studio STM32G431 Core Board (STM32G431CBU6) -> destino stm32g431
+	(librerias STM32G4, escritas sobre las cabeceras CMSIS de ST)
+
+	Reloj: oscilador interno HSI16 + PLL = 80 MHz. No se usa el cristal de
+	8 MHz ni el modo "boost" de 170 MHz; el valor "Frecuencia del cristal"
+	de LDmicro no influye en el tiempo de ciclo.
+
+	Ciclo del PLC: Timer 7 (el dialogo de configuracion muestra "3").
+
+	UART:  USART2 = PA2 (TX) + PA3 (RX).
+	SPI:   SPI1 = PA5 (SCK) + PA6 (MISO) + PA7 (MOSI).
+	I2C:   I2C1 = PA15 (SCL) + PB7 (SDA), con resistencias externas.
+	PWM:   Timer 1: PA8, PA9, PA10, PA11
+	       Timer 2: PA0, PA1, PB10, PB11
+	       Timer 3: PC6 (LED de la placa), PB5, PB0, PB1
+	       Timer 4: PB6, PB9
+	ADC:   ADC1: PA0, PA1, PA2, PA3, PB0, PB1, PB11, PB12, PB14
+	       ADC2: PA5, PA6, PA7, PC4, PB15            (12 bits)
+
+	LED en PC6 (activo a nivel alto). Tecla KEY en PC13 (da nivel alto al
+	pulsarla; configure la entrada sin pull-up). Tecla BOOT0 en PB8.
+	PF0/PF1 y PC14/PC15 estan ocupados por los cristales.
+
+	Grabacion (flashMcu.bat): STM32CubeProgrammer con un ST-Link en los
+	pines SWD, o por USB (DFU) manteniendo BOOT0 pulsada al reiniciar.

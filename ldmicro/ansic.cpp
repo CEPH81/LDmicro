@@ -70,8 +70,8 @@ static bool ArmCmsisLib()
 // Timer used for the PLC cycle on ARM targets
 static int ArmPlcTimer()
 {
-    if(Prog.mcu() && (Prog.mcu()->core == CortexL4))
-        return 7; // there is no TIM3 in the STM32L432
+    if(ArmCmsisLib())
+        return 7; // basic timer: there is no TIM3 in the STM32L432, and TIM3 stays free for PWM in the STM32G431
     return 3;
 }
 /////
@@ -3213,7 +3213,7 @@ bool CompileAnsiC(const char *outFile, int MNU)
                         "    Next_Plc_Cycle = 0;\n"
                         "}\n");
 
-                // Timer interrupt routine for PLC Cycles (Timer 3, or Timer 7 on STM32L4)
+                // Timer interrupt routine for PLC Cycles (Timer 3, or Timer 7 on STM32L4 and STM32G4)
                 fprintf(f,
                         "\n"
                         "void TIM%d_Handler() {\n"
