@@ -139,7 +139,7 @@ static uint16_t AddrForRelay(const NameArray &name)
         n++; // Throw away the @ symbol.
 
         // No PAB mapping, maybe IO mapping.
-        if(sscanf(n, "%x", &bit) == 1) {
+        if(sscanf(n, "%hx", &bit) == 1) {
             Relays[i].Address = bit | MAPPED_TO_IO;
         }
     }
@@ -190,7 +190,7 @@ template <size_t N> static uint16_t AddrForVariable(const StringArray<N> &name)
         n++; // Throw away the @ symbol.
 
         // No PAB mapping, maybe IO mapping.
-        if(sscanf(n, "%x", &reg) == 1) {
+        if(sscanf(n, "%hx", &reg) == 1) {
             Variables[i].Address = reg | MAPPED_TO_IO;
         }
     }

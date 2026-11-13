@@ -8,7 +8,7 @@
 " - (no guardado aun)"
 
 " PASCAL target does not support peripherals (UART, PWM, ADC, EEPROM). Skipping that instruction."
-" El objetivo PASCAL no es compatible con perifÃ©ricos (UART, PWM, ADC, EEPROM). Saltarse esa instrucciÃ³n."
+" El objetivo PASCAL no es compatible con periféricos (UART, PWM, ADC, EEPROM). Saltarse esa instrucción."
 
 " SPI: Sending too many chars in one cycle may cause timing issues"
 " SPI: Enviar demasiados caracteres en un ciclo puede causar problemas de tiempo"
@@ -158,7 +158,7 @@
 "* Ajustar por defecto = 0 (LDmicro v3.5.3), tipico = -1 (LDmicro v2.3)"
 
 "** Total timer delay (ms) = Delay (ms) + Adjust * PLC cycle time (%.3f ms)"
-"** Retardo total del temporizador (ms) = Retraso (ms) + Ajustar * Tiempo de ciclo del PLC (% .3f ms)"
+"** Retardo total del temporizador (ms) = Retraso (ms) + Ajustar * Tiempo de ciclo del PLC (%.3f ms)"
 
 "*Attention: Not all ports have a pull-up resistor. See datasheets of the controller for details."
 "Atencion: Todos los puertos no tienen pull-up resistencias."
@@ -167,7 +167,7 @@
 "PICs solamente: Ver registros RBPU y GPPU."
 
 "*PIC only: if PORT RB value is not 0, Weak Pull-ups will be enabled for all port B pins via RBPU."
-"*Solo PIC: si el valor de PORT RB no es 0, se habilitarÃ¡n Pull-ups dÃ©biles para todos los pines del puerto B a travÃ©s de RBPU."
+"*Solo PIC: si el valor de PORT RB no es 0, se habilitarán Pull-ups débiles para todos los pines del puerto B a través de RBPU."
 
 "--add comment here--"
 "--anade el comentario aqui--"
@@ -260,10 +260,10 @@
 "Atmel AVR MCUs"
 
 "Available PLC Cycle Time: min=%.6g %ss, max=%lld ms (%.6g %ss)\n"
-"Tiempo de ciclo del PLC disponible: min=%.6g %ss, max=% lld ms (%.6g %ss)\n"
+"Tiempo de ciclo del PLC disponible: min=%.6g %ss, max=%lld ms (%.6g %ss)\n"
 
 "Available PWM frequency from %.3f %sHz up to %.3f %sHz"
-"Frecuencia de PWM disponible desde %.3f% sHz hasta %.3f% sHz"
+"Frecuencia de PWM disponible desde %.3f %sHz hasta %.3f %sHz"
 
 "BCD var"
 "BCD var"
@@ -326,7 +326,7 @@
 "Llame al numero de renglon de SUBPROG o al nombre de la LABEL"
 
 "Call SUBPROG rung number or label"
-"Llame al nÃºmero de renglÃ³n o etiqueta SUBPROG"
+"Llame al número de renglón o etiqueta SUBPROG"
 
 "Call clear"
 "Llama clear"
@@ -380,10 +380,10 @@
 "No puedo borrar la linea; el programa debe tener al menos una linea."
 
 "Caught signal %d (%s)\n"
-"SeÃ±al capturada %d (%s)\n"
+"Señal capturada %d (%s)\n"
 
 "Caught signal %d\n"
-"SeÃ±al capturada %d\n"
+"Señal capturada %d\n"
 
 "Choose a color"
 "Elija un color"
@@ -476,13 +476,13 @@
 "Fallo de compilacion."
 
 "Compile is successful but exceed the memory size !!!"
-"La compilacion es exitosa pero excede el tamaÃ±o de memoria!"
+"La compilacion es exitosa pero excede el tamaño de memoria!"
 
 "Compile successful!\r\nWrote Netzer code to '%s' (CRC: 0x%.4x)."
 "Compilacion exitosa!\r\n Escribe el codigo de Netzer en '%s' (CRC: 0x%.4x)."
 
 "Compile successful; wrote C source code to '%s'.\r\n\r\nThis is not a complete C program. You have to provide the runtime and all the I/O routines. See the comments in the source code for information about how to do this."
-"Compilacion correcta: escrito codigo fuente en C en '%s'.\r\n\r\nno es un programa completo en C. Tiene que aÃ±adirle el procedimiento principal y todas las rutinas de E/S. Vea los comentarios en el codigo fuente para mas informacion sobre como hacer esto"
+"Compilacion correcta: escrito codigo fuente en C en '%s'.\r\n\r\nno es un programa completo en C. Tiene que añadirle el procedimiento principal y todas las rutinas de E/S. Vea los comentarios en el codigo fuente para mas informacion sobre como hacer esto"
 
 "Compile successful; wrote IHEX for AVR to '%s'.\r\n\r\nRemember to set the processor configuration (fuses) correctly. This does not happen automatically."
 "Compilacion correcta; se escribio IHEX para AVR en '%s'.\r\n\r\nRecuerde marcar la configuracion (fuses) del micro correctamente. Esto NO se hace automaticamente."
@@ -491,7 +491,7 @@
 "Compilacion correcta; escrito IHEX para PIC16 en '%s'.\r\n\r\nbits de Configurarion (fuses) han sido establecidos para oscilador a cristal, BOD activado, LVP desactivado, PWRT activado, Todos los bits de proteccion desactivados."
 
 "Compile successful; wrote PASCAL source code to '%s'.\r\n\r\nThis is not a complete PASCAL program. You have to provide the runtime and all the I/O routines. See the comments in the source code for information about how to do this."
-"CompilaciÃ³n exitosa; escribiÃ³ el cÃ³digo fuente de PASCAL en '% s'.\r\n\r\n Este no es un programa PASCAL completo. Debe proporcionar el tiempo de ejecuciÃ³n y todas las rutinas de E/S. Consulte los comentarios en el cÃ³digo fuente para obtener informaciÃ³n sobre cÃ³mo hacer esto."
+"Compilación exitosa; escribió el código fuente de PASCAL en '%s'.\r\n\r\n Este no es un programa PASCAL completo. Debe proporcionar el tiempo de ejecución y todas las rutinas de E/S. Consulte los comentarios en el código fuente para obtener información sobre cómo hacer esto."
 
 "Compile successful; wrote interpretable code to '%s'.\r\n\r\nYou probably have to adapt the interpreter to your application. See the documentation."
 "Compilacion correcta: Codigo para interprete escrito en '%s'.\r\n\r\nproblablemente tengas que adaptar el interprete a tu aplicacion. Mira la documentacion."
@@ -509,7 +509,7 @@
 "Conecte el indicador de ocupado PULSER al pin de salida YsomeName o al rele interno Rnombre."
 
 "Connect QUAD ENCOD dir flag to output pin YsomeName or internal relay RsomeName."
-"Conecte el indicador de direcciÃ³n QUAD ENCOD al pin de salida YsomeName o al relÃ© interno RsomeName."
+"Conecte el indicador de dirección QUAD ENCOD al pin de salida YsomeName o al relé interno RsomeName."
 
 "Connect QUAD ENCOD dir flag to output pin YsomeName."
 "Conecte el indicador direc QUAD ENCOD al pin de salida Ynombre."
@@ -668,7 +668,7 @@
 "Orden datos:"
 
 "Data Size:"
-"TamaÃ±o datos:"
+"Tamaño datos:"
 
 "De-energized element, Simulation mode"
 "Elemento desenergizado, modo simulacion"
@@ -716,7 +716,7 @@
 "Bits de destino:"
 
 "Destination rung(label):"
-"PeldaÃ±o de destino (etiqueta):"
+"Peldaño de destino (etiqueta):"
 
 "Destination:"
 "Destino:"
@@ -779,7 +779,7 @@
 "Nombre ENDSUB:"
 
 "ENDSUB: '%s' declaration must be a single inside the rung %d"
-"ENDSUB: '%s' la declaraciÃ³n debe ser una sola dentro del peldaÃ±o %d"
+"ENDSUB: '%s' la declaración debe ser una sola dentro del peldaño %d"
 
 "ENDSUB: Only one ENDSUB '%s' is allowed!"
 "ENDSUB: Solo se permite un ENDSUB '%s'!"
@@ -797,13 +797,13 @@
 "Editar tabla de valores ASCII como una cadena"
 
 "Empty row; delete it or add instructions before compiling."
-"Fila vacia; borrela o aÃ±ada instrucciones antes de compilar."
+"Fila vacia; borrela o añada instrucciones antes de compilar."
 
 "Empty textbox; not permitted."
 "Texto vacio; no permitido"
 
 "Empty variable name '%s'.\nrungNow=%d"
-"Nombre de variable vacio '% s'.\nrungNow=%d"
+"Nombre de variable vacio '%s'.\nrungNow=%d"
 
 "Enable:"
 "Habilitar:"
@@ -815,13 +815,13 @@
 "Error en RUNG %d. Ver error debajo de %s"
 
 "Error reading 'PULL-UP LIST' section from .ld file!\nError in line:\n'%s'."
-"Error al leer la secciÃ³n 'LISTA PULL-UP' del archivo .ld!\NError en lÃ­nea:\n'%s'."
+"Error al leer la sección 'LISTA PULL-UP' del archivo .ld!\NError en línea:\n'%s'."
 
 "Error reading 'VAR LIST' section from .ld file!\nError in line:\n'%s'."
 "Error al leer la seccion 'LISTA VAR' del archivo.ld!\nError en la linea:\n'%s'."
 
 "Error when generate intermediate code:\n"
-"Error al generar cÃ³digo intermedio:\n"
+"Error al generar código intermedio:\n"
 
 "Error"
 "Error"
@@ -836,7 +836,7 @@
 "Cada AllocFwdAddr necesita FwdAddrIsNow.\ni=%d op=%d arg1=%d arg2=%d rung=%d"
 
 "Exceeded the limit of %d rungs!"
-"ExcediÃ³ el lÃ­mite de% d peldaÃ±os!"
+"Excedió el límite de %d peldaños!"
 
 "Expected single-character or one simple-escape-sequence in single-quotes: <%s>!"
 "Se esperaba un solo caracter o una secuencia de escape simple entre comillas simples: <%s>!"
@@ -863,10 +863,10 @@
 "Archivo-> Guardar formato de archivo LDmicro0.2"
 
 "Flash program memory size %d exceeds limit by %d words\nfor %s."
-"El tamaÃ±o de la memoria del programa flas %d excede el limite en %d palabras\para %s."
+"El tamaño de la memoria del programa flas %d excede el limite en %d palabras\para %s."
 
 "Flash program memory size %d is exceed limit %d words\nfor %s."
-"El tamaÃ±o de la memoria del programa Flash% d excede el lÃ­mite% d palabras\npara %s."
+"El tamaño de la memoria del programa Flash %d excede el límite %d palabras\npara %s."
 
 "Format string:"
 "Cadena formato:"
@@ -905,7 +905,7 @@
 "Ir a numero de renglon o nombre de etiqueta"
 
 "Goto rung number or label"
-"Ir al nÃºmero de renglÃ³n o etiqueta"
+"Ir al número de renglón o etiqueta"
 
 "Graph:"
 "Grafico:"
@@ -953,7 +953,7 @@
 "I2C SDA"
 
 "I2C Simulation (Terminal)"
-"I2C SimulaciÃ³n (Terminal)"
+"I2C Simulación (Terminal)"
 
 "I2C functions used but not supported for this micro or compile mode."
 "Funciones I2C utilizadas pero no compatibles con este modo de micro o compilacion."
@@ -1361,7 +1361,7 @@
 "Rele interno"
 
 "Internal error relating to PIC paging; make program smaller or reshuffle it."
-"Error interno relativo a la paginacion del PIC; haz el programa mas pequeÃ±o o reorganizalo"
+"Error interno relativo a la paginacion del PIC; haz el programa mas pequeño o reorganizalo"
 
 "Internal error."
 "Error interno."
@@ -1376,7 +1376,7 @@
 "Limite interno superado (numero de variables)"
 
 "Internal relay '%s' never assigned; add its coil somewhere."
-"No ha asignado el rele interno '%s'; aÃ±ada la bobina en cualquier parte del programa."
+"No ha asignado el rele interno '%s'; añada la bobina en cualquier parte del programa."
 
 "Invalid AVR OpCode %i."
 "AVR OpCode %i no valido."
@@ -1388,7 +1388,7 @@
 "MCU no valido"
 
 "Invalid MENU:%i"
-"MENU no valido:% i"
+"MENU no valido:%i"
 
 "Invalid RX pin."
 "Pin de RX no valido."
@@ -1421,16 +1421,16 @@
 "Preescala invalida."
 
 "Invalid rung index %lu!"
-"Ãndice de peldaÃ±o no vÃ¡lido %lu!"
+"Índice de peldaño no válido %lu!"
 
 "Invalid size (%d) of variable '%s' set to 2!"
-"El tamaÃ±o no valido (%d) de la variable '%s' se establecio en 2!"
+"El tamaño no valido (%d) de la variable '%s' se establecio en 2!"
 
 "Invalid var size in swap."
-"TamaÃ±o de variable no valido en swap."
+"Tamaño de variable no valido en swap."
 
 "Invalid variable size."
-"TamaÃ±o de variable no valido."
+"Tamaño de variable no valido."
 
 "LABEL name:"
 "LABEL Nombre:"
@@ -1439,7 +1439,7 @@
 "LABEL Nombre:"
 
 "LABEL: Only one LABEL '%s' is allowed!"
-"LABEL: Â¡solo se permite una LABEL '%s'!"
+"LABEL: ¡solo se permite una LABEL '%s'!"
 
 "LDmicro - Program Editor"
 "LDmicro - Editor de Programa"
@@ -1469,13 +1469,13 @@
 "Advertencia LDmicro"
 
 "Labels limit '%d' exceeded!"
-"LÃ­mite de etiquetas '%d' excedido!"
+"Límite de etiquetas '%d' excedido!"
 
 "Latest release changes..."
 "Cambios Ultima Version..."
 
 "Line\n'%s'\nis skipped in IO LIST section from '%s'"
-"La lÃ­nea \n'%s'\nis omite en la secciÃ³n IO LIST de '%s'"
+"La línea \n'%s'\nis omite en la sección IO LIST de '%s'"
 
 "Literal number"
 "Numero literal"
@@ -1595,10 +1595,10 @@
 "Multiplicar"
 
 "Must assign pins for I2C device (name '%s')."
-"Debe asignar pines para el dispositivo I2C (nombre '% s')."
+"Debe asignar pines para el dispositivo I2C (nombre '%s')."
 
 "Must assign pins for SPI device (name '%s')."
-"Debe asignar pines para el dispositivo SPI (nombre '% s')."
+"Debe asignar pines para el dispositivo SPI (nombre '%s')."
 
 "Must assign pins for all ADC inputs (name '%s')."
 "Debe asignar patas para todas las entradas del ADC (nombre '%s')."
@@ -1658,19 +1658,19 @@
 "No se encontraron codigos de operacion."
 
 "No serial instructions (UART Send/UART Receive) are in use; add one to program before setting baud rate.\r\n\r\n"
-"No se han usado instrucciones (UART Enviar/UART Recibir) para el puerto serie aun; AÃ±ada una al programa antes de configurar los baudios.\r\n\r\n"
+"No se han usado instrucciones (UART Enviar/UART Recibir) para el puerto serie aun; Añada una al programa antes de configurar los baudios.\r\n\r\n"
 
 "No variable is interpolated into formatted string, but a variable name is specified. Include a string like '\\-3', or leave variable name blank."
-"No se ha declarado un parametro dentro de la cadena de caractares pero sin embargo se ha especificado una variable. AÃ±ada un cadena como '\\-3', o quite el nombre de la variable."
+"No se ha declarado un parametro dentro de la cadena de caractares pero sin embargo se ha especificado una variable. Añada un cadena como '\\-3', o quite el nombre de la variable."
 
 "Not a #PORT/#PIN/#TRIS/%s "
 "No es un #PORT/#PIN/#TRIS/%s "
 
 "Not a reasonable size for a shift register."
-"No es un tamaÃ±o razonable para el registro de desplazamiento."
+"No es un tamaño razonable para el registro de desplazamiento."
 
 "Not a reasonable size for a variable."
-"No es un tamaÃ±o razonable para una variable."
+"No es un tamaño razonable para una variable."
 
 "Not all I/O pins are saved! Use menu:\n"
 "No todos los pines de E/S estan guardados. Use el menu:\n"
@@ -1688,13 +1688,13 @@
 "No hay suficiente memoria para la correccion de PAGE!"
 
 "Number of bytes to receive:"
-"Nï¿½mero de bytes a recibir:"
+"Número de bytes a recibir:"
 
 "Number of bytes to send:"
-"Nï¿½mero de bytes a enviar:"
+"Número de bytes a enviar:"
 
 "Numerical problem with piecewise linear lookup table. Either make the table entries smaller, or space the points together more closely.\r\n\r\nSee the help file for details."
-"Problema numerico con la tabla de interpolacion. Haz la tabla de entradas mas pequeï¿½a, o aleja mas los puntos juntos.\r\n\r\nMira la ayuda para mas detalles."
+"Problema numerico con la tabla de interpolacion. Haz la tabla de entradas mas pequeña, o aleja mas los puntos juntos.\r\n\r\nMira la ayuda para mas detalles."
 
 "OK"
 "OK"
@@ -1703,7 +1703,7 @@
 "Instruccion OPUESTA: '%s' no es un destino valido."
 
 "Only 'Y-Outpur Pin' or 'R-Inrenal Relay' are allowed for Output Dir parameter '%s'"
-"Solo se permiten 'Pin de salida Y' o 'RelÃ© interno R' para el parÃ¡metro Dir de salida'%s'"
+"Solo se permiten 'Pin de salida Y' o 'Relé interno R' para el parámetro Dir de salida'%s'"
 
 "Only one I2C can be used"
 "Solo se puede usar un I2C"
@@ -1715,7 +1715,7 @@
 "Solo los caracteres '-o/\\' estan disponibles!"
 
 "Only timers 0 and 1 are possible as PLC cycle timer.\nSelect proper timer in menu 'Settings -> MCU Parameters'!"
-"Solo los temporizadores 0 y 1 son posibles como temporizador de ciclo del PLC.\nSeleccione el temporizador adecuado en el menÃº 'ConfiguraciÃ³n -> ParÃ¡metros MCU'!"
+"Solo los temporizadores 0 y 1 son posibles como temporizador de ciclo del PLC.\nSeleccione el temporizador adecuado en el menú 'Configuración -> Parámetros MCU'!"
 
 "Only values 0-0x1F allowed for Register parameter.\nreg=0x%02X"
 "Solo se permiten los valores 0-0x1F para el parametro Registro.\nreg=0x%02X"
@@ -1766,10 +1766,10 @@
 "Fuente opuesta y asignacion a destino"
 
 "Or decrease timer period."
-"Or disminuir el perÃ­odo del temporizador."
+"Or disminuir el período del temporizador."
 
 "Or increase timer period."
-"Or aumentar el perÃ­odo del temporizador."
+"Or aumentar el período del temporizador."
 
 "Original black color scheme\tJonathan"
 "Tema negro original\tJonathan"
@@ -1826,7 +1826,7 @@
 "Salida del Puerto"
 
 "PWM '%s' and  PLC cycle timer can not use the same timer %d!\nChange the PLC cycle timer to 0.\nMenu Settings->MCU parameters..."
-"PWM '%s' el temporizador del ciclo del PLC no pueden usar el mismo temporizador %d!\nCambie el temporizador del ciclo del PLC a 0.\nConfiguraciÃ³n del menÃº-> ParÃ¡metros MCU..."
+"PWM '%s' el temporizador del ciclo del PLC no pueden usar el mismo temporizador %d!\nCambie el temporizador del ciclo del PLC a 0.\nConfiguración del menú-> Parámetros MCU..."
 
 "PWM Internal error"
 "Error interno de PWM"
@@ -1856,7 +1856,7 @@
 "PWM: la variable solo se puede utilizar para RES en otros lugares"
 
 "Page Error.[%d:%s] 0x%X 0x%X"
-"Error de pagina. [% d:%s] 0x%X 0x%X"
+"Error de pagina.[%d:%s] 0x%X 0x%X"
 
 "PagePreSet() error at addr 0x%X"
 "Error de PagePreSet() en addr 0x%X"
@@ -2036,10 +2036,10 @@
 "Linea %d: Variable '%s' asignada incorrectamente.\n%s.\nConsulte renglones:%s"
 
 "Rung number"
-"Numero de peldaÃ±o"
+"Numero de peldaño"
 
 "Rung number, Simulation mode"
-"Numero de peldaÃ±o, modo de simulacion"
+"Numero de peldaño, modo de simulacion"
 
 "SFR position:"
 "SFR posicion:"
@@ -2114,7 +2114,7 @@
 "SUBPROG nombre:"
 
 "SUBPROG: '%s' declaration must be a single inside the rung %d"
-"SUBPROG:la declaraciÃ³n '%s' debe ser una sola dentro del renglÃ³n %d"
+"SUBPROG:la declaración '%s' debe ser una sola dentro del renglón %d"
 
 "SUBPROG: '%s' declaration must be single inside a rung %d"
 "SUBPROG: la declaracion '%s' debe estar sola dentro de un renglon %d"
@@ -2246,10 +2246,10 @@
 "Solo un Ciclo\tEspacio"
 
 "Size of var '%s'(%d) reset as signed 32 bit variable."
-"El tamaÃ±o de la var '%s' (%d) se restablecio como variable de 32 bits con signo."
+"El tamaño de la var '%s' (%d) se restablecio como variable de 32 bits con signo."
 
 "Size of var '%s'(%d) reset as signed 8 bit variable."
-"El tamaÃ±o de la var '%s' (%d) se restablecio como variable de 8 bits con signo."
+"El tamaño de la var '%s' (%d) se restablecio como variable de 8 bits con signo."
 
 "Size"
 "Tamano"
@@ -2276,10 +2276,10 @@
 "Funciones Especiales pora AVR (Obsoleto)"
 
 "Stack size %d overflow"
-"TamaÃ±o de pila %d desbordamiento"
+"Tamaño de pila %d desbordamiento"
 
 "Stack size %d underflow"
-"TamaÃ±o de pila %d sub desbordamiento"
+"Tamaño de pila %d sub desbordamiento"
 
 "Stages:"
 "Fases:"
@@ -2357,7 +2357,7 @@
 "TODO: Inserte BIN2BCD"
 
 "TODO: Insert MOD (Integer Divide Remainder)"
-"TODO: Insertar MOD (resto de divisiÃ³n entera)"
+"TODO: Insertar MOD (resto de división entera)"
 
 "TODO: Insert NEG (Integer Negate)"
 "TODO: Insertar NEG (Entero Negado)"
@@ -2396,16 +2396,16 @@
 "TON: variable no puede ser usada en otra parte"
 
 "Table size:"
-"TamaÃ±o de la tabla:"
+"Tamaño de la tabla:"
 
 "Target N PULSE frequency %d Hz, closest achievable with prescaler=%d and divider=%d is %d Hz (Warning, >5%% error)."
-"Objetivo N PULSO frecuencia %d Hz, lo mÃ¡s cercano posible con preescalador=%d y divisor=%d es %d Hz (Advertencia, error >5%%)."
+"Objetivo N PULSO frecuencia %d Hz, lo más cercano posible con preescalador=%d y divisor=%d es %d Hz (Advertencia, error >5%%)."
 
 "Target PWM frequency %d Hz, closest achievable is %d Hz (warning, >5%% error)."
 "Frecuencia Micro %d Hz, la mejor aproximacion es %d Hz (aviso, >5%% error)."
 
 "Temporization"
-"TemporizaciÃ³n"
+"Temporización"
 
 "Test if Bit Clear In SFR"
 "Prueba Bit Limpiar en SFR"
@@ -2435,7 +2435,7 @@
 "Temporizador '%s'=%.3f ms."
 
 "Timer 'T%s'=%.3f ms needs %d PLC cycle times."
-"Temporizador 'T%s'=%.3f ms necesita% d tiempos de ciclo del PLC."
+"Temporizador 'T%s'=%.3f ms necesita %d tiempos de ciclo del PLC."
 
 "Timer 'T%s'=%10.0Lf s   needs %15lld PLC cycle times."
 "El temporizador 'T%s'=% 10.0Lf s necesita%15lld tiempos de ciclo del PLC."
@@ -2465,7 +2465,7 @@
 "Demasiados elementos en un SubCircuito!"
 
 "Too many rungs in input file!\nSame rungs not loaded!"
-"Demasiados peldaÃ±os en el archivo de entrada!\nLos mismos peldaÃ±os no estan cargados!"
+"Demasiados peldaños en el archivo de entrada!\nLos mismos peldaños no estan cargados!"
 
 "Too many rungs!"
 "Demasiadas Lineas!"
@@ -2525,10 +2525,10 @@
 "Nombre desconocido >%s<"
 
 "Unsupported op (Peripheral) for interpretable target."
-"op no admitido (perifÃ©rico) para el objetivo interpretable."
+"op no admitido (periférico) para el objetivo interpretable."
 
 "Unsupported op (Peripheral) for interpretable target.\nINT_%d"
-"op no compatible (perifÃ©rico) para el objetivo interpretable.\nINT_%d"
+"op no compatible (periférico) para el objetivo interpretable.\nINT_%d"
 
 "Unsupported op (anything ADC, PWM, UART, EEPROM) for Netzer target."
 "Operacion no admitida (cualquier cosa ADC, PWM, UART, EEPROM) para el objetivo de Netzer."
@@ -2540,7 +2540,7 @@
 "Operacion no admitida (cualquier cosa UART, EEPROM, SFR...) para el objetivo interpretable.\nINT_%d"
 
 "Unsupported operation 'INT_STRING' for target, skipped."
-"OperaciÃ³n no admitida 'INT_STRING' para destino, omitida."
+"Operación no admitida 'INT_STRING' para destino, omitida."
 
 "Unsupported operation 'INT_WRITE_STRING' for target, skipped."
 "Operacion no compatible 'INT_WRITE_STRING' para el destino, omitido."
@@ -2549,13 +2549,13 @@
 "Operacion no admitida para el objetivo, omitido."
 
 "Use menu: 'Compile->Compile ARM-GCC for 32-bit ARM'"
-"Use el menÃº: 'Compilar-> Compilar ARM-GCC para ARM de 32 bits'"
+"Use el menú: 'Compilar-> Compilar ARM-GCC para ARM de 32 bits'"
 
 "Use menu: 'Compile->Compile HI-TECH C for PIC'"
-"Use el menÃº: 'Compilar-> Compilar HI-TECH C para PIC'"
+"Use el menú: 'Compilar-> Compilar HI-TECH C para PIC'"
 
 "Used %d/%d byte of RAM (chip %d%% full)."
-"Se utiliza %d/%d byte de RAM (chip % d %% completo.)"
+"Se utiliza %d/%d byte de RAM (chip %d%% completo)."
 
 "Used %d/%d words of program flash (chip %d%% full)."
 "Usadas %d/%d palabras de programa en flash (chip %d%% lleno)."
@@ -2624,7 +2624,7 @@
 "Espera hasta todos enviados:"
 
 "When the MCU crystal frequency is %.3g %sHz."
-"Cuando la frecuencia del cristal MCU es %.3g% sHz."
+"Cuando la frecuencia del cristal MCU es %.3g %sHz."
 
 "White color scheme\tIhor"
 "Tema blanco\tIhor"
@@ -2636,7 +2636,7 @@
 "Escribir en SFR"
 
 "You must Select rungs, then Copy or Cut, then Paste."
-"Debe seleccionar los peldaÃ±os, luego Copiar o Cortar, luego Pega.r"
+"Debe seleccionar los peldaños, luego Copiar o Cortar, luego Pega.r"
 
 "You try to compile to AVR GCC, but MCU core isn't AVR.\nDo you want to continue?"
 "Intenta compilar en AVR GCC, pero el nucleo de MCU no es AVR.\nDo Desea continuar?"
@@ -2708,7 +2708,7 @@
 "\nE/S ASIGNACION:\n"
 
 "\n\nAcceleration time=%.3f %s"
-"\ n\nTiempo de aceleraciÃ³n=%.3f %s"
+"\ n\nTiempo de aceleración=%.3f %s"
 
 "\n\nI/O ASSIGNMENT:\n\n"
 "\n\nE/S ASIGNACION:\n\n"

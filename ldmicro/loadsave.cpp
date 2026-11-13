@@ -617,10 +617,10 @@ char *strspace(char *str)
 //-----------------------------------------------------------------------------
 char *strspacer(char *str)
 {
-    size_t i = strlen(str) - 1;
-    while((i >= 0) && isspace(str[i])) {
-        str[i] = 0;
+    size_t i = strlen(str);
+    while((i > 0) && isspace((unsigned char)str[i - 1])) {
         i--;
+        str[i] = 0;
     }
     return str;
 }
@@ -1504,7 +1504,7 @@ bool SaveProjectToFile(char *filename, int code)
     if(Prog.mcu()) {
         fprintf(f, "MICRO=%s\n", Prog.mcu()->mcuName);
     }
-    fprintf(f, "CYCLE=%lld us at Timer%d, YPlcCycleDuty:%d, ConfigurationWord(s):0x%llX\n", Prog.cycleTime, Prog.cycleTimer, Prog.cycleDuty, Prog.configurationWord);
+    fprintf(f, "CYCLE=%lld us at Timer%d, YPlcCycleDuty:%d, ConfigurationWord(s):0x%llX\n", Prog.cycleTime, Prog.cycleTimer, Prog.cycleDuty, (long long unsigned int)(uint32_t)Prog.configurationWord);
     fprintf(f, "CRYSTAL=%d Hz\n", Prog.mcuClock);
     fprintf(f, "BAUD=%d Hz, RATE=%d Hz, SPEED=%d Hz\n", Prog.baudRate, Prog.spiRate, Prog.i2cRate);
     if(strlen(CurrentCompileFile) > 0) {

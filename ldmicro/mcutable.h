@@ -829,6 +829,17 @@ McuSpiInfo McuSpiInfoATmega16[] = {
     { "SPI1",       0x0D,    0x0E,    0x0F,  7,    6,   8,   5 },        // For AtMega16, 32, 162, 164, 324, 644, 1284
 };
 
+McuSpiInfo McuSpiInfoATmega1284_44[] = {
+//     name     REG_CTRL REG_STAT REG_DATA MISO  MOSI SCK  _SS
+//                                         PB6   PB5  PB7  PB4
+    { "SPI1",       0x0D,    0x0E,    0x0F,  2,    1,   3,   44 },       // For 44-Pin packages of ATmega164, 324, 644, 1284
+};
+
+McuI2cInfo McuI2cInfoATmega1284_44[] = {
+//      name,   REG_CTRL, REG_STAT, REG_DATA, REG_RATE,     SCL,    SDA
+    { "I2C1",    0,          0,          0,          0,      19,     20 },       // I2C = PC0 + PC1
+};
+
 McuSpiInfo McuSpiInfoATmega64[] = {
 //     name     REG_CTRL REG_STAT REG_DATA MISO  MOSI SCK  _SS
 //                                         PB6   PB5  PB7  PB4
@@ -865,13 +876,63 @@ McuSpiInfo McuSpiInfoATmega2560[] = {
 //  {   , 1, 8,   7, 0x43,  0   ,  0x45,  5,     4,     0x48, 0   ,  0    }, // OC1B
 //};
 
-McuPwmPinInfo AvrPwmPinInfo8[] = { // ATtiny85
+McuPwmPinInfo AvrPwmPinInfo8[] = { // ATtiny85 8-Pin packages
 ////     ti  reso max REG_   REG_   REG_   bit    bit    mask  REG_   mask
 //// pin mer lutn  CS OCRnxL OCRnxH TCCRnA COMnx1 COMnx0 WGMa  TCCRnB WGMb
-    {  5, 0, 8,    5, 0   ,  0x52,  0x53,  0,     0,        0, 0   ,  0    , ""}, // OC0A
-    {  6, 0, 8,    5, 0x4A,  0x4B,  0x4F,  7,     6,        1, 0x4E,  0x08 , ""}, // OC0B
-    {  6, 1, 8,    5, 0x48,  0x49,  0x4F,  5,     4,        1, 0x4E,  0x08 , ""}, // OC1A
-    {  4, 1, 8,    7, 0x43,  0   ,  0x45,  5,     4,     0x48, 0   ,  0    , ""}, // OC1B
+    {  5, 0, 8,    5, 0x49,  0,     0x4A,  7,     6,        3, 0x53,  0    , ""}, // OC0A = PB0 // Fast PWM
+    {  6, 0, 8,    5, 0x48,  0,     0x4A,  5,     4,        3, 0x53,  0    , ""}, // OC0B = PB1 // Fast PWM
+    // Timer1 of ATtiny85 (TCCR1/GTCCR) has a different register layout
+    // and is not supported by the PWM code generator.
+};
+
+McuPwmPinInfo AvrPwmPinInfo20Tiny85[] = { // ATtiny85 20-Pin packages
+////     ti  reso max REG_   REG_   REG_   bit    bit    mask  REG_   mask
+//// pin mer lutn  CS OCRnxL OCRnxH TCCRnA COMnx1 COMnx0 WGMa  TCCRnB WGMb
+    { 11, 0, 8,    5, 0x49,  0,     0x4A,  7,     6,        3, 0x53,  0    , ""}, // OC0A = PB0 // Fast PWM
+    { 12, 0, 8,    5, 0x48,  0,     0x4A,  5,     4,        3, 0x53,  0    , ""}, // OC0B = PB1 // Fast PWM
+};
+
+McuExtIntPinInfo AvrExtIntPinInfo20Tiny85[] = { // ATtiny85 20-Pin packages
+    { 11 }, // PCINT0
+    { 12 },
+    { 14 },
+    {  2 },
+    {  5 },
+    {  1 }
+};
+
+// AT90USB646/647/1286/1287: same timer registers as ATmega2560 (Timer0..3)
+McuPwmPinInfo AvrAT90USB647PwmPinInfo[] = {
+////     ti  reso max REG_    REG_   REG_   bit    bit    mask  REG_   mask
+//// pin mer lutn  CS OCRnxL  OCRnxH TCCRnA COMnx1 COMnx0 WGMa  TCCRnB WGMb
+    { 25, 0, 8,     5, 0x48,  0,     0x44,  5,     4,        2, 0x45,  0x08 , ""}, // OC0B = PD0
+
+    { 15, 1, 8,     5, 0x88,  0x89,  0x80,  7,     6,        1, 0x81,  0x08 , ""}, // OC1A = PB5
+    { 15, 1, 9,     5, 0x88,  0x89,  0x80,  7,     6,        2, 0x81,  0x08 , ""}, // OC1A
+    { 15, 1,10,     5, 0x88,  0x89,  0x80,  7,     6,        3, 0x81,  0x08 , ""}, // OC1A
+
+    { 16, 1, 8,     5, 0x8A,  0x8B,  0x80,  5,     4,        1, 0x81,  0x08 , ""}, // OC1B = PB6
+    { 16, 1, 9,     5, 0x8A,  0x8B,  0x80,  5,     4,        2, 0x81,  0x08 , ""}, // OC1B
+    { 16, 1,10,     5, 0x8A,  0x8B,  0x80,  5,     4,        3, 0x81,  0x08 , ""}, // OC1B
+
+    { 17, 1, 8,     5, 0x8C,  0x8D,  0x80,  3,     2,        1, 0x81,  0x08 , ""}, // OC1C = PB7
+    { 17, 1, 9,     5, 0x8C,  0x8D,  0x80,  3,     2,        2, 0x81,  0x08 , ""}, // OC1C
+    { 17, 1,10,     5, 0x8C,  0x8D,  0x80,  3,     2,        3, 0x81,  0x08 , ""}, // OC1C
+
+    { 14, 2, 8,     5, 0xB3,  0,     0xB0,  7,     6,        1, 0xB1,  0x08 , ""}, // OC2A = PB4
+    { 26, 2, 8,     5, 0xB4,  0,     0xB0,  5,     4,        2, 0xB1,  0x08 , ""}, // OC2B = PD1
+
+    { 41, 3, 8,     5, 0x98,  0x99,  0x90,  7,     6,        1, 0x91,  0x08 , ""}, // OC3A = PC6
+    { 41, 3, 9,     5, 0x98,  0x99,  0x90,  7,     6,        2, 0x91,  0x08 , ""}, // OC3A
+    { 41, 3,10,     5, 0x98,  0x99,  0x90,  7,     6,        3, 0x91,  0x08 , ""}, // OC3A
+
+    { 40, 3, 8,     5, 0x9A,  0x9B,  0x90,  5,     4,        1, 0x91,  0x08 , ""}, // OC3B = PC5
+    { 40, 3, 9,     5, 0x9A,  0x9B,  0x90,  5,     4,        2, 0x91,  0x08 , ""}, // OC3B
+    { 40, 3,10,     5, 0x9A,  0x9B,  0x90,  5,     4,        3, 0x91,  0x08 , ""}, // OC3B
+
+    { 39, 3, 8,     5, 0x9C,  0x9D,  0x90,  3,     2,        1, 0x91,  0x08 , ""}, // OC3C = PC4
+    { 39, 3, 9,     5, 0x9C,  0x9D,  0x90,  3,     2,        2, 0x91,  0x08 , ""}, // OC3C
+    { 39, 3,10,     5, 0x9C,  0x9D,  0x90,  3,     2,        3, 0x91,  0x08 , ""}, // OC3C
 };
 
 McuPwmPinInfo AvrPwmPinInfo28_[] = { // ATmega8, etc.
@@ -2211,7 +2272,7 @@ McuIoPinInfo ArmSTM32F40X_144LQFPIoPinInfo[] = {
     { 'G',  9, 124, "PG9"                   },
     { 'G', 10, 125, "PG10 _SS2"             },
     { 'G', 11, 126, "PG11"                  },
-    { 'G', 12, 128, "PG12"                  },
+    { 'G', 12, 127, "PG12"                  },
     { 'G', 13, 128, "PG13"                  },
     { 'G', 14, 129, "PG14"                  },
     { 'G', 15, 132, "PG15"                  }
@@ -2372,7 +2433,7 @@ McuIoInfo SupportedMcus_[] = {
         'P',
 //        A     B     C     D     E     F     G     H      I   J      K      L
         { 0x20, 0x23, 0x26, 0x29, 0x2C, 0x2F, 0x32, 0x100, 0,  0x103, 0x106, 0x109 }, // PINx  input
-        { 0x22, 0x25, 0x28, 0x2B, 0x2E, 0x32, 0x34, 0x102, 0,  0x105, 0x108, 0x10B }, // PORTx output
+        { 0x22, 0x25, 0x28, 0x2B, 0x2E, 0x31, 0x34, 0x102, 0,  0x105, 0x108, 0x10B }, // PORTx output
         { 0x21, 0x24, 0x27, 0x2A, 0x2D, 0x30, 0x33, 0x101, 0,  0x104, 0x107, 0x10A }, // DDRx  dir
         128*1024,
         { { 0x200, 8192 } },
@@ -2420,8 +2481,8 @@ McuIoInfo SupportedMcus_[] = {
         EnhancedCore128K, //???
         64,
         0,
-        AvrPwmPinInfo64_,
-        arraylen(AvrPwmPinInfo64_),
+        AvrAT90USB647PwmPinInfo,
+        arraylen(AvrAT90USB647PwmPinInfo),
         nullptr,
         0,
         nullptr,
@@ -2954,10 +3015,10 @@ McuIoInfo SupportedMcus_[] = {
         arraylen(AvrPwmPinInfo44),
         nullptr,
         0,
-        McuSpiInfoATmega16,
-        arraylen(McuSpiInfoATmega16),
-        McuI2cInfoATmega16,
-        arraylen(McuI2cInfoATmega16),
+        McuSpiInfoATmega1284_44,
+        arraylen(McuSpiInfoATmega1284_44),
+        McuI2cInfoATmega1284_44,
+        arraylen(McuI2cInfoATmega1284_44),
         {{0,0}}
     },
     {
@@ -3049,10 +3110,10 @@ McuIoInfo SupportedMcus_[] = {
         EnhancedCore128K,
         0,
         8,
-        AvrPwmPinInfo8,
-        arraylen(AvrPwmPinInfo8),
-        AvrExtIntPinInfo8,
-        arraylen(AvrExtIntPinInfo8),
+        AvrPwmPinInfo20Tiny85,
+        arraylen(AvrPwmPinInfo20Tiny85),
+        AvrExtIntPinInfo20Tiny85,
+        arraylen(AvrExtIntPinInfo20Tiny85),
         nullptr,
         0,
         nullptr,
@@ -3441,7 +3502,7 @@ McuIoInfo SupportedMcus_[] = {
 //        16,
         ISA_PIC16,
         MidrangeCore14bit,
-        40,
+        44,
             (3 << (9+16)) | // flash write protection off
             (0 << (8+16)) | // BOR at 2.1 V
             (1 << 13) |     // ICD disabled

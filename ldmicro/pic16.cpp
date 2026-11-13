@@ -874,7 +874,7 @@ doBankCorrection:
             if(nAdd) {
                 int      nSkip = 0;
                 uint32_t ii = i;                                                                                         // address where we doing insert
-                while((ii > 0) && (IsOperation(PicProg[ii - 1].opPic) == IS_SKIP) || (PicProg[ii - 1].opPic == OP_MOVLW) // for asm compat
+                while((ii > 0) && ((IsOperation(PicProg[ii - 1].opPic) == IS_SKIP) || (PicProg[ii - 1].opPic == OP_MOVLW)) // for asm compat
                 ) {
                     // can't insert op betwen IS_SKIP and any opPic
                     ii--;
