@@ -58,6 +58,22 @@ static long PWM_Freq[MAX_PWM_C];  // PWM Frequency
 static int  PWM_Resol[MAX_PWM_C]; // PWM Resolution
 static int  PWM_MaxCs[MAX_PWM_C]; // PWM Max prediv choices
 static int  countpwm = 0;
+
+// ARM targets whose libraries are written on the CMSIS device header of the vendor
+// (LIBRARIES_FOR/Arm/STM32L4...). They keep the API of the STM32F4 libraries, but a single
+// header, Lib_mcu.h, replaces those of the ST Standard Peripheral Library.
+static bool ArmCmsisLib()
+{
+    return Prog.mcu() && ((Prog.mcu()->core == CortexL4) || (Prog.mcu()->core == CortexG4));
+}
+
+// Timer used for the PLC cycle on ARM targets
+static int ArmPlcTimer()
+{
+    if(Prog.mcu() && (Prog.mcu()->core == CortexL4))
+        return 7; // there is no TIM3 in the STM32L432
+    return 3;
+}
 /////
 
 //-----------------------------------------------------------------------------
@@ -2373,66 +2389,85 @@ bool CompileAnsiC(const char *outFile, int MNU)
         if(StringFunctionUsed() || SpiFunctionUsed()) {
             fprintf(flh, "#include <string.h>\n");
         }
-        if((Prog.mcu()) && (Prog.mcu()->core == CortexF1))
+        if(ArmCmsisLib()) {
             fprintf(flh,
-                    "#include \"stm32f10x.h\"\n"
-                    "#include \"stm32f10x_gpio.h\"\n"
-                    "#include \"stm32f10x_rcc.h\"\n"
-                    "#include \"stm32f10x_tim.h\"\n");
-        else // CortexF4
+                    "#include \"Lib_mcu.h\"\n"
+                    "\n"
+                    "#include \"Lib_gpio.h\"\n"
+                    "#include \"Lib_timer.h\"\n"
+                    "#include \"Lib_usr.h\"\n");
+            if(AdcFunctionUsed())
+                fprintf(flh, "#include \"Lib_adc.h\"\n");
+            if(PwmFunctionUsed())
+                fprintf(flh, "#include \"Lib_pwm.h\"\n");
+            if(UartFunctionUsed())
+                fprintf(flh, "#include \"Lib_uart.h\"\n");
+            if(SpiFunctionUsed())
+                fprintf(flh, "#include \"Lib_spi.h\"\n");
+            if(I2cFunctionUsed())
+                fprintf(flh, "#include \"Lib_i2c.h\"\n");
+        } else {
+            if((Prog.mcu()) && (Prog.mcu()->core == CortexF1))
+                fprintf(flh,
+                        "#include \"stm32f10x.h\"\n"
+                        "#include \"stm32f10x_gpio.h\"\n"
+                        "#include \"stm32f10x_rcc.h\"\n"
+                        "#include \"stm32f10x_tim.h\"\n");
+            else // CortexF4
+                fprintf(flh,
+                        "#include \"stm32f4xx.h\"\n"
+                        "#include \"stm32f4xx_gpio.h\"\n"
+                        "#include \"stm32f4xx_rcc.h\"\n"
+                        "#include \"stm32f4xx_tim.h\"\n");
             fprintf(flh,
-                    "#include \"stm32f4xx.h\"\n"
-                    "#include \"stm32f4xx_gpio.h\"\n"
-                    "#include \"stm32f4xx_rcc.h\"\n"
-                    "#include \"stm32f4xx_tim.h\"\n");
-        fprintf(flh,
-                "\n"
-                "#include \"Lib_gpio.h\"\n"
-                "#include \"Lib_timer.h\"\n"
-                "#include \"Lib_usr.h\"\n");
+                    "\n"
+                    "#include \"Lib_gpio.h\"\n"
+                    "#include \"Lib_timer.h\"\n"
+                    "#include \"Lib_usr.h\"\n");
 
-        if(AdcFunctionUsed()) {
-            if((Prog.mcu()) && (Prog.mcu()->core == CortexF1))
-                fprintf(flh,
-                        "#include \"stm32f10x_adc.h\"\n"
-                        "#include \"Lib_adc.h\"\n");
-            else
-                fprintf(flh,
-                        "#include \"stm32f4xx_adc.h\"\n"
-                        "#include \"Lib_adc.h\"\n");
-        }
-        if(PwmFunctionUsed()) {
-            fprintf(flh, "#include \"Lib_pwm.h\"\n");
-        }
-        if(UartFunctionUsed()) {
-            if((Prog.mcu()) && (Prog.mcu()->core == CortexF1))
-                fprintf(flh,
-                        "#include \"stm32f10x_usart.h\"\n"
-                        "#include \"Lib_uart.h\"\n");
-            else
-                fprintf(flh,
-                        "#include \"stm32f4xx_usart.h\"\n"
-                        "#include \"Lib_uart.h\"\n");
-        }
-        if(SpiFunctionUsed()) {
-            if((Prog.mcu()) && (Prog.mcu()->core == CortexF1))
-                fprintf(flh,
-                        "#include \"stm32f10x_spi.h\"\n"
-                        "#include \"Lib_spi.h\"\n");
-            else
-                fprintf(flh,
-                        "#include \"stm32f4xx_spi.h\"\n"
-                        "#include \"Lib_spi.h\"\n");
-        }
-        if(I2cFunctionUsed()) {
-            if((Prog.mcu()) && (Prog.mcu()->core == CortexF1))
-                fprintf(flh,
-                        "#include \"stm32f10x_i2c.h\"\n"
-                        "#include \"Lib_i2c.h\"\n");
-            else
-                fprintf(flh,
-                        "#include \"stm32f4xx_i2c.h\"\n"
-                        "#include \"Lib_i2c.h\"\n");
+            if(AdcFunctionUsed()) {
+                if((Prog.mcu()) && (Prog.mcu()->core == CortexF1))
+                    fprintf(flh,
+                            "#include \"stm32f10x_adc.h\"\n"
+                            "#include \"Lib_adc.h\"\n");
+                else
+                    fprintf(flh,
+                            "#include \"stm32f4xx_adc.h\"\n"
+                            "#include \"Lib_adc.h\"\n");
+            }
+            if(PwmFunctionUsed()) {
+                fprintf(flh, "#include \"Lib_pwm.h\"\n");
+            }
+            if(UartFunctionUsed()) {
+                if((Prog.mcu()) && (Prog.mcu()->core == CortexF1))
+                    fprintf(flh,
+                            "#include \"stm32f10x_usart.h\"\n"
+                            "#include \"Lib_uart.h\"\n");
+                else
+                    fprintf(flh,
+                            "#include \"stm32f4xx_usart.h\"\n"
+                            "#include \"Lib_uart.h\"\n");
+            }
+            if(SpiFunctionUsed()) {
+                if((Prog.mcu()) && (Prog.mcu()->core == CortexF1))
+                    fprintf(flh,
+                            "#include \"stm32f10x_spi.h\"\n"
+                            "#include \"Lib_spi.h\"\n");
+                else
+                    fprintf(flh,
+                            "#include \"stm32f4xx_spi.h\"\n"
+                            "#include \"Lib_spi.h\"\n");
+            }
+            if(I2cFunctionUsed()) {
+                if((Prog.mcu()) && (Prog.mcu()->core == CortexF1))
+                    fprintf(flh,
+                            "#include \"stm32f10x_i2c.h\"\n"
+                            "#include \"Lib_i2c.h\"\n");
+                else
+                    fprintf(flh,
+                            "#include \"stm32f4xx_i2c.h\"\n"
+                            "#include \"Lib_i2c.h\"\n");
+            }
         }
     } else if(compiler_variant == MNU_COMPILE_AVRGCC) {
         fprintf(flh,
@@ -3178,15 +3213,18 @@ bool CompileAnsiC(const char *outFile, int MNU)
                         "    Next_Plc_Cycle = 0;\n"
                         "}\n");
 
-                // Timer 3 interrupt routine for PLC Cycles
+                // Timer interrupt routine for PLC Cycles (Timer 3, or Timer 7 on STM32L4)
                 fprintf(f,
                         "\n"
-                        "void TIM3_Handler() {\n"
-                        "    if(TIM_GetITStatus(TIM3, TIM_IT_Update) != RESET) {\n"
+                        "void TIM%d_Handler() {\n"
+                        "    if(TIM_GetITStatus(TIM%d, TIM_IT_Update) != RESET) {\n"
                         "        Next_Plc_Cycle = 1;\n"
-                        "        TIM_ClearITPendingBit(TIM3, TIM_IT_Update);     // acknowledge interrupt\n"
+                        "        TIM_ClearITPendingBit(TIM%d, TIM_IT_Update);     // acknowledge interrupt\n"
                         "    }\n"
-                        "}\n");
+                        "}\n",
+                        ArmPlcTimer(),
+                        ArmPlcTimer(),
+                        ArmPlcTimer());
             } else if(mcu_ISA == ISA_PIC16) {
                 CalcPicPlcCycle(Prog.cycleTime, PicProgLdLen);
                 if(plcTmr.softDivisor > 1) {
@@ -3382,12 +3420,29 @@ bool CompileAnsiC(const char *outFile, int MNU)
                     period = 1;
                 if(period > 65535)
                     period = 65535; // securities
-                fprintf(f,
-                        "    // Init Timer 3 and activate interrupts.\n"
-                        "    LibTimer_Init(TIM3, 1000, %lu);\n" // f= (F/4)/[(prediv)*(period)]
-                        "    LibTimer_Interrupts(TIM3, ENABLE);\n"
-                        "    NVIC_SetPriority(TIM3_IRQn, 0);\n",
-                        period);
+                if(ArmCmsisLib())
+                    // these libraries compute the dividers from the real clock frequency
+                    fprintf(f,
+                            "    // Init Timer %d and activate interrupts.\n"
+                            "    LibTimer_InitUs(TIM%d, %lld); // PLC cycle time in us\n"
+                            "    LibTimer_Interrupts(TIM%d, ENABLE);\n"
+                            "    NVIC_SetPriority(TIM%d_IRQn, 0);\n",
+                            ArmPlcTimer(),
+                            ArmPlcTimer(),
+                            (long long)Prog.cycleTime,
+                            ArmPlcTimer(),
+                            ArmPlcTimer());
+                else
+                    fprintf(f,
+                            "    // Init Timer %d and activate interrupts.\n"
+                            "    LibTimer_Init(TIM%d, 1000, %lu);\n" // f= (F/4)/[(prediv)*(period)]
+                            "    LibTimer_Interrupts(TIM%d, ENABLE);\n"
+                            "    NVIC_SetPriority(TIM%d_IRQn, 0);\n",
+                            ArmPlcTimer(),
+                            ArmPlcTimer(),
+                            period,
+                            ArmPlcTimer(),
+                            ArmPlcTimer());
                 if(DelayUsed()) {
                     fprintf(f,
                             "\n"
@@ -3455,13 +3510,29 @@ bool CompileAnsiC(const char *outFile, int MNU)
                     period = 1;
                 if(period > 65535)
                     period = 65535; // securities
-                fprintf(f,
-                        "\n"
-                        "    // init Timer 3 and activate interrupts\n"
-                        "    LibTimer_Init(TIM3, 1000, %lu);\n" // f= (F/4)/[(prediv)*(period)]
-                        "    LibTimer_Interrupts(TIM3, ENABLE);\n"
-                        "\n",
-                        period);
+                if(ArmCmsisLib())
+                    // these libraries compute the dividers from the real clock frequency
+                    fprintf(f,
+                            "\n"
+                            "    // init Timer %d and activate interrupts\n"
+                            "    LibTimer_InitUs(TIM%d, %lld); // PLC cycle time in us\n"
+                            "    LibTimer_Interrupts(TIM%d, ENABLE);\n"
+                            "\n",
+                            ArmPlcTimer(),
+                            ArmPlcTimer(),
+                            (long long)Prog.cycleTime,
+                            ArmPlcTimer());
+                else
+                    fprintf(f,
+                            "\n"
+                            "    // init Timer %d and activate interrupts\n"
+                            "    LibTimer_Init(TIM%d, 1000, %lu);\n" // f= (F/4)/[(prediv)*(period)]
+                            "    LibTimer_Interrupts(TIM%d, ENABLE);\n"
+                            "\n",
+                            ArmPlcTimer(),
+                            ArmPlcTimer(),
+                            period,
+                            ArmPlcTimer());
 
             } else if(mcu_ISA == ISA_AVR) {
                 if(Prog.cycleTimer == 0) {
@@ -3611,7 +3682,8 @@ bool CompileAnsiC(const char *outFile, int MNU)
                         else {
                             // Pins pack of LIBRARIES_FOR/Arm/STM32F4/Lib_pwm.c that matches the pins declared in mcutable.h:
                             // pack 1 for the 48-pin STM32F411 (PWM on PA and PB), pack 2 for the STM32F40X.
-                            int pinsPack = strstr(Prog.mcu()->deviceName, "STM32F411") ? 1 : 2;
+                            // The libraries written on CMSIS only have one pack.
+                            int pinsPack = (ArmCmsisLib() || strstr(Prog.mcu()->deviceName, "STM32F411")) ? 1 : 2;
                             fprintf(f, "    LibPWM_InitChannel(&TIM%d_Chan%d, LibPWM_Channel_%d, LibPWM_PinsPack_%d);\n", p / 16, p % 16, p % 16, pinsPack);
                         }
                         usedpwm++;

@@ -67,6 +67,8 @@ typedef enum CoreTag {
     CortexF2,
     CortexF3,
     CortexF4,
+    CortexL4, // STM32L4: libraries written on the CMSIS device header
+    CortexG4, // STM32G4: libraries written on the CMSIS device header
     ARMcores_, // end of ARMcores
 
     PCcores,

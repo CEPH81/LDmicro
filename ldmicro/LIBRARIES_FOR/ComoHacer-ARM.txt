@@ -85,3 +85,31 @@ NB:	Placas STM32 soportadas y nombre de destino (lo usa buildArm.bat):
 	I2C1 = PB6 + PB7, PWM en PA8..PA11 (TIM1) y PA0..PA3 (TIM2).
 
 	En todas ellas el Timer 3 queda reservado para el ciclo del PLC.
+
+NB:	ST NUCLEO-L432KC (STM32L432KC) -> destino stm32l432 (librerias STM32L4)
+
+	Las librerias de LIBRARIES_FOR/Arm/STM32L4 estan escritas directamente
+	sobre las cabeceras CMSIS de ST (para la familia L4 no existe la
+	"Standard Peripheral Library" que usan STM32F1 y STM32F4).
+
+	Reloj: oscilador interno HSI16 + PLL = 80 MHz. No hace falta cristal y
+	el valor "Frecuencia del cristal" de LDmicro no influye en el tiempo de
+	ciclo: la libreria lo calcula a partir del reloj real.
+
+	Ciclo del PLC: Timer 7 (el STM32L432 no tiene Timer 3; el dialogo de
+	configuracion sigue mostrando "3" para todos los ARM).
+
+	UART:  USART2 = PA2 (TX) + PA15 (RX). Es el puerto COM virtual del
+	       ST-Link de la placa: no hace falta adaptador USB-serie.
+	SPI:   SPI1 = PB3 (SCK, D13) + PB4 (MISO, D12) + PB5 (MOSI, D11).
+	       PB3 es tambien el LED LD3 de la placa.
+	I2C:   I2C1 = PB6 (SCL, D5) + PB7 (SDA, D4), con resistencias externas.
+	       Los puentes SB16 y SB18 unen de fabrica PB7 con PA5 (A4) y PB6
+	       con PA6 (A5): no use PA5/PA6 como salidas mientras use el I2C.
+	PWM:   PA8 (D9), PA9 (D1), PA10 (D0), PA11 (D10) con el Timer 1;
+	       PA0 (A0), PA1 (A1), PA2 (A7), PA3 (A2) con el Timer 2.
+	ADC:   PA0..PA7 (A0, A1, A7, A2, A3, A4, A5, A6) y PB0 (D3), 12 bits.
+
+	PC14/PC15 (D7/D8) estan ocupados por el cristal de 32.768 kHz y no se
+	ofrecen como E/S. Grabacion: ST-Link de la placa (flashMcu.bat), o
+	copiando el archivo .bin a la unidad USB que crea la Nucleo.

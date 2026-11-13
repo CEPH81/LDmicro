@@ -2607,6 +2607,75 @@ McuI2cInfo ArmSTM32F411_48UFQFPNMcuI2cInfo[] = {
 //  name, REG_CTRL, REG_STAT, REG_DATA, REG_RATE, SCL, SDA
     { "I2C1", 0, 0, 0, 0, 45, 46 },                 // I2C1 = PB8 + PB9
 };
+
+//-----------------------------------------------------------------------------
+// ST NUCLEO-L432KC (STM32L432KCU6, UFQFPN32).
+// Pin functions follow LIBRARIES_FOR/Arm/STM32L4:
+// USART2 = PA2 (TX) + PA15 (RX) is the virtual COM port of the on-board ST-Link,
+// SPI1 = PB3/PB4/PB5 (D13/D12/D11), I2C1 = PB6 (SCL) + PB7 (SDA),
+// PWM on TIM1 (PA8..PA11) and TIM2 (PA0..PA3), ADC1 on PA0..PA7 and PB0.
+// TIM7 is used by the PLC cycle timer. The 80 MHz clock comes from the internal HSI16.
+// PC14/PC15 (32.768 kHz crystal), PA13/PA14 (SWD) and PH3 (BOOT0) are not listed.
+McuIoPinInfo ArmSTM32L432_32UFQFPNIoPinInfo[] = {
+//   port bit pin  pinName                  ArduinoPin  ArduinoName (STM32duino)
+    { 'A',   0,  6, "PA0 ADC1.5/PWM2.1"     ,  6, "PA0; //A0"     },
+    { 'A',   1,  7, "PA1 ADC1.6/PWM2.2"     ,  7, "PA1; //A1"     },
+    { 'A',   2,  8, "PA2 ADC1.7/PWM2.3/TX2" ,  8, "PA2; //A7 //ST-Link VCP TX" },
+    { 'A',   3,  9, "PA3 ADC1.8/PWM2.4"     ,  9, "PA3; //A2"     },
+    { 'A',   4, 10, "PA4 ADC1.9"            , 10, "PA4; //A3"     },
+    { 'A',   5, 11, "PA5 ADC1.10"           , 11, "PA5; //A4 //tied to D4 by SB16" },
+    { 'A',   6, 12, "PA6 ADC1.11"           , 12, "PA6; //A5 //tied to D5 by SB18" },
+    { 'A',   7, 13, "PA7 ADC1.12"           , 13, "PA7; //A6"     },
+    { 'A',   8, 18, "PA8 PWM1.1"            , 18, "PA8; //D9"     },
+    { 'A',   9, 19, "PA9 PWM1.2/TX1"        , 19, "PA9; //D1"     },
+    { 'A',  10, 20, "PA10 PWM1.3/RX1"       , 20, "PA10; //D0"    },
+    { 'A',  11, 21, "PA11 PWM1.4/_SS1"      , 21, "PA11; //D10"   },
+    { 'A',  12, 22, "PA12"                  , 22, "PA12; //D2"    },
+    { 'A',  15, 25, "PA15 RX2"              , 25, "PA15; //ST-Link VCP RX" },
+    { 'B',   0, 14, "PB0 ADC1.15"           , 14, "PB0; //D3"     },
+    { 'B',   1, 15, "PB1"                   , 15, "PB1; //D6"     }, // ADC channel 16 is not usable by the code generator
+    { 'B',   3, 26, "PB3 SCK1"              , 26, "PB3; //D13 //LED LD3" },
+    { 'B',   4, 27, "PB4 MISO1"             , 27, "PB4; //D12"    },
+    { 'B',   5, 28, "PB5 MOSI1"             , 28, "PB5; //D11"    },
+    { 'B',   6, 29, "PB6 SCL1"              , 29, "PB6; //D5"     },
+    { 'B',   7, 30, "PB7 SDA1"              , 30, "PB7; //D4"     }
+};
+
+McuAdcPinInfo ArmSTM32L432_32UFQFPNAdcPinInfo[] = {
+//  {pin, channel}      // the channel is the number of the ADC1 input
+    {  6,  5 },         // ADC1 input 5 on PA0
+    {  7,  6 },         // ADC1 input 6 on PA1
+    {  8,  7 },         // ADC1 input 7 on PA2
+    {  9,  8 },         // ADC1 input 8 on PA3
+    { 10,  9 },         // ADC1 input 9 on PA4
+    { 11, 10 },         // ADC1 input 10 on PA5
+    { 12, 11 },         // ADC1 input 11 on PA6
+    { 13, 12 },         // ADC1 input 12 on PA7
+    { 14, 15 }          // ADC1 input 15 on PB0
+};
+
+McuPwmPinInfo ArmSTM32L432_32UFQFPNPwmPinInfo[] = {
+//  {pin, timer, resol}
+    { 18, 1, 16 , 0, 0, 0, 0, 0, 0, 0, 0, 0, ""},       // PWM1 on PA8 to PA11
+    { 19, 1, 16 , 0, 0, 0, 0, 0, 0, 0, 0, 0, ""},
+    { 20, 1, 16 , 0, 0, 0, 0, 0, 0, 0, 0, 0, ""},
+    { 21, 1, 16 , 0, 0, 0, 0, 0, 0, 0, 0, 0, ""},
+    {  6, 2, 32 , 0, 0, 0, 0, 0, 0, 0, 0, 0, ""},       // PWM2 on PA0 to PA3
+    {  7, 2, 32 , 0, 0, 0, 0, 0, 0, 0, 0, 0, ""},
+    {  8, 2, 32 , 0, 0, 0, 0, 0, 0, 0, 0, 0, ""},
+    {  9, 2, 32 , 0, 0, 0, 0, 0, 0, 0, 0, 0, ""}
+};
+
+McuSpiInfo ArmSTM32L432_32UFQFPNMcuSpiInfo[] = {
+//  name,  CTRL, STAT, DATA, MISO, MOSI, SCK, SS
+    { "SPI1", 0,    0,    0,   27,   28,  26, 21 }, // SPI1 = PB4 + PB5 + PB3 + PA11
+//  NB: SS is in fact user defined - if need be - (software SS) but a pin must be declared
+};
+
+McuI2cInfo ArmSTM32L432_32UFQFPNMcuI2cInfo[] = {
+//  name, REG_CTRL, REG_STAT, REG_DATA, REG_RATE, SCL, SDA
+    { "I2C1", 0, 0, 0, 0, 29, 30 },                 // I2C1 = PB6 + PB7
+};
 /////
 
 
@@ -4514,6 +4583,42 @@ McuIoInfo SupportedMcus_[] = {
         #undef BASE_A
         #undef BASE_B
         #undef BASE_C
+    },
+    {
+        #define BASE_A 0x48000000
+        #define BASE_B 0x48000400
+        "St ARM STM32L432 32-UFQFPN / Nucleo-L432KC",   // Name
+        "STM32L432",                                    // Target name (see buildArm.bat)
+        "NUCLEO-L432KC",
+        "",
+        "",
+        'P',                                        // Port prefix
+        { BASE_A+0x10, BASE_B+0x10, 0, 0, 0, 0, 0, 0, 0, 0, 0},     // In registers (IDR)
+        { BASE_A+0x14, BASE_B+0x14, 0, 0, 0, 0, 0, 0, 0, 0, 0},     // Out registers (ODR)
+        { BASE_A, BASE_B,  0, 0, 0, 0, 0, 0, 0, 0, 0},              // Dir registers (MODER)
+        128 * 1024,                                 // 256 KB Flash
+        { { 0x20000000, 0xC000 } },                 // 48 KB RAM (SRAM1)
+        ArmSTM32L432_32UFQFPNIoPinInfo,             // Pin info
+        arraylen(ArmSTM32L432_32UFQFPNIoPinInfo),
+        ArmSTM32L432_32UFQFPNAdcPinInfo,            // Adc info
+        arraylen(ArmSTM32L432_32UFQFPNAdcPinInfo),
+        4095,                                       // 12 bits ADC
+        {25, 8},                                    // UART RX + TX (USART2 = PA15 + PA2, ST-Link virtual COM port)
+        ISA_ARM,
+        CortexL4,
+        32,
+        0,
+        ArmSTM32L432_32UFQFPNPwmPinInfo,            // Pwm info
+        arraylen(ArmSTM32L432_32UFQFPNPwmPinInfo),
+        nullptr,                                    // ExtInt info
+        0,
+        ArmSTM32L432_32UFQFPNMcuSpiInfo,            // SPI info
+        arraylen(ArmSTM32L432_32UFQFPNMcuSpiInfo),
+        ArmSTM32L432_32UFQFPNMcuI2cInfo,            // I2C info
+        arraylen(ArmSTM32L432_32UFQFPNMcuI2cInfo),
+        {{0,0}}
+        #undef BASE_A
+        #undef BASE_B
     },
 
 //===========================================================================

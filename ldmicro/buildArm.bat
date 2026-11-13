@@ -52,14 +52,20 @@ chdir %~pn1
 @IF %3 == "stm32f10x" SET LIB_PATH=%EXE_PATH%LIBRARIES_FOR\ARM\STM32F1
 @IF %3 == "stm32f411" SET LIB_PATH=%EXE_PATH%LIBRARIES_FOR\ARM\STM32F4
 @IF %3 == "stm32f103c6" SET LIB_PATH=%EXE_PATH%LIBRARIES_FOR\ARM\STM32F1
+@IF %3 == "stm32l432" SET LIB_PATH=%EXE_PATH%LIBRARIES_FOR\ARM\STM32L4
 
 @rem Device options and linker script of each target
 @rem   stm32f40x   : STM32F40x/41x, default HSE_VALUE of the library
 @rem   stm32f411   : STM32F411CE (WeAct BlackPill), 25 MHz crystal, 512 KB Flash
 @rem   stm32f10x   : STM32F103C8/CB (Bluepill), 64 KB Flash, 20 KB RAM
 @rem   stm32f103c6 : STM32F103C6 (Bluepill), 32 KB Flash, 10 KB RAM
+@rem   stm32l432   : STM32L432KC (Nucleo-L432KC), internal 16 MHz oscillator, 256 KB Flash
 @SET MCU_DEFS=
 @SET LN_SCRIPT=
+@SET STARTUP=CortexM4.S
+@IF %3 == "stm32l432" SET LN_SCRIPT=CortexM4_L432.ln
+@IF %3 == "stm32l432" SET STARTUP=CortexM4_L432.S
+@IF %3 == "stm32l432" SET MCU_DEFS=-DSTM32L432xx
 @IF %3 == "stm32f40x" SET LN_SCRIPT=CortexM4.ln
 @IF %3 == "stm32f411" SET LN_SCRIPT=CortexM4_F411.ln
 @IF %3 == "stm32f411" SET MCU_DEFS=-DSTM32F411xE -DHSE_VALUE=25000000
@@ -79,13 +85,15 @@ PATH %GCC_PATH%\BIN;%PATH%
 @IF %3 == "stm32f103c6" goto STM32F1
 @IF %3 == "stm32f40x" goto STM32F4
 @IF %3 == "stm32f411" goto STM32F4
+@IF %3 == "stm32l432" goto STM32F4
 goto NOT_SUPPORTED
 
 
+@rem Cortex-M4 targets: STM32F4 and STM32L4
 :STM32F4
 
 @rem Compile libraries
-arm-none-eabi-g++.exe -mcpu=cortex-m4 -mthumb -g -IInc -I"%GCC_PATH%\arm-none-eabi\include" -c ARMGCC\lib\CortexM4.S -o ARMGCC\obj\cortexM4.o
+arm-none-eabi-g++.exe -mcpu=cortex-m4 -mthumb -g -IInc -I"%GCC_PATH%\arm-none-eabi\include" -c ARMGCC\lib\%STARTUP% -o ARMGCC\obj\cortexM4.o
 
 CD ARMGCC\lib
 FOR %%F in (*.c) do arm-none-eabi-gcc.exe -mcpu=cortex-m4 -mthumb -g %MCU_DEFS% -IInc -I"%GCC_PATH%\arm\arm-none-eabi\include" -c %%F -o ..\obj\%%F.o
@@ -99,6 +107,9 @@ arm-none-eabi-gcc.exe -o "ARMGCC\bin\%~nx2.elf" ARMGCC\obj\*.o -Wl,-Map -Wl,"ARM
 
 @rem Convert Elf to Hex
 arm-none-eabi-objcopy -O ihex "ARMGCC\bin\%~nx2.elf" "ARMGCC\bin\%~nx2.hex"
+
+@rem Binary image, for the USB drive of the Nucleo boards
+arm-none-eabi-objcopy -O binary "ARMGCC\bin\%~nx2.elf" "ARMGCC\bin\%~nx2.bin"
 
 @rem Creation of the J-Link script
 @echo r > ARMGCC\bin\cmdfile.jlink

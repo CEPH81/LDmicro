@@ -113,6 +113,7 @@ IF %4 == "stm32f10x" goto STM32F1
 IF %4 == "stm32f103c6" goto STM32F1
 IF %4 == "stm32f40x" goto STM32F4
 IF %4 == "stm32f411" goto STM32F1
+IF %4 == "stm32l432" goto STM32F1
 goto NOT_SUPPORTED
 
 :STM32F4
@@ -140,7 +141,8 @@ SET PATH=%PATH%;%STL_PATH%
 @echo on
 
 @rem *** Flash the STM32 with ST-Link ***
-@rem (also used for the STM32F411 BlackPill: ST-Link on the SWD header)
+@rem (also used for the STM32F411 BlackPill: ST-Link on the SWD header,
+@rem  and for the Nucleo-L432KC: on-board ST-Link)
 ST-LINK_CLI.exe -c SWD -P ARMGCC\bin\%~nx2.hex -V "after_programming" -Run
 
 @GOTO exit
