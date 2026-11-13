@@ -3608,8 +3608,12 @@ bool CompileAnsiC(const char *outFile, int MNU)
                         fprintf(f, "    LibPWM_InitTimer(TIM%d, &TIM%d_Chan%d, %ld);\n", p / 16, p / 16, p % 16, PWM_Freq[p]);
                         if((Prog.mcu()) && (Prog.mcu()->core == CortexF1)) ///// Modified by JG2
                             fprintf(f, "    LibPWM_InitChannel(&TIM%d_Chan%d, LibPWM_Channel_%d);\n", p / 16, p % 16, p % 16);
-                        else
-                            fprintf(f, "    LibPWM_InitChannel(&TIM%d_Chan%d, LibPWM_Channel_%d, LibPWM_PinsPack_2);\n", p / 16, p % 16, p % 16);
+                        else {
+                            // Pins pack of LIBRARIES_FOR/Arm/STM32F4/Lib_pwm.c that matches the pins declared in mcutable.h:
+                            // pack 1 for the 48-pin STM32F411 (PWM on PA and PB), pack 2 for the STM32F40X.
+                            int pinsPack = strstr(Prog.mcu()->deviceName, "STM32F411") ? 1 : 2;
+                            fprintf(f, "    LibPWM_InitChannel(&TIM%d_Chan%d, LibPWM_Channel_%d, LibPWM_PinsPack_%d);\n", p / 16, p % 16, p % 16, pinsPack);
+                        }
                         usedpwm++;
                     }
                 }

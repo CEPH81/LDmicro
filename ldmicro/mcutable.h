@@ -445,9 +445,9 @@ McuIoPinInfo AvrAtmega16U4or32U4IoPinInfo44[] = {
 //   port bit pin  pinName                  ArduinoPin  ArduinoName
 //                                                   X  Leonardo
     { 'B',  0,  8, "PB0 PCINT0/_SS"             ,  8, "17; //RXLED"      },
-    { 'B',  1,  9, "PB1 PCINT1/SCL"             ,  9, ""                 },
-    { 'B',  2, 10, "PB2 PCINT2/PDI/MOSI"        , 10, ""                 },
-    { 'B',  3, 11, "PB3 PCINT3/PDO/MISO"        , 11, ""                 },
+    { 'B',  1,  9, "PB1 PCINT1/SCLK"            ,  9, "15; //SCK"        },
+    { 'B',  2, 10, "PB2 PCINT2/PDI/MOSI"        , 10, "16; //MOSI"       },
+    { 'B',  3, 11, "PB3 PCINT3/PDO/MISO"        , 11, "14; //MISO"       },
     { 'B',  4, 28, "PB4 PCINT4/ADC11"           , 28, "8"                },
     { 'B',  5, 29, "PB5 PCINT5/OC1A/OC4B/ADC12" , 29, "9; //PWM~"        },
     { 'B',  6, 30, "PB6 PCINT6/OC1B/_OC4B/ADC13", 30, "10; //PWM~"       },
@@ -462,12 +462,12 @@ McuIoPinInfo AvrAtmega16U4or32U4IoPinInfo44[] = {
     { 'D',  7, 27, "PD7 T0/OC4D/ADC10"          , 27, "6; //PWM~"        },
     { 'C',  6, 31, "PC6 OC3A/_OC4A"             , 31, "5; //PWM~"        },
     { 'C',  7, 32, "PC7 ICP3/CLK0/OC4A"         , 32, "13; //PWM~ //LED" },
-    { 'F',  0, 41, "PF0 ADC0"                   , 41, "A0"               },
-    { 'F',  1, 40, "PF1 ADC1"                   , 40, "A1"               },
-    { 'F',  4, 39, "PF4 ADC4/TCK"               , 39, "A4"               },
-    { 'F',  5, 38, "PF5 ADC5/TMS"               , 38, "A5"               },
-    { 'F',  6, 37, "PF6 ADC6/TDO"               , 37, "A6"               },
-    { 'F',  7, 36, "PF7 ADC7/TDI"               , 36, "A7"               },
+    { 'F',  0, 41, "PF0 ADC0"                   , 41, "A5"               },
+    { 'F',  1, 40, "PF1 ADC1"                   , 40, "A4"               },
+    { 'F',  4, 39, "PF4 ADC4/TCK"               , 39, "A3"               },
+    { 'F',  5, 38, "PF5 ADC5/TMS"               , 38, "A2"               },
+    { 'F',  6, 37, "PF6 ADC6/TDO"               , 37, "A1"               },
+    { 'F',  7, 36, "PF7 ADC7/TDI"               , 36, "A0"               },
     { 'E',  2, 33, "PE2 _HWB"                   , 33, ""                 },
     { 'E',  6,  1, "PE6 INT6/AIN0"              ,  1, "7"                }
 };
@@ -485,6 +485,39 @@ McuAdcPinInfo AvrAtmega16U4or32U4AdcPinInfo44[] = {
     { 28, 0x23 },
     { 29, 0x24 },
     { 30, 0x25 }
+};
+
+//-----------------------------------------------------------------------------
+// Arduino Micro (ATmega32U4, 44-Pin package). Only the pins routed to the
+// board headers or to the on-board LEDs are listed. PE2 (_HWB) is not available.
+McuIoPinInfo ArduinoMicroIoPinInfo[] = {
+//   port bit pin  pinName                  ArduinoPin  ArduinoName
+//                                                   X  Micro
+    { 'D',  2, 20, "PD2 INT2/RXD1"              , 20, "0; //RX"          },
+    { 'D',  3, 21, "PD3 INT3/TXD1"              , 21, "1; //TX"          },
+    { 'D',  1, 19, "PD1 INT1/SDA"               , 19, "2; //SDA"         },
+    { 'D',  0, 18, "PD0 INT0/OC0B/SCL"          , 18, "3; //PWM~ //SCL"  },
+    { 'D',  4, 25, "PD4 ICP1/ADC8"              , 25, "4; //A6"          },
+    { 'C',  6, 31, "PC6 OC3A/_OC4A"             , 31, "5; //PWM~"        },
+    { 'D',  7, 27, "PD7 T0/OC4D/ADC10"          , 27, "6; //PWM~ //A7"   },
+    { 'E',  6,  1, "PE6 INT6/AIN0"              ,  1, "7"                },
+    { 'B',  4, 28, "PB4 PCINT4/ADC11"           , 28, "8; //A8"          },
+    { 'B',  5, 29, "PB5 PCINT5/OC1A/OC4B/ADC12" , 29, "9; //PWM~ //A9"   },
+    { 'B',  6, 30, "PB6 PCINT6/OC1B/_OC4B/ADC13", 30, "10; //PWM~ //A10" },
+    { 'B',  7, 12, "PB7 PCINT7/OC1C/OC0A/_RTS"  , 12, "11; //PWM~"       },
+    { 'D',  6, 26, "PD6 T1/_OC4D/ADC9"          , 26, "12; //A11"        },
+    { 'C',  7, 32, "PC7 ICP3/CLK0/OC4A"         , 32, "13; //PWM~ //LED" },
+    { 'B',  3, 11, "PB3 PCINT3/PDO/MISO"        , 11, "14; //MISO"       },
+    { 'B',  1,  9, "PB1 PCINT1/SCLK"            ,  9, "15; //SCK"        },
+    { 'B',  2, 10, "PB2 PCINT2/PDI/MOSI"        , 10, "16; //MOSI"       },
+    { 'B',  0,  8, "PB0 PCINT0/_SS"             ,  8, "17; //SS //RXLED" },
+    { 'F',  7, 36, "PF7 ADC7/TDI"               , 36, "A0"               },
+    { 'F',  6, 37, "PF6 ADC6/TDO"               , 37, "A1"               },
+    { 'F',  5, 38, "PF5 ADC5/TMS"               , 38, "A2"               },
+    { 'F',  4, 39, "PF4 ADC4/TCK"               , 39, "A3"               },
+    { 'F',  1, 40, "PF1 ADC1"                   , 40, "A4"               },
+    { 'F',  0, 41, "PF0 ADC0"                   , 41, "A5"               },
+    { 'D',  5, 22, "PD5 XCK1/_CTS"              , 22, "30; //TXLED"      }
 };
 
 //-----------------------------------------------------------------------------
@@ -2413,6 +2446,169 @@ McuI2cInfo ArmSTM32F10X_48LQFPMcuI2cInfo[] = {
 };
 /////
 
+//-----------------------------------------------------------------------------
+// STM32F103C6T6 Bluepill (low density: 32 KB Flash, 10 KB RAM).
+// Same LQFP48 pinout as the STM32F103C8, but without TIM4, USART3, I2C2 and SPI2.
+// TIM3 is used by the PLC cycle timer.
+McuIoPinInfo ArmSTM32F103C6_48LQFPIoPinInfo[] = {
+//   port bit pin  pinName                  ArduinoPin  ArduinoName (STM32duino)
+    { 'A',   0, 10, "PA0 ADC1.0/PWM2.1"     , 10, "PA0"           },
+    { 'A',   1, 11, "PA1 ADC1.1/PWM2.2"     , 11, "PA1"           },
+    { 'A',   2, 12, "PA2 ADC1.2/PWM2.3/TX2" , 12, "PA2"           },
+    { 'A',   3, 13, "PA3 ADC1.3/PWM2.4/RX2" , 13, "PA3"           },
+    { 'A',   4, 14, "PA4 ADC2.4/_SS1"       , 14, "PA4"           },
+    { 'A',   5, 15, "PA5 ADC2.5/SCK1"       , 15, "PA5"           },
+    { 'A',   6, 16, "PA6 ADC2.6/MISO1"      , 16, "PA6"           },
+    { 'A',   7, 17, "PA7 ADC2.7/MOSI1"      , 17, "PA7"           },
+    { 'A',   8, 29, "PA8 PWM1.1"            , 29, "PA8"           },
+    { 'A',   9, 30, "PA9 PWM1.2/TX1"        , 30, "PA9"           },
+    { 'A',  10, 31, "PA10 PWM1.3/RX1"       , 31, "PA10"          },
+    { 'A',  11, 32, "PA11 PWM1.4"           , 32, "PA11; //USB D-" },
+    { 'A',  12, 33, "PA12"                  , 33, "PA12; //USB D+" },
+    { 'A',  13, 34, "PA13 JTAG"             , 34, "PA13; //SWDIO" },
+    { 'A',  14, 37, "PA14 JTAG"             , 37, "PA14; //SWCLK" },
+    { 'A',  15, 38, "PA15 JTAG"             , 38, "PA15"          },
+    { 'B',   0, 18, "PB0"                   , 18, "PB0"           }, // ADC Channel 8 not supported by libs
+    { 'B',   1, 19, "PB1"                   , 19, "PB1"           }, // ADC Channel 9 not supported by libs
+    { 'B',   2, 20, "PB2 BOOT"              , 20, "PB2; //BOOT1"  },
+    { 'B',   3, 39, "PB3 JTAG"              , 39, "PB3"           },
+    { 'B',   4, 40, "PB4 JTAG"              , 40, "PB4"           },
+    { 'B',   5, 41, "PB5"                   , 41, "PB5"           },
+    { 'B',   6, 42, "PB6 SCL1"              , 42, "PB6"           },
+    { 'B',   7, 43, "PB7 SDA1"              , 43, "PB7"           },
+    { 'B',   8, 45, "PB8"                   , 45, "PB8"           },
+    { 'B',   9, 46, "PB9"                   , 46, "PB9"           },
+    { 'B',  10, 21, "PB10"                  , 21, "PB10"          },
+    { 'B',  11, 22, "PB11"                  , 22, "PB11"          },
+    { 'B',  12, 25, "PB12"                  , 25, "PB12"          },
+    { 'B',  13, 26, "PB13"                  , 26, "PB13"          },
+    { 'B',  14, 27, "PB14"                  , 27, "PB14"          },
+    { 'B',  15, 28, "PB15"                  , 28, "PB15"          }
+    // PC13-15 not supported (PC13 = on-board LED)
+};
+
+McuAdcPinInfo ArmSTM32F103C6_48LQFPAdcPinInfo[] = {
+//  {pin, channel}
+    { 10, 0x00 },       // ADC1 channel 0 on PA0
+    { 11, 0x01 },       // ADC1 channel 1 on PA1
+    { 12, 0x02 },       // ADC1 channel 2 on PA2
+    { 13, 0x03 },       // ADC1 channel 3 on PA3
+    { 14, 0x04 },       // ADC2 channel 4 on PA4
+    { 15, 0x05 },       // ADC2 channel 5 on PA5
+    { 16, 0x06 },       // ADC2 channel 6 on PA6
+    { 17, 0x07 }        // ADC2 channel 7 on PA7
+};
+
+McuPwmPinInfo ArmSTM32F103C6_48LQFPPwmPinInfo[] = {
+//  {pin, timer, resol}
+    { 29, 1, 16 , 0, 0, 0, 0, 0, 0, 0, 0, 0, ""},       // PWM1 on PA8 to PA11
+    { 30, 1, 16 , 0, 0, 0, 0, 0, 0, 0, 0, 0, ""},
+    { 31, 1, 16 , 0, 0, 0, 0, 0, 0, 0, 0, 0, ""},
+    { 32, 1, 16 , 0, 0, 0, 0, 0, 0, 0, 0, 0, ""},
+    { 10, 2, 16 , 0, 0, 0, 0, 0, 0, 0, 0, 0, ""},       // PWM2 on PA0 to PA3
+    { 11, 2, 16 , 0, 0, 0, 0, 0, 0, 0, 0, 0, ""},
+    { 12, 2, 16 , 0, 0, 0, 0, 0, 0, 0, 0, 0, ""},
+    { 13, 2, 16 , 0, 0, 0, 0, 0, 0, 0, 0, 0, ""}
+};
+
+McuSpiInfo ArmSTM32F103C6_48LQFPMcuSpiInfo[] = {
+//  name,  CTRL, STAT, DATA, MISO, MOSI, SCK, SS
+    { "SPI1", 0,    0,    0,   16,   17,  15, 14 }, // SPI1 = PA6  + PA7  + PA5  + PA4
+//  NB: SS is in fact user defined - if need be - (software SS) but a pin must be declared
+};
+
+McuI2cInfo ArmSTM32F103C6_48LQFPMcuI2cInfo[] = {
+//  name, REG_CTRL, REG_STAT, REG_DATA, REG_RATE, SCL, SDA
+    { "I2C1", 0, 0, 0, 0, 42, 43 },                 // I2C1 = PB6 + PB7
+};
+
+//-----------------------------------------------------------------------------
+// STM32F411CEU6 in UFQFPN48 (WeAct Studio BlackPill V2.x / V3.x).
+// Pin functions follow the default pin packs of LIBRARIES_FOR/Arm/STM32F4:
+// USART1 = PA9/PA10, USART2 = PA2/PA3, SPI1 = PA5/PA6/PA7, SPI3 = PB3/PB4/PB5,
+// I2C1 = PB8/PB9, PWM pins pack 1 (TIM1 = PA8..PA11, TIM2 = PA0..PA3, TIM4 = PB6..PB9).
+// TIM3 is used by the PLC cycle timer. There is no PB11 on this package.
+McuIoPinInfo ArmSTM32F411_48UFQFPNIoPinInfo[] = {
+//   port bit pin  pinName                  ArduinoPin  ArduinoName (STM32duino)
+    { 'A',   0, 10, "PA0 ADC1.0/PWM2.1"     , 10, "PA0; //KEY"    },
+    { 'A',   1, 11, "PA1 ADC1.1/PWM2.2"     , 11, "PA1"           },
+    { 'A',   2, 12, "PA2 ADC1.2/PWM2.3/TX2" , 12, "PA2"           },
+    { 'A',   3, 13, "PA3 ADC1.3/PWM2.4/RX2" , 13, "PA3"           },
+    { 'A',   4, 14, "PA4 ADC1.4/_SS1"       , 14, "PA4"           },
+    { 'A',   5, 15, "PA5 ADC1.5/SCK1"       , 15, "PA5"           },
+    { 'A',   6, 16, "PA6 ADC1.6/MISO1"      , 16, "PA6"           },
+    { 'A',   7, 17, "PA7 ADC1.7/MOSI1"      , 17, "PA7"           },
+    { 'A',   8, 29, "PA8 PWM1.1"            , 29, "PA8"           },
+    { 'A',   9, 30, "PA9 PWM1.2/TX1"        , 30, "PA9"           },
+    { 'A',  10, 31, "PA10 PWM1.3/RX1"       , 31, "PA10"          },
+    { 'A',  11, 32, "PA11 PWM1.4"           , 32, "PA11; //USB D-" },
+    { 'A',  12, 33, "PA12"                  , 33, "PA12; //USB D+" },
+    { 'A',  13, 34, "PA13 SWDIO"            , 34, "PA13; //SWDIO" },
+    { 'A',  14, 37, "PA14 SWCLK"            , 37, "PA14; //SWCLK" },
+    { 'A',  15, 38, "PA15 _SS3"             , 38, "PA15"          },
+    { 'B',   0, 18, "PB0 ADC1.8"            , 18, "PB0"           },
+    { 'B',   1, 19, "PB1 ADC1.9"            , 19, "PB1"           },
+    { 'B',   2, 20, "PB2 BOOT1"             , 20, "PB2; //BOOT1"  },
+    { 'B',   3, 39, "PB3 SCK3"              , 39, "PB3"           },
+    { 'B',   4, 40, "PB4 MISO3"             , 40, "PB4"           },
+    { 'B',   5, 41, "PB5 MOSI3"             , 41, "PB5"           },
+    { 'B',   6, 42, "PB6 PWM4.1"            , 42, "PB6"           },
+    { 'B',   7, 43, "PB7 PWM4.2"            , 43, "PB7"           },
+    { 'B',   8, 45, "PB8 PWM4.3/SCL1"       , 45, "PB8"           },
+    { 'B',   9, 46, "PB9 PWM4.4/SDA1"       , 46, "PB9"           },
+    { 'B',  10, 21, "PB10"                  , 21, "PB10"          },
+    { 'B',  12, 25, "PB12"                  , 25, "PB12"          },
+    { 'B',  13, 26, "PB13"                  , 26, "PB13"          },
+    { 'B',  14, 27, "PB14"                  , 27, "PB14"          },
+    { 'B',  15, 28, "PB15"                  , 28, "PB15"          },
+    { 'C',  13,  2, "PC13 LED"              ,  2, "PC13; //LED (active low)" },
+    { 'C',  14,  3, "PC14 OSC32_IN"         ,  3, "PC14"          },
+    { 'C',  15,  4, "PC15 OSC32_OUT"        ,  4, "PC15"          }
+};
+
+McuAdcPinInfo ArmSTM32F411_48UFQFPNAdcPinInfo[] = {
+//  {pin, channel}       // the STM32F411 only has ADC1
+    { 10, 0x00 },       // ADC1 channel 0 on PA0
+    { 11, 0x01 },       // ADC1 channel 1 on PA1
+    { 12, 0x02 },       // ADC1 channel 2 on PA2
+    { 13, 0x03 },       // ADC1 channel 3 on PA3
+    { 14, 0x04 },       // ADC1 channel 4 on PA4
+    { 15, 0x05 },       // ADC1 channel 5 on PA5
+    { 16, 0x06 },       // ADC1 channel 6 on PA6
+    { 17, 0x07 },       // ADC1 channel 7 on PA7
+    { 18, 0x08 },       // ADC1 channel 8 on PB0
+    { 19, 0x09 }        // ADC1 channel 9 on PB1
+};
+
+McuPwmPinInfo ArmSTM32F411_48UFQFPNPwmPinInfo[] = {
+//  {pin, timer, resol}
+    { 29, 1, 16 , 0, 0, 0, 0, 0, 0, 0, 0, 0, ""},       // PWM1 on PA8 to PA11
+    { 30, 1, 16 , 0, 0, 0, 0, 0, 0, 0, 0, 0, ""},
+    { 31, 1, 16 , 0, 0, 0, 0, 0, 0, 0, 0, 0, ""},
+    { 32, 1, 16 , 0, 0, 0, 0, 0, 0, 0, 0, 0, ""},
+    { 10, 2, 32 , 0, 0, 0, 0, 0, 0, 0, 0, 0, ""},       // PWM2 on PA0 to PA3
+    { 11, 2, 32 , 0, 0, 0, 0, 0, 0, 0, 0, 0, ""},
+    { 12, 2, 32 , 0, 0, 0, 0, 0, 0, 0, 0, 0, ""},
+    { 13, 2, 32 , 0, 0, 0, 0, 0, 0, 0, 0, 0, ""},
+    { 42, 4, 16 , 0, 0, 0, 0, 0, 0, 0, 0, 0, ""},       // PWM4 on PB6 to PB9
+    { 43, 4, 16 , 0, 0, 0, 0, 0, 0, 0, 0, 0, ""},
+    { 45, 4, 16 , 0, 0, 0, 0, 0, 0, 0, 0, 0, ""},
+    { 46, 4, 16 , 0, 0, 0, 0, 0, 0, 0, 0, 0, ""}
+};
+
+McuSpiInfo ArmSTM32F411_48UFQFPNMcuSpiInfo[] = {
+//  name,  CTRL, STAT, DATA, MISO, MOSI, SCK, SS
+    { "SPI1", 0,    0,    0,   16,   17,  15, 14 }, // SPI1 = PA6 + PA7 + PA5 + PA4
+    { "SPI3", 0,    0,    0,   40,   41,  39, 38 }, // SPI3 = PB4 + PB5 + PB3 + PA15
+//  NB: SS is in fact user defined - if need be - (software SS) but a pin must be declared
+};
+
+McuI2cInfo ArmSTM32F411_48UFQFPNMcuI2cInfo[] = {
+//  name, REG_CTRL, REG_STAT, REG_DATA, REG_RATE, SCL, SDA
+    { "I2C1", 0, 0, 0, 0, 45, 46 },                 // I2C1 = PB8 + PB9
+};
+/////
+
 
 //-----------------------------------------------------------------------------
 // PC LPT & COM
@@ -2606,6 +2802,40 @@ McuIoInfo SupportedMcus_[] = {
         { { 0x100, 2560 } },
         AvrAtmega16U4or32U4IoPinInfo44,
         arraylen(AvrAtmega16U4or32U4IoPinInfo44),
+        AvrAtmega16U4or32U4AdcPinInfo44,
+        arraylen(AvrAtmega16U4or32U4AdcPinInfo44),
+        1023,
+        { 20, 21 },
+//        0, // OC2
+        ISA_AVR,
+        EnhancedCore128K,
+        44,
+        0,
+        ATmegaXXU4PwmPinInfo,
+        arraylen(ATmegaXXU4PwmPinInfo),
+        nullptr,
+        0,
+        nullptr,
+        0,
+        nullptr,
+        0,
+        {{0,0}}
+    },
+    {
+        "Atmel AVR ATmega32U4 Arduino Micro",
+        "ATmega32U4",
+        "",
+        "",
+        "iom32u4", // AVRGCC
+        'P',
+//        A     B     C     D     E     F     G     H      I   J      K      L
+        { 0, 0x23, 0x26, 0x29, 0x2C, 0x2F }, // PINx
+        { 0, 0x25, 0x28, 0x2B, 0x2E, 0x31 }, // PORTx
+        { 0, 0x24, 0x27, 0x2A, 0x2D, 0x30 }, // DDRx
+        16*1024,
+        { { 0x100, 2560 } },
+        ArduinoMicroIoPinInfo,
+        arraylen(ArduinoMicroIoPinInfo),
         AvrAtmega16U4or32U4AdcPinInfo44,
         arraylen(AvrAtmega16U4or32U4AdcPinInfo44),
         1023,
@@ -4210,6 +4440,80 @@ McuIoInfo SupportedMcus_[] = {
         {{0,0}}
         #undef BASE_A
         #undef BASE_B
+    },
+    {
+        #define BASE_A 0x40010800
+        #define BASE_B 0x40010C00
+        "St ARM STM32F103C6 48-LQFP / Bluepill",        // Name
+        "STM32F103C6",                                  // Target name (see buildArm.bat)
+        "BLUEPILL",
+        "",
+        "",
+        'P',                                        // Port prefix
+        { BASE_A+0x14, BASE_B+0x14, 0, 0, 0, 0, 0, 0, 0, 0, 0},     // In registers
+        { BASE_A+0x18, BASE_B+0x18, 0, 0, 0, 0, 0, 0, 0, 0, 0},     // Out registers
+        { BASE_A, BASE_B,  0, 0, 0, 0, 0, 0, 0, 0, 0},              // Dir registers
+        16 * 1024,                                  // 32 KB Flash
+        { { 0x20000000, 0x2800 } },                 // 10 KB RAM
+        ArmSTM32F103C6_48LQFPIoPinInfo,             // Pin info
+        arraylen(ArmSTM32F103C6_48LQFPIoPinInfo),
+        ArmSTM32F103C6_48LQFPAdcPinInfo,            // Adc info
+        arraylen(ArmSTM32F103C6_48LQFPAdcPinInfo),
+        4095,                                       // 12 bits ADC
+        {31, 30},                                   // UART RX + TX (USART1 = PA10 + PA9)
+        ISA_ARM,
+        CortexF1,
+        48,
+        0,
+        ArmSTM32F103C6_48LQFPPwmPinInfo,            // Pwm info
+        arraylen(ArmSTM32F103C6_48LQFPPwmPinInfo),
+        nullptr,                                    // ExtInt info
+        0,
+        ArmSTM32F103C6_48LQFPMcuSpiInfo,            // SPI info
+        arraylen(ArmSTM32F103C6_48LQFPMcuSpiInfo),
+        ArmSTM32F103C6_48LQFPMcuI2cInfo,            // I2C info
+        arraylen(ArmSTM32F103C6_48LQFPMcuI2cInfo),
+        {{0,0}}
+        #undef BASE_A
+        #undef BASE_B
+    },
+    {
+        #define BASE_A 0x40020000
+        #define BASE_B 0x40020400
+        #define BASE_C 0x40020800
+        "St ARM STM32F411 48-UFQFPN / WeAct BlackPill",  // Name
+        "STM32F411",                                    // Target name (see buildArm.bat)
+        "BLACKPILL",
+        "",
+        "",
+        'P',                                        // Port prefix
+        { BASE_A+0x14, BASE_B+0x14, BASE_C+0x14, 0, 0, 0, 0, 0, 0, 0, 0},     // In registers
+        { BASE_A+0x18, BASE_B+0x18, BASE_C+0x18, 0, 0, 0, 0, 0, 0, 0, 0},     // Out registers
+        { BASE_A, BASE_B, BASE_C, 0, 0, 0, 0, 0, 0, 0, 0},                    // Dir registers
+        256 * 1024,                                 // 512 KB Flash (STM32F411CEU6)
+        { { 0x20000000, 0x20000 } },                // 128 KB RAM
+        ArmSTM32F411_48UFQFPNIoPinInfo,             // Pin info
+        arraylen(ArmSTM32F411_48UFQFPNIoPinInfo),
+        ArmSTM32F411_48UFQFPNAdcPinInfo,            // Adc info
+        arraylen(ArmSTM32F411_48UFQFPNAdcPinInfo),
+        4095,                                       // 12 bits ADC
+        {31, 30},                                   // UART RX + TX (USART1 = PA10 + PA9)
+        ISA_ARM,
+        CortexF4,
+        48,
+        0,
+        ArmSTM32F411_48UFQFPNPwmPinInfo,            // Pwm info
+        arraylen(ArmSTM32F411_48UFQFPNPwmPinInfo),
+        nullptr,                                    // ExtInt info
+        0,
+        ArmSTM32F411_48UFQFPNMcuSpiInfo,            // SPI info
+        arraylen(ArmSTM32F411_48UFQFPNMcuSpiInfo),
+        ArmSTM32F411_48UFQFPNMcuI2cInfo,            // I2C info
+        arraylen(ArmSTM32F411_48UFQFPNMcuI2cInfo),
+        {{0,0}}
+        #undef BASE_A
+        #undef BASE_B
+        #undef BASE_C
     },
 
 //===========================================================================

@@ -70,3 +70,22 @@ NB:	I2C must be called "I2C1", "I2C2" or "I2C3" on ARMs
 NB:	ADC max available resolution is used
 	PWM max resolution is used and parameter is only % between 0 and 100
 
+NB:	Supported STM32 boards and target name (used by buildArm.bat):
+
+	STM32F40X 144-LQFP                     -> stm32f40x   (STM32F4 libraries)
+	STM32F411 48-UFQFPN / WeAct BlackPill  -> stm32f411   (STM32F4 libraries,
+		25 MHz crystal, linker script CortexM4_F411.ln)
+	STM32F10X 48-LQFP / Bluepill (C8/CB)   -> stm32f10x   (STM32F1 libraries)
+	STM32F103C6 48-LQFP / Bluepill         -> stm32f103c6 (STM32F1 libraries,
+		32 KB Flash / 10 KB RAM, linker script CortexM3_C6.ln)
+
+	STM32F411 BlackPill: UART1 = PA9 (TX) + PA10 (RX), UART2 = PA2 + PA3,
+	SPI1 = PA5/PA6/PA7, SPI3 = PB3/PB4/PB5, I2C1 = PB8 (SCL) + PB9 (SDA),
+	PWM on PA8..PA11 (TIM1), PA0..PA3 (TIM2) and PB6..PB9 (TIM4),
+	ADC1 on PA0..PA7, PB0 and PB1. On-board LED on PC13 (active low).
+
+	STM32F103C6: there is no TIM4, USART3, I2C2 or SPI2.
+	UART1 = PA9 (TX) + PA10 (RX), UART2 = PA2 + PA3, SPI1 = PA4..PA7,
+	I2C1 = PB6 + PB7, PWM on PA8..PA11 (TIM1) and PA0..PA3 (TIM2).
+
+	Timer 3 is reserved for the PLC cycle on all of them.

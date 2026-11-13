@@ -142,6 +142,12 @@ static void SetSysClock(void)
     }
 
     if(HSEStatus == (uint32_t)0x01) {
+#if defined(STM32F411xE)
+        /* The STM32F411 starts in regulator voltage Scale 2 (84 MHz max):
+           select Scale 1 mode (VOS = 11) before running the PLL at 100 MHz */
+        RCC->APB1ENR |= RCC_APB1ENR_PWREN;
+        PWR->CR |= PWR_CR_VOS;
+#endif
         /* HCLK = SYSCLK */
         RCC->CFGR |= (uint32_t)RCC_CFGR_HPRE_DIV1;
 

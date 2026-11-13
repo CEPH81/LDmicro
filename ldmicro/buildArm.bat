@@ -50,6 +50,21 @@ chdir %~pn1
 
 @IF %3 == "stm32f40x" SET LIB_PATH=%EXE_PATH%LIBRARIES_FOR\ARM\STM32F4
 @IF %3 == "stm32f10x" SET LIB_PATH=%EXE_PATH%LIBRARIES_FOR\ARM\STM32F1
+@IF %3 == "stm32f411" SET LIB_PATH=%EXE_PATH%LIBRARIES_FOR\ARM\STM32F4
+@IF %3 == "stm32f103c6" SET LIB_PATH=%EXE_PATH%LIBRARIES_FOR\ARM\STM32F1
+
+@rem Device options and linker script of each target
+@rem   stm32f40x   : STM32F40x/41x, default HSE_VALUE of the library
+@rem   stm32f411   : STM32F411CE (WeAct BlackPill), 25 MHz crystal, 512 KB Flash
+@rem   stm32f10x   : STM32F103C8/CB (Bluepill), 64 KB Flash, 20 KB RAM
+@rem   stm32f103c6 : STM32F103C6 (Bluepill), 32 KB Flash, 10 KB RAM
+@SET MCU_DEFS=
+@SET LN_SCRIPT=
+@IF %3 == "stm32f40x" SET LN_SCRIPT=CortexM4.ln
+@IF %3 == "stm32f411" SET LN_SCRIPT=CortexM4_F411.ln
+@IF %3 == "stm32f411" SET MCU_DEFS=-DSTM32F411xE -DHSE_VALUE=25000000
+@IF %3 == "stm32f10x" SET LN_SCRIPT=CortexM3.ln
+@IF %3 == "stm32f103c6" SET LN_SCRIPT=CortexM3_C6.ln
 
 if not exist ARMGCC\lib\Lib_usr.c copy %LIB_PATH%\*.* ARMGCC\lib
 dir ARMGCC\lib\*.c
@@ -61,7 +76,9 @@ dir ARMGCC\lib\*.c
 PATH %GCC_PATH%\BIN;%PATH%
 
 @IF %3 == "stm32f10x" goto STM32F1
+@IF %3 == "stm32f103c6" goto STM32F1
 @IF %3 == "stm32f40x" goto STM32F4
+@IF %3 == "stm32f411" goto STM32F4
 goto NOT_SUPPORTED
 
 
@@ -71,14 +88,14 @@ goto NOT_SUPPORTED
 arm-none-eabi-g++.exe -mcpu=cortex-m4 -mthumb -g -IInc -I"%GCC_PATH%\arm-none-eabi\include" -c ARMGCC\lib\CortexM4.S -o ARMGCC\obj\cortexM4.o
 
 CD ARMGCC\lib
-FOR %%F in (*.c) do arm-none-eabi-gcc.exe -mcpu=cortex-m4 -mthumb -g -IInc -I"%GCC_PATH%\arm\arm-none-eabi\include" -c %%F -o ..\obj\%%F.o
+FOR %%F in (*.c) do arm-none-eabi-gcc.exe -mcpu=cortex-m4 -mthumb -g %MCU_DEFS% -IInc -I"%GCC_PATH%\arm\arm-none-eabi\include" -c %%F -o ..\obj\%%F.o
 CD ..\..
 
 @rem Compile main file
-arm-none-eabi-gcc.exe -mcpu=cortex-m4 -mthumb -g -IInc -I"%GCC_PATH%\arm\arm-none-eabi\include" -IARMGCC\lib\ -c "%~nx2.c" -o "ARMGCC\obj\%~n2.o"
+arm-none-eabi-gcc.exe -mcpu=cortex-m4 -mthumb -g %MCU_DEFS% -IInc -I"%GCC_PATH%\arm\arm-none-eabi\include" -IARMGCC\lib\ -c "%~nx2.c" -o "ARMGCC\obj\%~n2.o"
 
 @rem Link object files
-arm-none-eabi-gcc.exe -o "ARMGCC\bin\%~nx2.elf" ARMGCC\obj\*.o -Wl,-Map -Wl,"ARMGCC\bin\%~nx2.elf.map" -Wl,--gc-sections -n -Wl,-cref -mcpu=cortex-m4 -mthumb -TARMGCC\lib\CortexM4.ln
+arm-none-eabi-gcc.exe -o "ARMGCC\bin\%~nx2.elf" ARMGCC\obj\*.o -Wl,-Map -Wl,"ARMGCC\bin\%~nx2.elf.map" -Wl,--gc-sections -n -Wl,-cref -mcpu=cortex-m4 -mthumb -TARMGCC\lib\%LN_SCRIPT%
 
 @rem Convert Elf to Hex
 arm-none-eabi-objcopy -O ihex "ARMGCC\bin\%~nx2.elf" "ARMGCC\bin\%~nx2.hex"
@@ -105,7 +122,7 @@ CD ..\..
 arm-none-eabi-gcc.exe -O0 -mcpu=cortex-m3 -mthumb -g -IInc -I"%GCC_PATH%\arm\arm-none-eabi\include" -IARMGCC\lib\ -c "%~n2.c" -o "ARMGCC\obj\%~n2.o"
 
 @echo Link object files
-arm-none-eabi-gcc.exe -o "ARMGCC\bin\%~nx2.elf" ARMGCC\obj\*.o -Wl,-Map -Wl,"ARMGCC\bin\%~nx2.elf.map" -Wl,--gc-sections -n -Wl,-cref -mcpu=cortex-m3 -mthumb -TARMGCC\lib\CortexM3.ln
+arm-none-eabi-gcc.exe -o "ARMGCC\bin\%~nx2.elf" ARMGCC\obj\*.o -Wl,-Map -Wl,"ARMGCC\bin\%~nx2.elf.map" -Wl,--gc-sections -n -Wl,-cref -mcpu=cortex-m3 -mthumb -TARMGCC\lib\%LN_SCRIPT%
 
 @echo Convert Elf to Hex
 arm-none-eabi-objcopy -O ihex "ARMGCC\bin\%~nx2.elf" "ARMGCC\bin\%~nx2.hex"
