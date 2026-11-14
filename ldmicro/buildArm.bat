@@ -57,6 +57,7 @@ chdir %~pn1
 @IF %3 == "ra4m1" SET LIB_PATH=%EXE_PATH%LIBRARIES_FOR\ARM\RA4M1
 @IF %3 == "pic32cm_ls00" SET LIB_PATH=%EXE_PATH%LIBRARIES_FOR\ARM\PIC32CM_LS00
 @IF %3 == "avr32sd32" SET LIB_PATH=%EXE_PATH%LIBRARIES_FOR\AVR32SD32
+@IF %3 == "dspic33ck64mc105" SET LIB_PATH=%EXE_PATH%LIBRARIES_FOR\DSPIC33CK64MC105
 
 @rem Device options and linker script of each target
 @rem   stm32f40x   : STM32F40x/41x, default HSE_VALUE of the library
@@ -68,6 +69,7 @@ chdir %~pn1
 @rem   ra4m1       : Renesas R7FA4M1AB (Arduino Nano R4), internal 48 MHz oscillator, program at 0x4000 (DFU bootloader)
 @rem   pic32cm_ls00: Microchip PIC32CM5164LS00048 (Curiosity Nano), Cortex-M23, internal 16 MHz oscillator
 @rem   avr32sd32   : Microchip AVR32SD32 (Curiosity Nano), 8 bits AVR built with avr-gcc, internal 16 MHz oscillator
+@rem   dspic33ck64mc105 : Microchip dsPIC33CK64MC105 (Curiosity Nano), 16 bits DSC built with MPLAB XC16, FCY = 4 MHz
 @SET MCU_DEFS=
 @SET LN_SCRIPT=
 @SET STARTUP=CortexM4.S
@@ -106,6 +108,7 @@ PATH %GCC_PATH%\BIN;%PATH%
 @IF %3 == "ra4m1" goto STM32F4
 @IF %3 == "pic32cm_ls00" goto CORTEXM23
 @IF %3 == "avr32sd32" goto AVR32SD32
+@IF %3 == "dspic33ck64mc105" goto DSPIC33CK
 goto NOT_SUPPORTED
 
 
@@ -186,6 +189,30 @@ avr-gcc.exe -mmcu=avr32sd32 %DFP_OPT% -o "ARMGCC\bin\%~nx2.elf" ARMGCC\obj\*.o -
 @rem Convert Elf to Hex
 avr-objcopy.exe -O ihex -R .eeprom -R .fuse -R .lock -R .signature -R .user_signatures "ARMGCC\bin\%~nx2.elf" "ARMGCC\bin\%~nx2.hex"
 avr-size.exe "ARMGCC\bin\%~nx2.elf"
+
+@GOTO END
+
+
+@rem Microchip dsPIC33CK64MC105: not an ARM, but a "C + libraries" target of LDmicro built the same way,
+@rem with the MPLAB XC16 compiler (the newer MPLAB XC-DSC has the same commands with the xc-dsc- prefix).
+:DSPIC33CK
+  SET XC16_PATH=%ProgramFiles%\Microchip\xc16\v2.10\bin
+::SET XC16_PATH=%ProgramFiles%\Microchip\xc16\v1.70\bin
+PATH %XC16_PATH%;%PATH%
+
+@rem Compile libraries
+CD ARMGCC\lib
+FOR %%F in (*.c) do xc16-gcc.exe -mcpu=33CK64MC105 -O1 -Wall -c %%F -o ..\obj\%%F.o
+CD ..\..
+
+@rem Compile main file
+xc16-gcc.exe -mcpu=33CK64MC105 -O1 -IARMGCC\lib\ -c "%~nx2.c" -o "ARMGCC\obj\%~n2.o"
+
+@rem Link object files
+xc16-gcc.exe -mcpu=33CK64MC105 -o "ARMGCC\bin\%~nx2.elf" ARMGCC\obj\*.o -T p33CK64MC105.gld -Wl,--gc-sections,-Map="ARMGCC\bin\%~nx2.elf.map"
+
+@rem Convert Elf to Hex (the hex file is written next to the elf file)
+xc16-bin2hex.exe "ARMGCC\bin\%~nx2.elf"
 
 @GOTO END
 

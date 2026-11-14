@@ -252,3 +252,40 @@ NB:	AVR32SD32 Curiosity Nano (Microchip AVR32SD32, 8 bits AVR)
 
 	Flashing (flashMcu.bat): the hex file is copied to the CURIOSITY drive
 	of the debugger of the board. MPLAB X IPE can also be used.
+
+NB:	dsPIC33CK64MC105 Curiosity Nano (Microchip dsPIC33CK64MC105, 16 bits DSC)
+	-> target dspic33ck64mc105 (DSPIC33CK64MC105 libraries, built with the
+	MPLAB XC16 compiler)
+
+	This MCU is not an ARM and LDmicro has no code generator for the dsPIC.
+	It is declared as a "C + libraries" target and uses the same path as
+	the ARM boards: compile with the ARM-GCC menu; LDmicro generates the
+	same C code and the library gives the same functions with XC16. The
+	output files are in the ARMGCC folder of the project.
+
+	Compiler: MPLAB XC16 (free version). Edit XC16_PATH in buildArm.bat.
+	The library was written without the compiler at hand: if XC16 reports
+	an unknown register or configuration name, check it against the header
+	p33CK64MC105.h of your version.
+
+	Clock: internal FRC oscillator (8 MHz), FCY = 4 MHz; the "Crystal
+	frequency" value of LDmicro has no influence on the cycle time.
+	The configuration bits are in system_dspic33ck.c (watchdog off, JTAG
+	off, I2C1 on its alternate pins, debugger on PGC3/PGD3).
+
+	PLC cycle: Timer1 (the configuration dialog shows "3").
+
+	Board: LED0 on RD10 (lit when the output is low), SW0 on RD13 (to
+	ground: enable the pull-up of the input). RB5 and RB6 belong to the
+	debugger of the board.
+
+	UART:  UART1 = RC10 (TX) + RC11 (RX) = virtual COM port of the board.
+	SPI:   SPI1 = RC2 (SCK) + RC1 (MISO) + RC0 (MOSI).
+	I2C:   I2C1 = RC9 (SCL) + RC8 (SDA), with external pull-ups.
+	PWM:   SCCP1 = RB7, SCCP2 = RB8, SCCP3 = RB9, SCCP4 = RD10 (LED); each
+	       output has its own frequency.
+	ADC:   AN0..AN6 and AN8..AN15 (see the pin list); 12 bits, reference =
+	       analog supply.
+
+	Flashing (flashMcu.bat): the hex file is copied to the CURIOSITY drive
+	of the debugger of the board. MPLAB X IPE can also be used.

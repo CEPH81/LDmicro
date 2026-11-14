@@ -256,3 +256,41 @@ NB:	AVR32SD32 Curiosity Nano (Microchip AVR32SD32, AVR de 8 bits)
 
 	Grabacion (flashMcu.bat): el archivo hex se copia a la unidad CURIOSITY
 	del depurador de la placa. Tambien se puede usar MPLAB X IPE.
+
+NB:	dsPIC33CK64MC105 Curiosity Nano (Microchip dsPIC33CK64MC105, DSC de 16 bits)
+	-> destino dspic33ck64mc105 (librerias DSPIC33CK64MC105, compiladas con
+	MPLAB XC16)
+
+	Este MCU no es un ARM y LDmicro no tiene generador de codigo para
+	dsPIC. Se declara como destino "C + librerias" y usa el mismo camino
+	que las placas ARM: compile con el menu ARM-GCC; LDmicro genera el
+	mismo codigo C y la libreria ofrece las mismas funciones con XC16. Los
+	archivos de salida quedan en la carpeta ARMGCC del proyecto.
+
+	Compilador: MPLAB XC16 (version gratuita). Edite XC16_PATH en
+	buildArm.bat. La libreria se escribio sin tener el compilador a mano:
+	si XC16 indica un nombre de registro o de configuracion desconocido,
+	compruebelo con la cabecera p33CK64MC105.h de su version.
+
+	Reloj: oscilador interno FRC (8 MHz), FCY = 4 MHz; el valor "Frecuencia
+	del cristal" de LDmicro no influye en el tiempo de ciclo.
+	Los bits de configuracion estan en system_dspic33ck.c (watchdog
+	apagado, JTAG apagado, I2C1 en sus pines alternativos, depurador en
+	PGC3/PGD3).
+
+	Ciclo del PLC: Timer1 (el dialogo muestra "3").
+
+	Placa: LED0 en RD10 (enciende con la salida en bajo), SW0 en RD13 (a
+	masa: active el pull-up de la entrada). RB5 y RB6 son del depurador
+	de la placa.
+
+	UART:  UART1 = RC10 (TX) + RC11 (RX) = puerto COM virtual de la placa.
+	SPI:   SPI1 = RC2 (SCK) + RC1 (MISO) + RC0 (MOSI).
+	I2C:   I2C1 = RC9 (SCL) + RC8 (SDA), con resistencias externas.
+	PWM:   SCCP1 = RB7, SCCP2 = RB8, SCCP3 = RB9, SCCP4 = RD10 (LED); cada
+	       salida tiene su propia frecuencia.
+	ADC:   AN0..AN6 y AN8..AN15 (vea la lista de pines); 12 bits,
+	       referencia = alimentacion analogica.
+
+	Grabacion (flashMcu.bat): el archivo hex se copia a la unidad CURIOSITY
+	del depurador de la placa. Tambien se puede usar MPLAB X IPE.

@@ -3047,6 +3047,100 @@ McuI2cInfo AvrAVR32SD32McuI2cInfo[] = {
 
 
 //-----------------------------------------------------------------------------
+// dsPIC33CK64MC105 Curiosity Nano (Microchip dsPIC33CK64MC105, 48-TQFP). Pin numbers and functions
+// from the pin table of the device (48 pins package) and from the user guide of the board.
+// This 16 bits DSC has no code generator in LDmicro: it is declared as a "C + libraries" target, like
+// the ARM boards. LDmicro generates the same C code as for ARM and LIBRARIES_FOR/DSPIC33CK64MC105
+// gives the same API with the MPLAB XC16 (or XC-DSC) compiler.
+// USART1 = UART1 on RC10 (TX) + RC11 (RX) = virtual COM port of the debugger of the board,
+// SPI1 = RC0/RC1/RC2, I2C1 = RC8 (SDA) + RC9 (SCL), PWMn.1 = SCCPn. The PLC cycle timer is Timer1.
+// Clock: internal FRC oscillator, FCY = 4 MHz.
+// Not listed: RB5 and RB6 (PGD3/PGC3, debugger of the board).
+McuIoPinInfo DsPic33CK64MC105IoPinInfo[] = {
+//   port bit pin  pinName                      ArduinoPin  ArduinoName
+    { 'B',  14,  1, "RB14"                      ,  0, ""              },
+    { 'B',  15,  2, "RB15"                      ,  0, ""              },
+    { 'C',  12,  3, "RC12"                      ,  0, ""              },
+    { 'C',  13,  4, "RC13"                      ,  0, ""              },
+    { 'D',  13,  6, "RD13 SW"                   ,  0, ""              }, // SW0 of the board, to ground: needs the pull-up
+    { 'C',   0,  7, "RC0 ADC0.12/MOSI1"         ,  0, ""              },
+    { 'A',   0,  8, "RA0 ADC0.0"                ,  0, ""              },
+    { 'A',   1,  9, "RA1"                       ,  0, ""              },
+    { 'A',   2, 10, "RA2 ADC0.9"                ,  0, ""              },
+    { 'A',   3, 11, "RA3 ADC0.3"                ,  0, ""              },
+    { 'A',   4, 12, "RA4 ADC0.4"                ,  0, ""              },
+    { 'C',   1, 15, "RC1 ADC0.13/MISO1"         ,  0, ""              },
+    { 'C',   2, 16, "RC2 ADC0.14/SCK1"          ,  0, ""              },
+    { 'C',   6, 17, "RC6"                       ,  0, ""              },
+    { 'C',   3, 20, "RC3 ADC0.15/_SS1"          ,  0, ""              },
+    { 'B',   0, 21, "RB0 ADC0.5"                ,  0, ""              },
+    { 'B',   1, 22, "RB1 ADC0.6"                ,  0, ""              },
+    { 'D',  10, 23, "RD10 LED PWM4.1"           ,  0, ""              }, // LED0 of the board, lit when low
+    { 'C',   7, 24, "RC7"                       ,  0, ""              },
+    { 'B',   2, 25, "RB2 ADC0.1"                ,  0, ""              },
+    { 'B',   3, 26, "RB3 ADC0.8"                ,  0, ""              },
+    { 'B',   4, 27, "RB4"                       ,  0, ""              },
+    { 'C',   8, 28, "RC8 SDA1"                  ,  0, ""              },
+    { 'C',   9, 29, "RC9 SCL1"                  ,  0, ""              },
+    { 'D',   8, 30, "RD8"                       ,  0, ""              },
+    { 'B',   7, 35, "RB7 ADC0.2/PWM1.1"         ,  0, ""              },
+    { 'B',   8, 36, "RB8 ADC0.10/PWM2.1"        ,  0, ""              },
+    { 'B',   9, 37, "RB9 ADC0.11/PWM3.1"        ,  0, ""              },
+    { 'C',   4, 38, "RC4"                       ,  0, ""              },
+    { 'C',   5, 39, "RC5"                       ,  0, ""              },
+    { 'C',  10, 40, "RC10 TX1"                  ,  0, ""              },
+    { 'C',  11, 41, "RC11 RX1"                  ,  0, ""              },
+    { 'D',   1, 44, "RD1"                       ,  0, ""              },
+    { 'B',  10, 45, "RB10"                      ,  0, ""              },
+    { 'B',  11, 46, "RB11"                      ,  0, ""              },
+    { 'B',  12, 47, "RB12"                      ,  0, ""              },
+    { 'B',  13, 48, "RB13"                      ,  0, ""              }
+};
+
+McuAdcPinInfo DsPic33CK64MC105AdcPinInfo[] = {
+//  {pin, channel}      // the channel is the number of the analog input (ANx)
+    {  8,  0 },
+    { 25,  1 },
+    { 35,  2 },
+    { 11,  3 },
+    { 12,  4 },
+    { 21,  5 },
+    { 22,  6 },
+    { 26,  8 },
+    { 10,  9 },
+    { 36, 10 },
+    { 37, 11 },
+    {  7, 12 },
+    { 15, 13 },
+    { 16, 14 },
+    { 20, 15 }
+};
+
+McuPwmPinInfo DsPic33CK64MC105PwmPinInfo[] = {
+//  {pin, timer, resol}
+    { 35, 1, 16 , 0, 0, 0, 0, 0, 0, 0, 0, 0, ""},       // SCCP1
+    { 36, 2, 16 , 0, 0, 0, 0, 0, 0, 0, 0, 0, ""},       // SCCP2
+    { 37, 8, 16 , 0, 0, 0, 0, 0, 0, 0, 0, 0, ""},       // SCCP3 (see the note below)
+    { 23, 4, 16 , 0, 0, 0, 0, 0, 0, 0, 0, 0, ""}        // SCCP4 on the LED of the board
+//  NB: LDmicro reserves the timer number 3 for the PLC cycle of the "C + libraries" targets and hides
+//  the PWM pins declared on it. This target uses Timer1 for the cycle, so the SCCP3 output is declared
+//  with the timer number 8 here; the real module comes from the pin name (PWM3.1).
+};
+
+McuSpiInfo DsPic33CK64MC105McuSpiInfo[] = {
+//  name,  CTRL, STAT, DATA, MISO, MOSI, SCK, SS
+    { "SPI1", 0,    0,    0,   15,    7,  16, 20 }, // SPI1 = RC1 + RC0 + RC2 + RC3
+//  NB: SS is in fact user defined - if need be - (software SS) but a pin must be declared
+};
+
+McuI2cInfo DsPic33CK64MC105McuI2cInfo[] = {
+//  name, REG_CTRL, REG_STAT, REG_DATA, REG_RATE, SCL, SDA
+    { "I2C1", 0, 0, 0, 0, 29, 28 },                 // I2C1 = RC9 (ASCL1) + RC8 (ASDA1)
+};
+/////
+
+
+//-----------------------------------------------------------------------------
 // PC LPT & COM
 McuIoPinInfo PcCfg[] = {
 // Dynamically loaded by LoadPcPorts() in psports.cpp
@@ -5129,6 +5223,40 @@ McuIoInfo SupportedMcus_[] = {
         arraylen(AvrAVR32SD32McuSpiInfo),
         AvrAVR32SD32McuI2cInfo,                     // I2C info
         arraylen(AvrAVR32SD32McuI2cInfo),
+        {{0,0}}
+    },
+
+//===========================================================================
+    {
+        "Microchip dsPIC33CK64MC105 48-TQFP / Curiosity Nano (C + libraries)", // Name
+        "dsPIC33CK64MC105",                         // Target name (see buildArm.bat)
+        "DSPIC33CK64MC105-CNANO",
+        "",
+        "",
+        'R',                                        // Port prefix
+        { 0x0E02, 0x0E1E, 0x0E3A, 0x0E56, 0, 0, 0, 0, 0, 0, 0}, // In, Out and Dir registers: only marks of the existing ports A..D (the C code does not use them)
+        { 0x0E04, 0x0E20, 0x0E3C, 0x0E58, 0, 0, 0, 0, 0, 0, 0},
+        { 0x0E00, 0x0E1C, 0x0E38, 0x0E54, 0, 0, 0, 0, 0, 0, 0},
+        32 * 1024,                                  // 64 KB Flash
+        { { 0x1000, 0x2000 } },                     // 8 KB RAM
+        DsPic33CK64MC105IoPinInfo,                  // Pin info
+        arraylen(DsPic33CK64MC105IoPinInfo),
+        DsPic33CK64MC105AdcPinInfo,                 // Adc info
+        arraylen(DsPic33CK64MC105AdcPinInfo),
+        4095,                                       // 12 bits ADC
+        {41, 40},                                   // UART RX + TX (UART1 = RC11 + RC10)
+        ISA_ARM,                                    // "C + libraries" target: see the note above the pin table
+        LibDsPic33CK,
+        48,
+        0,
+        DsPic33CK64MC105PwmPinInfo,                 // Pwm info
+        arraylen(DsPic33CK64MC105PwmPinInfo),
+        nullptr,                                    // ExtInt info
+        0,
+        DsPic33CK64MC105McuSpiInfo,                 // SPI info
+        arraylen(DsPic33CK64MC105McuSpiInfo),
+        DsPic33CK64MC105McuI2cInfo,                 // I2C info
+        arraylen(DsPic33CK64MC105McuI2cInfo),
         {{0,0}}
     },
 

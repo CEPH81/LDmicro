@@ -72,6 +72,7 @@ typedef enum CoreTag {
     CortexRA4, // Renesas RA4M1: libraries written on the CMSIS device header
     CortexM23LS, // Microchip PIC32CM LS00 (Cortex-M23): libraries with their own register header
     LibAvrSD, // Microchip AVR SD (8 bits, avr-gcc): same C code and library API as the ARM targets
+    LibDsPic33CK, // Microchip dsPIC33CK (16 bits, XC16): same C code and library API as the ARM targets
     ARMcores_, // end of ARMcores
 
     PCcores,
