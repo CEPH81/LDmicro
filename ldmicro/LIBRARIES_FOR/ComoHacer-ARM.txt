@@ -139,3 +139,35 @@ NB:	WeAct Studio STM32G431 Core Board (STM32G431CBU6) -> destino stm32g431
 
 	Grabacion (flashMcu.bat): STM32CubeProgrammer con un ST-Link en los
 	pines SWD, o por USB (DFU) manteniendo BOOT0 pulsada al reiniciar.
+
+NB:	Arduino Nano R4 (Renesas RA4M1, R7FA4M1AB3CFM) -> destino ra4m1
+	(librerias RA4M1, escritas sobre la cabecera CMSIS de Renesas)
+
+	Reloj: oscilador interno HOCO = 48 MHz; el valor "Frecuencia del
+	cristal" de LDmicro no influye en el tiempo de ciclo.
+
+	Ciclo del PLC: temporizador GPT6 (el dialogo muestra "3").
+
+	Puertos: el RA4M1 numera sus puertos. LDmicro muestra P0xx como puerto
+	A, P1xx como B, P2xx como C, P3xx como D y P4xx como E; la lista de
+	pines da ademas el nombre Renesas y el nombre Arduino ("P104 D3"). Los
+	numeros de pin son los del conector de la Nano (1 = D1/TX, 2 = D0/RX,
+	5 = D2 ... 16 = D13, 19 = A0 ... 26 = A7); 31 = LED, 32/33/34 = LED
+	rojo/verde/azul.
+
+	UART:  SCI2 = D1 (TX) + D0 (RX). El USB de la placa no es un puerto
+	       serie para el programa PLC: use un adaptador USB-serie.
+	SPI:   SPI1 = D13 (SCK) + D12 (MISO) + D11 (MOSI).
+	I2C:   IIC1 = A5 (SCL) + A4 (SDA), con resistencias externas.
+	PWM:   GPT0: D7, D6      GPT1: D11, D3     GPT2: D4, D5
+	       GPT3: D13, D10    GPT4: D1, D0      GPT7: D8, D9
+	       GPT5: LED rojo. Las dos salidas de un temporizador comparten
+	       la frecuencia.
+	ADC:   A0..A7, D4 y D5, 12 bits.
+	Este MCU no tiene resistencias pull-down, solo pull-up.
+
+	Grabacion (flashMcu.bat): por USB con dfu-util y el bootloader de la
+	placa (pulse reset dos veces). El programa se enlaza en 0x4000 y el
+	bootloader se conserva: la placa puede volver al IDE de Arduino cuando
+	quiera. Mientras corre el programa PLC la placa no aparece como
+	dispositivo USB.

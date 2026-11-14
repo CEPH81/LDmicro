@@ -143,3 +143,33 @@ NB:	WeAct Studio STM32G431 Core Board (STM32G431CBU6) -> target stm32g431
 
 	Flashing (flashMcu.bat): STM32CubeProgrammer with an ST-Link on the
 	SWD pins, or through USB (DFU) holding BOOT0 while resetting.
+
+NB:	Arduino Nano R4 (Renesas RA4M1, R7FA4M1AB3CFM) -> target ra4m1
+	(RA4M1 libraries, written on the CMSIS device header of Renesas)
+
+	Clock: internal oscillator HOCO = 48 MHz; the "Crystal frequency" value
+	of LDmicro has no influence on the cycle time.
+
+	PLC cycle: timer GPT6 (the configuration dialog shows "3").
+
+	Ports: the RA4M1 numbers its ports. LDmicro shows P0xx as port A, P1xx
+	as B, P2xx as C, P3xx as D and P4xx as E; the pin list also gives the
+	Renesas name and the Arduino name ("P104 D3"). Pin numbers are those
+	of the header of the Nano (1 = D1/TX, 2 = D0/RX, 5 = D2 ... 16 = D13,
+	19 = A0 ... 26 = A7); 31 = LED, 32/33/34 = red/green/blue LED.
+
+	UART:  SCI2 = D1 (TX) + D0 (RX). The USB port of the board is not a
+	       serial port for the PLC program: use a USB-serial adapter.
+	SPI:   SPI1 = D13 (SCK) + D12 (MISO) + D11 (MOSI).
+	I2C:   IIC1 = A5 (SCL) + A4 (SDA), with external pull-up resistors.
+	PWM:   GPT0: D7, D6      GPT1: D11, D3     GPT2: D4, D5
+	       GPT3: D13, D10    GPT4: D1, D0      GPT7: D8, D9
+	       GPT5: red LED. The two outputs of a timer share the frequency.
+	ADC:   A0..A7, D4 and D5, 12 bits.
+	There are no pull-down resistors in this MCU, only pull-ups.
+
+	Flashing (flashMcu.bat): through USB with dfu-util and the bootloader
+	of the board (press reset twice). The program is linked at 0x4000 and
+	the bootloader is kept: the board can go back to the Arduino IDE at
+	any time. While the PLC program runs, the board does not show up as a
+	USB device.

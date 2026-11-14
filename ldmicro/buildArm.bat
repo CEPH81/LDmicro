@@ -54,6 +54,7 @@ chdir %~pn1
 @IF %3 == "stm32f103c6" SET LIB_PATH=%EXE_PATH%LIBRARIES_FOR\ARM\STM32F1
 @IF %3 == "stm32l432" SET LIB_PATH=%EXE_PATH%LIBRARIES_FOR\ARM\STM32L4
 @IF %3 == "stm32g431" SET LIB_PATH=%EXE_PATH%LIBRARIES_FOR\ARM\STM32G4
+@IF %3 == "ra4m1" SET LIB_PATH=%EXE_PATH%LIBRARIES_FOR\ARM\RA4M1
 
 @rem Device options and linker script of each target
 @rem   stm32f40x   : STM32F40x/41x, default HSE_VALUE of the library
@@ -62,6 +63,7 @@ chdir %~pn1
 @rem   stm32f103c6 : STM32F103C6 (Bluepill), 32 KB Flash, 10 KB RAM
 @rem   stm32l432   : STM32L432KC (Nucleo-L432KC), internal 16 MHz oscillator, 256 KB Flash
 @rem   stm32g431   : STM32G431CB (WeAct Core Board), internal 16 MHz oscillator, 128 KB Flash
+@rem   ra4m1       : Renesas R7FA4M1AB (Arduino Nano R4), internal 48 MHz oscillator, program at 0x4000 (DFU bootloader)
 @SET MCU_DEFS=
 @SET LN_SCRIPT=
 @SET STARTUP=CortexM4.S
@@ -71,6 +73,8 @@ chdir %~pn1
 @IF %3 == "stm32g431" SET LN_SCRIPT=CortexM4_G431.ln
 @IF %3 == "stm32g431" SET STARTUP=CortexM4_G431.S
 @IF %3 == "stm32g431" SET MCU_DEFS=-DSTM32G431xx
+@IF %3 == "ra4m1" SET LN_SCRIPT=CortexM4_RA4M1.ln
+@IF %3 == "ra4m1" SET STARTUP=CortexM4_RA4M1.S
 @IF %3 == "stm32f40x" SET LN_SCRIPT=CortexM4.ln
 @IF %3 == "stm32f411" SET LN_SCRIPT=CortexM4_F411.ln
 @IF %3 == "stm32f411" SET MCU_DEFS=-DSTM32F411xE -DHSE_VALUE=25000000
@@ -92,10 +96,11 @@ PATH %GCC_PATH%\BIN;%PATH%
 @IF %3 == "stm32f411" goto STM32F4
 @IF %3 == "stm32l432" goto STM32F4
 @IF %3 == "stm32g431" goto STM32F4
+@IF %3 == "ra4m1" goto STM32F4
 goto NOT_SUPPORTED
 
 
-@rem Cortex-M4 targets: STM32F4, STM32L4 and STM32G4
+@rem Cortex-M4 targets: STM32F4, STM32L4, STM32G4 and Renesas RA4M1
 :STM32F4
 
 @rem Compile libraries
@@ -114,7 +119,7 @@ arm-none-eabi-gcc.exe -o "ARMGCC\bin\%~nx2.elf" ARMGCC\obj\*.o -Wl,-Map -Wl,"ARM
 @rem Convert Elf to Hex
 arm-none-eabi-objcopy -O ihex "ARMGCC\bin\%~nx2.elf" "ARMGCC\bin\%~nx2.hex"
 
-@rem Binary image, for the USB drive of the Nucleo boards
+@rem Binary image, for the USB drive of the Nucleo boards and for dfu-util (Arduino Nano R4)
 arm-none-eabi-objcopy -O binary "ARMGCC\bin\%~nx2.elf" "ARMGCC\bin\%~nx2.bin"
 
 @rem Creation of the J-Link script

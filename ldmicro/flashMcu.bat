@@ -115,6 +115,7 @@ IF %4 == "stm32f40x" goto STM32F4
 IF %4 == "stm32f411" goto STM32F1
 IF %4 == "stm32l432" goto STM32F1
 IF %4 == "stm32g431" goto STM32CUBEPROG
+IF %4 == "ra4m1" goto ARDUINO_DFU
 goto NOT_SUPPORTED
 
 :STM32F4
@@ -158,6 +159,18 @@ STM32_Programmer_CLI.exe -c port=SWD -w ARMGCC\bin\%~nx2.hex -v -rst
 
 @rem *** or through USB (DFU): hold the BOOT0 key while resetting the board, then use this line instead ***
 ::STM32_Programmer_CLI.exe -c port=USB1 -w ARMGCC\bin\%~nx2.hex -v -s
+
+@GOTO exit
+
+
+:ARDUINO_DFU
+@rem *** Arduino Nano R4: flashed through USB with the DFU bootloader of the board ***
+@rem Press the reset key of the board twice, quickly, to start the bootloader before running this script.
+@rem dfu-util.exe comes with the "Arduino UNO R4 Boards" package of the Arduino IDE:
+SET DFU_PATH="%LOCALAPPDATA%\Arduino15\packages\arduino\tools\dfu-util\0.11.0-arduino5"
+SET PATH=%PATH%;%DFU_PATH%
+
+dfu-util.exe --device 0x2341:0x0074,:0x0374 -D ARMGCC\bin\%~nx2.bin -a0 -Q
 
 @GOTO exit
 

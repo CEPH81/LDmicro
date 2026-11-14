@@ -2777,6 +2777,93 @@ McuI2cInfo ArmSTM32G431_48UFQFPNMcuI2cInfo[] = {
 
 
 //-----------------------------------------------------------------------------
+// Arduino Nano R4 (Renesas RA4M1, R7FA4M1AB3CFM). Pin map taken from the Arduino core (variants/NANOR4).
+// The ports of the RA4M1 are numbers: P0xx = port 'A', P1xx = 'B', P2xx = 'C', P3xx = 'D', P4xx = 'E'.
+// The pin numbers are those of the 30 pins header of the Nano (1 = D1/TX ... 30 = VIN); the LEDs
+// of the board follow from 31.
+// Pin functions follow LIBRARIES_FOR/Arm/RA4M1:
+// USART2 = SCI2 on D0 (RX) + D1 (TX), SPI1 = D11/D12/D13, I2C1 = IIC1 on A4 (SDA) + A5 (SCL),
+// PWMn.c = timer GPTn, output A (c = 1) or B (c = 2). GPT6 is used by the PLC cycle timer.
+// The 48 MHz clock comes from the internal oscillator (HOCO).
+McuIoPinInfo ArmRA4M1NanoR4IoPinInfo[] = {
+//   port bit pin  pinName                      ArduinoPin  ArduinoName
+    { 'D',   2,  1, "P302 D1 TX2/PWM4.1"        ,  1, "D1"            },
+    { 'D',   1,  2, "P301 D0 RX2/PWM4.2"        ,  0, "D0"            },
+    { 'B',   5,  5, "P105 D2"                   ,  2, "D2"            },
+    { 'B',   4,  6, "P104 D3 PWM1.2"            ,  3, "D3"            },
+    { 'B',   3,  7, "P103 D4 ADC0.19/PWM2.1"    ,  4, "D4"            },
+    { 'B',   2,  8, "P102 D5 ADC0.20/PWM2.2"    ,  5, "D5"            },
+    { 'B',   6,  9, "P106 D6 PWM0.2"            ,  6, "D6"            },
+    { 'B',   7, 10, "P107 D7 PWM0.1"            ,  7, "D7"            },
+    { 'D',   4, 11, "P304 D8 PWM7.1"            ,  8, "D8"            },
+    { 'D',   3, 12, "P303 D9 PWM7.2"            ,  9, "D9"            },
+    { 'B',  12, 13, "P112 D10 _SS1/PWM3.2"      , 10, "D10"           },
+    { 'B',   9, 14, "P109 D11 MOSI1/PWM1.1"     , 11, "D11"           },
+    { 'B',  10, 15, "P110 D12 MISO1"            , 12, "D12"           },
+    { 'B',  11, 16, "P111 D13 SCK1/PWM3.1"      , 13, "D13"           },
+    { 'A',  14, 19, "P014 A0 ADC0.9"            , 14, "A0"            },
+    { 'A',   0, 20, "P000 A1 ADC0.0"            , 15, "A1"            },
+    { 'A',   1, 21, "P001 A2 ADC0.1"            , 16, "A2"            },
+    { 'A',   2, 22, "P002 A3 ADC0.2"            , 17, "A3"            },
+    { 'B',   1, 23, "P101 A4 ADC0.21/SDA1"      , 18, "A4"            },
+    { 'B',   0, 24, "P100 A5 ADC0.22/SCL1"      , 19, "A5"            },
+    { 'A',   4, 25, "P004 A6 ADC0.4"            , 20, "A6"            },
+    { 'A',   3, 26, "P003 A7 ADC0.3"            , 21, "A7"            },
+    { 'C',   4, 31, "P204 LED"                  , 22, "LED_BUILTIN"   },
+    { 'E',   9, 32, "P409 LEDR PWM5.1"          , 23, "LEDR"          },
+    { 'E',  10, 33, "P410 LEDG"                 , 24, "LEDG"          },
+    { 'E',  11, 34, "P411 LEDB"                 , 25, "LEDB"          }
+};
+
+McuAdcPinInfo ArmRA4M1NanoR4AdcPinInfo[] = {
+//  {pin, channel}      // the channel is the number of the analog input (ANxxx)
+    { 19,  9 },         // AN009 on P014 (A0)
+    { 20,  0 },         // AN000 on P000 (A1)
+    { 21,  1 },         // AN001 on P001 (A2)
+    { 22,  2 },         // AN002 on P002 (A3)
+    { 23, 21 },         // AN021 on P101 (A4)
+    { 24, 22 },         // AN022 on P100 (A5)
+    { 25,  4 },         // AN004 on P004 (A6)
+    { 26,  3 },         // AN003 on P003 (A7)
+    {  7, 19 },         // AN019 on P103 (D4)
+    {  8, 20 }          // AN020 on P102 (D5)
+};
+
+McuPwmPinInfo ArmRA4M1NanoR4PwmPinInfo[] = {
+//  {pin, timer, resol}
+    { 10, 0, 32 , 0, 0, 0, 0, 0, 0, 0, 0, 0, ""},       // GPT0 (32 bits) on D7 (A) and D6 (B)
+    {  9, 0, 32 , 0, 0, 0, 0, 0, 0, 0, 0, 0, ""},
+    { 14, 1, 32 , 0, 0, 0, 0, 0, 0, 0, 0, 0, ""},       // GPT1 (32 bits) on D11 (A) and D3 (B)
+    {  6, 1, 32 , 0, 0, 0, 0, 0, 0, 0, 0, 0, ""},
+    {  7, 2, 16 , 0, 0, 0, 0, 0, 0, 0, 0, 0, ""},       // GPT2 on D4 (A) and D5 (B)
+    {  8, 2, 16 , 0, 0, 0, 0, 0, 0, 0, 0, 0, ""},
+    { 16, 8, 16 , 0, 0, 0, 0, 0, 0, 0, 0, 0, ""},       // GPT3 on D13 (A) and D10 (B) (see the note below)
+    { 13, 8, 16 , 0, 0, 0, 0, 0, 0, 0, 0, 0, ""},
+    {  1, 4, 16 , 0, 0, 0, 0, 0, 0, 0, 0, 0, ""},       // GPT4 on D1 (A) and D0 (B)
+    {  2, 4, 16 , 0, 0, 0, 0, 0, 0, 0, 0, 0, ""},
+    { 32, 5, 16 , 0, 0, 0, 0, 0, 0, 0, 0, 0, ""},       // GPT5 on the red LED (A)
+    { 11, 7, 16 , 0, 0, 0, 0, 0, 0, 0, 0, 0, ""},       // GPT7 on D8 (A) and D9 (B)
+    { 12, 7, 16 , 0, 0, 0, 0, 0, 0, 0, 0, 0, ""}
+//  NB: LDmicro reserves the timer number 3 for the PLC cycle of every ARM target and hides the PWM pins
+//  declared on it. This target uses GPT6 for the cycle, so the GPT3 outputs are declared with the
+//  timer number 8 here; the real timer comes from the pin name (PWM3.x).
+//  The two outputs of a timer share the same frequency.
+};
+
+McuSpiInfo ArmRA4M1NanoR4McuSpiInfo[] = {
+//  name,  CTRL, STAT, DATA, MISO, MOSI, SCK, SS
+    { "SPI1", 0,    0,    0,   15,   14,  16, 13 }, // SPI1 = D12 + D11 + D13 + D10
+//  NB: SS is in fact user defined - if need be - (software SS) but a pin must be declared
+};
+
+McuI2cInfo ArmRA4M1NanoR4McuI2cInfo[] = {
+//  name, REG_CTRL, REG_STAT, REG_DATA, REG_RATE, SCL, SDA
+    { "I2C1", 0, 0, 0, 0, 24, 23 },                 // I2C1 = IIC1 = A5 (SCL) + A4 (SDA)
+};
+/////
+
+
+//-----------------------------------------------------------------------------
 // PC LPT & COM
 McuIoPinInfo PcCfg[] = {
 // Dynamically loaded by LoadPcPorts() in psports.cpp
@@ -4754,6 +4841,42 @@ McuIoInfo SupportedMcus_[] = {
         #undef BASE_A
         #undef BASE_B
         #undef BASE_C
+    },
+
+//===========================================================================
+    {
+        #define BASE_PORT(n) (0x40040000 + 0x20 * (n))
+        "Renesas ARM RA4M1 / Arduino Nano R4",      // Name
+        "RA4M1",                                    // Target name (see buildArm.bat)
+        "ARDUINO-NANO-R4",
+        "",
+        "",
+        'P',                                        // Port prefix
+        { BASE_PORT(0)+4, BASE_PORT(1)+4, BASE_PORT(2)+4, BASE_PORT(3)+4, BASE_PORT(4)+4, 0, 0, 0, 0, 0, 0},     // In registers (PCNTR2)
+        { BASE_PORT(0), BASE_PORT(1), BASE_PORT(2), BASE_PORT(3), BASE_PORT(4), 0, 0, 0, 0, 0, 0},               // Out registers (PCNTR1)
+        { BASE_PORT(0), BASE_PORT(1), BASE_PORT(2), BASE_PORT(3), BASE_PORT(4), 0, 0, 0, 0, 0, 0},               // Dir registers (PCNTR1)
+        120 * 1024,                                 // 256 KB Flash, less the 16 KB of the bootloader
+        { { 0x20000000, 0x8000 } },                 // 32 KB RAM
+        ArmRA4M1NanoR4IoPinInfo,                    // Pin info
+        arraylen(ArmRA4M1NanoR4IoPinInfo),
+        ArmRA4M1NanoR4AdcPinInfo,                   // Adc info
+        arraylen(ArmRA4M1NanoR4AdcPinInfo),
+        4095,                                       // 12 bits ADC
+        {2, 1},                                     // UART RX + TX (SCI2 = D0 + D1)
+        ISA_ARM,
+        CortexRA4,
+        34,                                         // 30 pins of the header + 4 LEDs of the board
+        0,
+        ArmRA4M1NanoR4PwmPinInfo,                   // Pwm info
+        arraylen(ArmRA4M1NanoR4PwmPinInfo),
+        nullptr,                                    // ExtInt info
+        0,
+        ArmRA4M1NanoR4McuSpiInfo,                   // SPI info
+        arraylen(ArmRA4M1NanoR4McuSpiInfo),
+        ArmRA4M1NanoR4McuI2cInfo,                   // I2C info
+        arraylen(ArmRA4M1NanoR4McuI2cInfo),
+        {{0,0}}
+        #undef BASE_PORT
     },
 
 //===========================================================================
