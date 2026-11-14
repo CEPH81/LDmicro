@@ -173,3 +173,42 @@ NB:	Arduino Nano R4 (Renesas RA4M1, R7FA4M1AB3CFM) -> target ra4m1
 	the bootloader is kept: the board can go back to the Arduino IDE at
 	any time. While the PLC program runs, the board does not show up as a
 	USB device.
+
+NB:	PIC32CM LS00 Curiosity Nano+ Touch (Microchip PIC32CM5164LS00048, Cortex-M23)
+	-> target pic32cm_ls00 (PIC32CM_LS00 libraries, with their own register header)
+
+	Compiler: the Cortex-M23 needs arm-none-eabi-gcc 7 or later; buildArm.bat
+	looks for "GNU Tools ARM Embedded\7 2018-q2-update" (edit GCC_PATH for
+	another version). The compiler of emIDE V2.20 cannot build this target.
+
+	Clock: internal oscillator OSC16M at 16 MHz; the "Crystal frequency"
+	value of LDmicro has no influence on the cycle time.
+
+	PLC cycle: timer TC0 (the configuration dialog shows "3").
+
+	Ports: LDmicro handles 16 pins per port, so the 32 pins ports are split:
+	LDmicro port A = PA00..PA15, port B = PB00..PB15,
+	LDmicro port C = PA16..PA31, port D = PB16..PB31.
+	The pin list gives the real name ("PA23 SW"). Pin numbers are those of
+	the 48 pins package.
+
+	Board: LED on PA15 (lit when the output is low), switch on PA23 (to
+	ground: enable the pull-up of the input).
+
+	UART:  SERCOM3 = PB08 (TX) + PB09 (RX) = virtual COM port of the board:
+	       the PLC program talks to the PC through the USB cable.
+	SPI:   SERCOM0 = PA05 (SCK) + PA07 (MISO) + PA04 (MOSI).
+	I2C:   SERCOM1 = PA17 (SCL) + PA16 (SDA), with external pull-ups.
+	PWM:   TCC0: PA08, PA15 (LED), PA18, PA19     TCC1: PA10, PA11
+	       TCC2: PA12, PA13                       TCC3: PB22, PB23, PB02, PB03
+	       The outputs of one timer share the frequency.
+	ADC:   PA02..PA11, PB02, PB03, PB08, PB09; 12 bits, reference = supply.
+
+	TrustZone: the PLC program runs entirely in the secure state, linked at
+	address 0. It needs a board whose configuration fuses (user row and
+	boot configuration row) leave enough secure Flash for the program; the
+	fuses are not touched by LDmicro. If a TrustZone demo changed them,
+	restore them with MPLAB X.
+
+	Flashing (flashMcu.bat): the hex file is copied to the CURIOSITY drive
+	of the debugger of the board. MPLAB X IPE can also be used.

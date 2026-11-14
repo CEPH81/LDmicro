@@ -55,6 +55,7 @@ chdir %~pn1
 @IF %3 == "stm32l432" SET LIB_PATH=%EXE_PATH%LIBRARIES_FOR\ARM\STM32L4
 @IF %3 == "stm32g431" SET LIB_PATH=%EXE_PATH%LIBRARIES_FOR\ARM\STM32G4
 @IF %3 == "ra4m1" SET LIB_PATH=%EXE_PATH%LIBRARIES_FOR\ARM\RA4M1
+@IF %3 == "pic32cm_ls00" SET LIB_PATH=%EXE_PATH%LIBRARIES_FOR\ARM\PIC32CM_LS00
 
 @rem Device options and linker script of each target
 @rem   stm32f40x   : STM32F40x/41x, default HSE_VALUE of the library
@@ -64,6 +65,7 @@ chdir %~pn1
 @rem   stm32l432   : STM32L432KC (Nucleo-L432KC), internal 16 MHz oscillator, 256 KB Flash
 @rem   stm32g431   : STM32G431CB (WeAct Core Board), internal 16 MHz oscillator, 128 KB Flash
 @rem   ra4m1       : Renesas R7FA4M1AB (Arduino Nano R4), internal 48 MHz oscillator, program at 0x4000 (DFU bootloader)
+@rem   pic32cm_ls00: Microchip PIC32CM5164LS00048 (Curiosity Nano), Cortex-M23, internal 16 MHz oscillator
 @SET MCU_DEFS=
 @SET LN_SCRIPT=
 @SET STARTUP=CortexM4.S
@@ -75,6 +77,7 @@ chdir %~pn1
 @IF %3 == "stm32g431" SET MCU_DEFS=-DSTM32G431xx
 @IF %3 == "ra4m1" SET LN_SCRIPT=CortexM4_RA4M1.ln
 @IF %3 == "ra4m1" SET STARTUP=CortexM4_RA4M1.S
+@IF %3 == "pic32cm_ls00" SET LN_SCRIPT=CortexM23_LS00.ln
 @IF %3 == "stm32f40x" SET LN_SCRIPT=CortexM4.ln
 @IF %3 == "stm32f411" SET LN_SCRIPT=CortexM4_F411.ln
 @IF %3 == "stm32f411" SET MCU_DEFS=-DSTM32F411xE -DHSE_VALUE=25000000
@@ -87,6 +90,8 @@ dir ARMGCC\lib\*.c
   SET GCC_PATH=%ProgramFiles%\EmIDE\emIDE V2.20\arm
 ::SET GCC_PATH=%ProgramFiles%\Atmel\Studio\7.0\toolchain\arm\arm-gnu-toolchain
 ::SET GCC_PATH=%ProgramFiles%\GNU Tools ARM Embedded\7 2018-q2-update
+@rem The Cortex-M23 needs GCC 7 or later (the compiler of emIDE V2.20 does not know this core)
+@IF %3 == "pic32cm_ls00" SET GCC_PATH=%ProgramFiles(x86)%\GNU Tools ARM Embedded\7 2018-q2-update
 
 PATH %GCC_PATH%\BIN;%PATH%
 
@@ -97,6 +102,7 @@ PATH %GCC_PATH%\BIN;%PATH%
 @IF %3 == "stm32l432" goto STM32F4
 @IF %3 == "stm32g431" goto STM32F4
 @IF %3 == "ra4m1" goto STM32F4
+@IF %3 == "pic32cm_ls00" goto CORTEXM23
 goto NOT_SUPPORTED
 
 
@@ -127,6 +133,26 @@ arm-none-eabi-objcopy -O binary "ARMGCC\bin\%~nx2.elf" "ARMGCC\bin\%~nx2.bin"
 @echo loadfile "ARMGCC\bin\%~2.hex" >> ARMGCC\bin\cmdfile.jlink
 @echo go >> ARMGCC\bin\cmdfile.jlink
 @echo exit >> ARMGCC\bin\cmdfile.jlink
+
+@GOTO END
+
+
+@rem Cortex-M23 target: Microchip PIC32CM LS00. The start-up code is in system_pic32cm_ls00.c
+:CORTEXM23
+
+@rem Compile libraries
+CD ARMGCC\lib
+FOR %%F in (*.c) do arm-none-eabi-gcc.exe -mcpu=cortex-m23 -mthumb -g -IInc -c %%F -o ..\obj\%%F.o
+CD ..\..
+
+@rem Compile main file
+arm-none-eabi-gcc.exe -mcpu=cortex-m23 -mthumb -g -IInc -IARMGCC\lib\ -c "%~nx2.c" -o "ARMGCC\obj\%~n2.o"
+
+@rem Link object files
+arm-none-eabi-gcc.exe -o "ARMGCC\bin\%~nx2.elf" ARMGCC\obj\*.o -Wl,-Map -Wl,"ARMGCC\bin\%~nx2.elf.map" -Wl,--gc-sections -n -Wl,-cref -mcpu=cortex-m23 -mthumb -TARMGCC\lib\%LN_SCRIPT%
+
+@rem Convert Elf to Hex
+arm-none-eabi-objcopy -O ihex "ARMGCC\bin\%~nx2.elf" "ARMGCC\bin\%~nx2.hex"
 
 @GOTO END
 

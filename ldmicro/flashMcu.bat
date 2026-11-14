@@ -116,6 +116,7 @@ IF %4 == "stm32f411" goto STM32F1
 IF %4 == "stm32l432" goto STM32F1
 IF %4 == "stm32g431" goto STM32CUBEPROG
 IF %4 == "ra4m1" goto ARDUINO_DFU
+IF %4 == "pic32cm_ls00" goto CURIOSITY_NANO
 goto NOT_SUPPORTED
 
 :STM32F4
@@ -171,6 +172,18 @@ SET DFU_PATH="%LOCALAPPDATA%\Arduino15\packages\arduino\tools\dfu-util\0.11.0-ar
 SET PATH=%PATH%;%DFU_PATH%
 
 dfu-util.exe --device 0x2341:0x0074,:0x0374 -D ARMGCC\bin\%~nx2.bin -a0 -Q
+
+@GOTO exit
+
+
+:CURIOSITY_NANO
+@rem *** Curiosity Nano boards: the debugger of the board shows up as a USB drive named CURIOSITY; ***
+@rem *** a hex file copied to this drive is written to the MCU.                                    ***
+SET CNANO_DRIVE=
+FOR %%D in (D E F G H I J K L M N O P Q R S T U V W X Y Z) do @vol %%D: 2>nul | find "CURIOSITY" >nul && SET CNANO_DRIVE=%%D:
+IF "%CNANO_DRIVE%" == "" echo The CURIOSITY drive was not found: connect the board, or flash ARMGCC\bin\%~nx2.hex with MPLAB X IPE.
+IF "%CNANO_DRIVE%" == "" goto exit
+copy ARMGCC\bin\%~nx2.hex %CNANO_DRIVE%\
 
 @GOTO exit
 

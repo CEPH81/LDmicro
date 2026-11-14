@@ -2864,6 +2864,103 @@ McuI2cInfo ArmRA4M1NanoR4McuI2cInfo[] = {
 
 
 //-----------------------------------------------------------------------------
+// PIC32CM LS00 Curiosity Nano+ Touch (Microchip PIC32CM5164LS00048, Cortex-M23, 48-TQFP).
+// Pin numbers are those of the 48 pins package; pin functions from the device description (ATDF).
+// LDmicro handles 16 pins per port, so the two 32 pins ports of the MCU are split:
+// port 'A' = PA00..PA15, port 'B' = PB00..PB15, port 'C' = PA16..PA31, port 'D' = PB16..PB31.
+// The real pin name is the first word of the pin name.
+// Pin functions follow LIBRARIES_FOR/Arm/PIC32CM_LS00:
+// USART3 = SERCOM3 on PB08 (TX) + PB09 (RX) = virtual COM port of the debugger of the board,
+// SPI1 = SERCOM0 on PA04/PA05/PA07, I2C1 = SERCOM1 on PA16 (SDA) + PA17 (SCL),
+// PWMn.c = timer TCCn, compare channel c. The PLC cycle timer is TC0.
+// The 16 MHz clock comes from the internal oscillator (OSC16M).
+// Not listed: PA24/PA25 (USB) and PA30/PA31 (SWD).
+McuIoPinInfo ArmPIC32CM_LS00_48IoPinInfo[] = {
+//   port bit pin  pinName                      ArduinoPin  ArduinoName
+    { 'A',   0,  1, "PA00"                      ,  0, ""              },
+    { 'A',   1,  2, "PA01"                      ,  0, ""              },
+    { 'A',   2,  3, "PA02 ADC0.0"               ,  0, ""              },
+    { 'A',   3,  4, "PA03 ADC0.1"               ,  0, ""              },
+    { 'B',   8,  7, "PB08 TX3/ADC0.18"          ,  0, ""              },
+    { 'B',   9,  8, "PB09 RX3/ADC0.19"          ,  0, ""              },
+    { 'A',   4,  9, "PA04 ADC0.2/MOSI1"         ,  0, ""              },
+    { 'A',   5, 10, "PA05 ADC0.3/SCK1"          ,  0, ""              },
+    { 'A',   6, 11, "PA06 ADC0.4/_SS1"          ,  0, ""              },
+    { 'A',   7, 12, "PA07 ADC0.5/MISO1"         ,  0, ""              },
+    { 'A',   8, 13, "PA08 ADC0.6/PWM0.1"        ,  0, ""              },
+    { 'A',   9, 14, "PA09 ADC0.7"               ,  0, ""              },
+    { 'A',  10, 15, "PA10 ADC0.8/PWM1.1"        ,  0, ""              },
+    { 'A',  11, 16, "PA11 ADC0.9/PWM1.2"        ,  0, ""              },
+    { 'A',  12, 21, "PA12 PWM2.1"               ,  0, ""              },
+    { 'A',  13, 22, "PA13 PWM2.2"               ,  0, ""              },
+    { 'A',  14, 23, "PA14"                      ,  0, ""              },
+    { 'A',  15, 24, "PA15 LED PWM0.2"           ,  0, ""              }, // LED of the board, lit when low
+    { 'C',   0, 25, "PA16 SDA1"                 ,  0, ""              },
+    { 'C',   1, 26, "PA17 SCL1"                 ,  0, ""              },
+    { 'C',   2, 27, "PA18 PWM0.3"               ,  0, ""              },
+    { 'C',   3, 28, "PA19 PWM0.4"               ,  0, ""              },
+    { 'C',   4, 29, "PA20"                      ,  0, ""              },
+    { 'C',   5, 30, "PA21"                      ,  0, ""              },
+    { 'C',   6, 31, "PA22"                      ,  0, ""              },
+    { 'C',   7, 32, "PA23 SW"                   ,  0, ""              }, // switch of the board, to ground: needs the pull-up
+    { 'D',   6, 37, "PB22 PWM3.1"               ,  0, ""              },
+    { 'D',   7, 38, "PB23 PWM3.2"               ,  0, ""              },
+    { 'B',   2, 47, "PB02 ADC0.10/PWM3.3"       ,  0, ""              },
+    { 'B',   3, 48, "PB03 ADC0.11/PWM3.4"       ,  0, ""              }
+};
+
+McuAdcPinInfo ArmPIC32CM_LS00_48AdcPinInfo[] = {
+//  {pin, channel}      // the channel is the number of the analog input (AINx)
+    {  3,  0 },
+    {  4,  1 },
+    {  9,  2 },
+    { 10,  3 },
+    { 11,  4 },
+    { 12,  5 },
+    { 13,  6 },
+    { 14,  7 },
+    { 15,  8 },
+    { 16,  9 },
+    { 47, 10 },
+    { 48, 11 },
+    {  7, 18 },
+    {  8, 19 }
+};
+
+McuPwmPinInfo ArmPIC32CM_LS00_48PwmPinInfo[] = {
+//  {pin, timer, resol}
+    { 13, 0, 24 , 0, 0, 0, 0, 0, 0, 0, 0, 0, ""},       // TCC0 (24 bits)
+    { 24, 0, 24 , 0, 0, 0, 0, 0, 0, 0, 0, 0, ""},
+    { 27, 0, 24 , 0, 0, 0, 0, 0, 0, 0, 0, 0, ""},
+    { 28, 0, 24 , 0, 0, 0, 0, 0, 0, 0, 0, 0, ""},
+    { 15, 1, 24 , 0, 0, 0, 0, 0, 0, 0, 0, 0, ""},       // TCC1 (24 bits)
+    { 16, 1, 24 , 0, 0, 0, 0, 0, 0, 0, 0, 0, ""},
+    { 21, 2, 16 , 0, 0, 0, 0, 0, 0, 0, 0, 0, ""},       // TCC2 (16 bits)
+    { 22, 2, 16 , 0, 0, 0, 0, 0, 0, 0, 0, 0, ""},
+    { 37, 8, 24 , 0, 0, 0, 0, 0, 0, 0, 0, 0, ""},       // TCC3 (24 bits) (see the note below)
+    { 38, 8, 24 , 0, 0, 0, 0, 0, 0, 0, 0, 0, ""},
+    { 47, 8, 24 , 0, 0, 0, 0, 0, 0, 0, 0, 0, ""},
+    { 48, 8, 24 , 0, 0, 0, 0, 0, 0, 0, 0, 0, ""}
+//  NB: LDmicro reserves the timer number 3 for the PLC cycle of every ARM target and hides the PWM pins
+//  declared on it. This target uses TC0 for the cycle, so the TCC3 outputs are declared with the
+//  timer number 8 here; the real timer comes from the pin name (PWM3.x).
+//  The outputs of one timer share the same frequency.
+};
+
+McuSpiInfo ArmPIC32CM_LS00_48McuSpiInfo[] = {
+//  name,  CTRL, STAT, DATA, MISO, MOSI, SCK, SS
+    { "SPI1", 0,    0,    0,   12,    9,  10, 11 }, // SPI1 = SERCOM0 = PA07 + PA04 + PA05 + PA06
+//  NB: SS is in fact user defined - if need be - (software SS) but a pin must be declared
+};
+
+McuI2cInfo ArmPIC32CM_LS00_48McuI2cInfo[] = {
+//  name, REG_CTRL, REG_STAT, REG_DATA, REG_RATE, SCL, SDA
+    { "I2C1", 0, 0, 0, 0, 26, 25 },                 // I2C1 = SERCOM1 = PA17 (SCL) + PA16 (SDA)
+};
+/////
+
+
+//-----------------------------------------------------------------------------
 // PC LPT & COM
 McuIoPinInfo PcCfg[] = {
 // Dynamically loaded by LoadPcPorts() in psports.cpp
@@ -4875,6 +4972,42 @@ McuIoInfo SupportedMcus_[] = {
         arraylen(ArmRA4M1NanoR4McuSpiInfo),
         ArmRA4M1NanoR4McuI2cInfo,                   // I2C info
         arraylen(ArmRA4M1NanoR4McuI2cInfo),
+        {{0,0}}
+        #undef BASE_PORT
+    },
+
+//===========================================================================
+    {
+        #define BASE_PORT(n) (0x40003200 + 0x80 * (n))
+        "Microchip ARM PIC32CM LS00 48-TQFP / Curiosity Nano", // Name
+        "PIC32CM_LS00",                             // Target name (see buildArm.bat)
+        "PIC32CM-LS00-CNANO",
+        "",
+        "",
+        'P',                                        // Port prefix
+        { BASE_PORT(0)+0x20, BASE_PORT(1)+0x20, BASE_PORT(0)+0x20, BASE_PORT(1)+0x20, 0, 0, 0, 0, 0, 0, 0}, // In registers (PA, PB, PA high half, PB high half)
+        { BASE_PORT(0)+0x10, BASE_PORT(1)+0x10, BASE_PORT(0)+0x10, BASE_PORT(1)+0x10, 0, 0, 0, 0, 0, 0, 0}, // Out registers
+        { BASE_PORT(0), BASE_PORT(1), BASE_PORT(0), BASE_PORT(1), 0, 0, 0, 0, 0, 0, 0},                     // Dir registers
+        256 * 1024,                                 // 512 KB Flash
+        { { 0x20000000, 0x10000 } },                // 64 KB RAM
+        ArmPIC32CM_LS00_48IoPinInfo,                // Pin info
+        arraylen(ArmPIC32CM_LS00_48IoPinInfo),
+        ArmPIC32CM_LS00_48AdcPinInfo,               // Adc info
+        arraylen(ArmPIC32CM_LS00_48AdcPinInfo),
+        4095,                                       // 12 bits ADC
+        {8, 7},                                     // UART RX + TX (SERCOM3 = PB09 + PB08)
+        ISA_ARM,
+        CortexM23LS,
+        48,
+        0,
+        ArmPIC32CM_LS00_48PwmPinInfo,               // Pwm info
+        arraylen(ArmPIC32CM_LS00_48PwmPinInfo),
+        nullptr,                                    // ExtInt info
+        0,
+        ArmPIC32CM_LS00_48McuSpiInfo,               // SPI info
+        arraylen(ArmPIC32CM_LS00_48McuSpiInfo),
+        ArmPIC32CM_LS00_48McuI2cInfo,               // I2C info
+        arraylen(ArmPIC32CM_LS00_48McuI2cInfo),
         {{0,0}}
         #undef BASE_PORT
     },

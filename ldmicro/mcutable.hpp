@@ -70,6 +70,7 @@ typedef enum CoreTag {
     CortexL4, // STM32L4: libraries written on the CMSIS device header
     CortexG4, // STM32G4: libraries written on the CMSIS device header
     CortexRA4, // Renesas RA4M1: libraries written on the CMSIS device header
+    CortexM23LS, // Microchip PIC32CM LS00 (Cortex-M23): libraries with their own register header
     ARMcores_, // end of ARMcores
 
     PCcores,

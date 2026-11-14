@@ -64,12 +64,14 @@ static int  countpwm = 0;
 // header, Lib_mcu.h, replaces those of the ST Standard Peripheral Library.
 static bool ArmCmsisLib()
 {
-    return Prog.mcu() && ((Prog.mcu()->core == CortexL4) || (Prog.mcu()->core == CortexG4) || (Prog.mcu()->core == CortexRA4));
+    return Prog.mcu() && ((Prog.mcu()->core == CortexL4) || (Prog.mcu()->core == CortexG4) || (Prog.mcu()->core == CortexRA4) || (Prog.mcu()->core == CortexM23LS));
 }
 
 // Timer used for the PLC cycle on ARM targets
 static int ArmPlcTimer()
 {
+    if(Prog.mcu() && (Prog.mcu()->core == CortexM23LS))
+        return 4; // "TIM4" of the PIC32CM LS00 library = TC0
     if(Prog.mcu() && (Prog.mcu()->core == CortexRA4))
         return 6; // GPT6 of the RA4M1: it has no output on the pins of the Arduino Nano R4
     if(ArmCmsisLib())

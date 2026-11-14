@@ -171,3 +171,46 @@ NB:	Arduino Nano R4 (Renesas RA4M1, R7FA4M1AB3CFM) -> destino ra4m1
 	bootloader se conserva: la placa puede volver al IDE de Arduino cuando
 	quiera. Mientras corre el programa PLC la placa no aparece como
 	dispositivo USB.
+
+NB:	PIC32CM LS00 Curiosity Nano+ Touch (Microchip PIC32CM5164LS00048, Cortex-M23)
+	-> destino pic32cm_ls00 (librerias PIC32CM_LS00, con su propia cabecera
+	de registros)
+
+	Compilador: el Cortex-M23 necesita arm-none-eabi-gcc 7 o posterior;
+	buildArm.bat busca "GNU Tools ARM Embedded\7 2018-q2-update" (edite
+	GCC_PATH para otra version). El compilador de emIDE V2.20 no sirve
+	para este destino.
+
+	Reloj: oscilador interno OSC16M a 16 MHz; el valor "Frecuencia del
+	cristal" de LDmicro no influye en el tiempo de ciclo.
+
+	Ciclo del PLC: temporizador TC0 (el dialogo muestra "3").
+
+	Puertos: LDmicro maneja 16 pines por puerto, asi que los puertos de 32
+	pines se dividen:
+	puerto A de LDmicro = PA00..PA15, puerto B = PB00..PB15,
+	puerto C de LDmicro = PA16..PA31, puerto D = PB16..PB31.
+	La lista de pines da el nombre real ("PA23 SW"). Los numeros de pin son
+	los del encapsulado de 48 pines.
+
+	Placa: LED en PA15 (enciende con la salida en bajo), pulsador en PA23
+	(a masa: active el pull-up de la entrada).
+
+	UART:  SERCOM3 = PB08 (TX) + PB09 (RX) = puerto COM virtual de la placa:
+	       el programa PLC habla con el PC por el cable USB.
+	SPI:   SERCOM0 = PA05 (SCK) + PA07 (MISO) + PA04 (MOSI).
+	I2C:   SERCOM1 = PA17 (SCL) + PA16 (SDA), con resistencias externas.
+	PWM:   TCC0: PA08, PA15 (LED), PA18, PA19     TCC1: PA10, PA11
+	       TCC2: PA12, PA13                       TCC3: PB22, PB23, PB02, PB03
+	       Las salidas de un temporizador comparten la frecuencia.
+	ADC:   PA02..PA11, PB02, PB03, PB08, PB09; 12 bits, referencia =
+	       alimentacion.
+
+	TrustZone: el programa PLC corre por completo en estado seguro, enlazado
+	en la direccion 0. Necesita una placa cuyos fusibles de configuracion
+	(user row y boot configuration row) dejen suficiente Flash segura para
+	el programa; LDmicro no toca los fusibles. Si una demo TrustZone los
+	cambio, restaurelos con MPLAB X.
+
+	Grabacion (flashMcu.bat): el archivo hex se copia a la unidad CURIOSITY
+	del depurador de la placa. Tambien se puede usar MPLAB X IPE.
