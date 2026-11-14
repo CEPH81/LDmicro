@@ -214,3 +214,45 @@ NB:	PIC32CM LS00 Curiosity Nano+ Touch (Microchip PIC32CM5164LS00048, Cortex-M23
 
 	Grabacion (flashMcu.bat): el archivo hex se copia a la unidad CURIOSITY
 	del depurador de la placa. Tambien se puede usar MPLAB X IPE.
+
+NB:	AVR32SD32 Curiosity Nano (Microchip AVR32SD32, AVR de 8 bits)
+	-> destino avr32sd32 (librerias AVR32SD32, compiladas con avr-gcc)
+
+	Este MCU no es un ARM. Sus perifericos no son los de los AVR clasicos
+	que maneja el generador de codigo AVR de LDmicro, asi que se declara
+	como destino "C + librerias" y usa el mismo camino que las placas ARM:
+	compile con el menu ARM-GCC; LDmicro genera el mismo codigo C y la
+	libreria ofrece las mismas funciones con avr-gcc. Los archivos de
+	salida quedan en la carpeta ARMGCC del proyecto.
+
+	Compilador: avr-gcc debe conocer el AVR32SD32. Use un toolchain
+	reciente, o defina la variable AVR_DFP con el device pack de Microchip
+	para la familia AVR SD (vea buildArm.bat). Edite AVR_GCC_PATH en
+	buildArm.bat.
+
+	Reloj: oscilador interno a 16 MHz; el valor "Frecuencia del cristal" de
+	LDmicro no influye en el tiempo de ciclo.
+
+	Ciclo del PLC: temporizador TCB0 (el dialogo muestra "3").
+
+	Seguridad funcional: el controlador de errores del AVR SD no se puede
+	apagar. La libreria pone todas las fuentes de error en el nivel
+	"notificacion" (consejo de la hoja de datos para empezar un
+	desarrollo): los errores se registran pero no dejan los pines flotando
+	ni reinician el MCU. Este ajuste no sirve para una aplicacion de
+	seguridad.
+
+	Placa: LED0 en PD2 (enciende con la salida en bajo), SW0 en PF2 (a
+	masa: active el pull-up de la entrada). PC0..PC3 se alimentan de
+	VDDIO2. Hay un cristal de 32.768 kHz conectado a PF0 y PF1.
+
+	UART:  USART0 = PD4 (TX) + PD5 (RX) = puerto COM virtual de la placa.
+	SPI:   SPI0 = PA6 (SCK) + PA5 (MISO) + PA4 (MOSI).
+	I2C:   TWI0 = PA3 (SCL) + PA2 (SDA), con resistencias externas.
+	PWM:   TCA0 = PD1 y PD2 (LED), misma frecuencia para ambos.
+	ADC:   PD1..PD7, PF0..PF5, PA2..PA7, PC0..PC3; 10 bits (0..1023),
+	       referencia = alimentacion.
+	Este MCU no tiene resistencias pull-down, solo pull-up.
+
+	Grabacion (flashMcu.bat): el archivo hex se copia a la unidad CURIOSITY
+	del depurador de la placa. Tambien se puede usar MPLAB X IPE.

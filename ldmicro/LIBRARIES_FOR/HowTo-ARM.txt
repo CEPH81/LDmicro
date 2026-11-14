@@ -212,3 +212,43 @@ NB:	PIC32CM LS00 Curiosity Nano+ Touch (Microchip PIC32CM5164LS00048, Cortex-M23
 
 	Flashing (flashMcu.bat): the hex file is copied to the CURIOSITY drive
 	of the debugger of the board. MPLAB X IPE can also be used.
+
+NB:	AVR32SD32 Curiosity Nano (Microchip AVR32SD32, 8 bits AVR)
+	-> target avr32sd32 (AVR32SD32 libraries, built with avr-gcc)
+
+	This MCU is not an ARM. Its peripherals are not those of the classic
+	AVR handled by the AVR code generator of LDmicro, so it is declared as
+	a "C + libraries" target and uses the same path as the ARM boards:
+	compile with the ARM-GCC menu; LDmicro generates the same C code and
+	the library gives the same functions with avr-gcc. The output files
+	are in the ARMGCC folder of the project.
+
+	Compiler: avr-gcc must know the AVR32SD32. Use a recent toolchain, or
+	set the AVR_DFP variable to the device pack of Microchip for the AVR SD
+	family (see buildArm.bat). Edit AVR_GCC_PATH in buildArm.bat.
+
+	Clock: internal oscillator at 16 MHz; the "Crystal frequency" value of
+	LDmicro has no influence on the cycle time.
+
+	PLC cycle: timer TCB0 (the configuration dialog shows "3").
+
+	Functional safety: the error controller of the AVR SD cannot be turned
+	off. The library sets all the error sources to the "notification"
+	level (advice of the data sheet for the start of a development): the
+	errors are recorded but do not float the pins nor reset the MCU. This
+	setting is not suited to a safety application.
+
+	Board: LED0 on PD2 (lit when the output is low), SW0 on PF2 (to
+	ground: enable the pull-up of the input). PC0..PC3 are supplied by
+	VDDIO2. A 32.768 kHz crystal is connected to PF0 and PF1.
+
+	UART:  USART0 = PD4 (TX) + PD5 (RX) = virtual COM port of the board.
+	SPI:   SPI0 = PA6 (SCK) + PA5 (MISO) + PA4 (MOSI).
+	I2C:   TWI0 = PA3 (SCL) + PA2 (SDA), with external pull-ups.
+	PWM:   TCA0 = PD1 and PD2 (LED), same frequency for both.
+	ADC:   PD1..PD7, PF0..PF5, PA2..PA7, PC0..PC3; 10 bits (0..1023),
+	       reference = supply.
+	There are no pull-down resistors in this MCU, only pull-ups.
+
+	Flashing (flashMcu.bat): the hex file is copied to the CURIOSITY drive
+	of the debugger of the board. MPLAB X IPE can also be used.

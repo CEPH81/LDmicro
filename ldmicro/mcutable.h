@@ -2961,6 +2961,92 @@ McuI2cInfo ArmPIC32CM_LS00_48McuI2cInfo[] = {
 
 
 //-----------------------------------------------------------------------------
+// AVR32SD32 Curiosity Nano (Microchip AVR32SD32, 32-TQFP/VQFN). Pin functions from the data sheet
+// (I/O multiplexing) and from the user guide of the board.
+// This 8 bits MCU is not handled by the AVR code generator of LDmicro (its peripherals are those of
+// the AVR Dx/Ex families): it is declared as a "C + libraries" target, like the ARM boards. LDmicro
+// generates the same C code as for ARM and LIBRARIES_FOR/AVR32SD32 gives the same API with avr-gcc.
+// USART0 = PD4 (TX) + PD5 (RX) = virtual COM port of the debugger of the board,
+// SPI0 = PA4/PA5/PA6, I2C0 = TWI0 on PA2 (SDA) + PA3 (SCL), PWM0.c = TCA0, compare channel c - 1.
+// The PLC cycle timer is TCB0. The 16 MHz clock comes from the internal oscillator (OSCHF).
+// Not listed: PF6 (RESET) and PF7 (UPDI).
+McuIoPinInfo AvrAVR32SD32IoPinInfo[] = {
+//   port bit pin  pinName                      ArduinoPin  ArduinoName
+    { 'A',   0, 30, "PA0"                       ,  0, ""              },
+    { 'A',   1, 31, "PA1"                       ,  0, ""              },
+    { 'A',   2, 32, "PA2 ADC0.22/SDA0"          ,  0, ""              },
+    { 'A',   3,  1, "PA3 ADC0.23/SCL0"          ,  0, ""              },
+    { 'A',   4,  2, "PA4 ADC0.24/MOSI0"         ,  0, ""              },
+    { 'A',   5,  3, "PA5 ADC0.25/MISO0"         ,  0, ""              },
+    { 'A',   6,  4, "PA6 ADC0.26/SCK0"          ,  0, ""              },
+    { 'A',   7,  5, "PA7 ADC0.27/_SS0"          ,  0, ""              },
+    { 'C',   0,  6, "PC0 ADC0.28"               ,  0, ""              }, // PC0..PC3 are supplied by VDDIO2
+    { 'C',   1,  7, "PC1 ADC0.29"               ,  0, ""              },
+    { 'C',   2,  8, "PC2 ADC0.30"               ,  0, ""              },
+    { 'C',   3,  9, "PC3 ADC0.31"               ,  0, ""              },
+    { 'D',   1, 11, "PD1 ADC0.1/PWM0.2"         ,  0, ""              },
+    { 'D',   2, 12, "PD2 LED ADC0.2/PWM0.3"     ,  0, ""              }, // LED0 of the board, lit when low
+    { 'D',   3, 13, "PD3 ADC0.3"                ,  0, ""              },
+    { 'D',   4, 14, "PD4 TX0/ADC0.4"            ,  0, ""              },
+    { 'D',   5, 15, "PD5 RX0/ADC0.5"            ,  0, ""              },
+    { 'D',   6, 16, "PD6 ADC0.6"                ,  0, ""              },
+    { 'D',   7, 17, "PD7 ADC0.7"                ,  0, ""              },
+    { 'F',   0, 20, "PF0 ADC0.16"               ,  0, ""              }, // 32.768 kHz crystal of the board on PF0, PF1
+    { 'F',   1, 21, "PF1 ADC0.17"               ,  0, ""              },
+    { 'F',   2, 22, "PF2 SW ADC0.18"            ,  0, ""              }, // SW0 of the board, to ground: needs the pull-up
+    { 'F',   3, 23, "PF3 ADC0.19"               ,  0, ""              },
+    { 'F',   4, 24, "PF4 ADC0.20"               ,  0, ""              },
+    { 'F',   5, 25, "PF5 ADC0.21"               ,  0, ""              }  // two colours LED of the board (heartbeat signal)
+};
+
+McuAdcPinInfo AvrAVR32SD32AdcPinInfo[] = {
+//  {pin, channel}      // the channel is the number of the analog input (AINx)
+    { 11,  1 },
+    { 12,  2 },
+    { 13,  3 },
+    { 14,  4 },
+    { 15,  5 },
+    { 16,  6 },
+    { 17,  7 },
+    { 20, 16 },
+    { 21, 17 },
+    { 22, 18 },
+    { 23, 19 },
+    { 24, 20 },
+    { 25, 21 },
+    { 32, 22 },
+    {  1, 23 },
+    {  2, 24 },
+    {  3, 25 },
+    {  4, 26 },
+    {  5, 27 },
+    {  6, 28 },
+    {  7, 29 },
+    {  8, 30 },
+    {  9, 31 }
+};
+
+McuPwmPinInfo AvrAVR32SD32PwmPinInfo[] = {
+//  {pin, timer, resol}
+    { 11, 0, 16 , 0, 0, 0, 0, 0, 0, 0, 0, 0, ""},       // TCA0 WO1
+    { 12, 0, 16 , 0, 0, 0, 0, 0, 0, 0, 0, 0, ""}        // TCA0 WO2
+//  NB: both outputs share the same frequency.
+};
+
+McuSpiInfo AvrAVR32SD32McuSpiInfo[] = {
+//  name,  CTRL, STAT, DATA, MISO, MOSI, SCK, SS
+    { "SPI0", 0,    0,    0,    3,    2,   4,  5 }, // SPI0 = PA5 + PA4 + PA6 + PA7
+//  NB: SS is in fact user defined - if need be - (software SS) but a pin must be declared
+};
+
+McuI2cInfo AvrAVR32SD32McuI2cInfo[] = {
+//  name, REG_CTRL, REG_STAT, REG_DATA, REG_RATE, SCL, SDA
+    { "I2C0", 0, 0, 0, 0, 1, 32 },                  // I2C0 = TWI0 = PA3 (SCL) + PA2 (SDA)
+};
+/////
+
+
+//-----------------------------------------------------------------------------
 // PC LPT & COM
 McuIoPinInfo PcCfg[] = {
 // Dynamically loaded by LoadPcPorts() in psports.cpp
@@ -5010,6 +5096,40 @@ McuIoInfo SupportedMcus_[] = {
         arraylen(ArmPIC32CM_LS00_48McuI2cInfo),
         {{0,0}}
         #undef BASE_PORT
+    },
+
+//===========================================================================
+    {
+        "Microchip AVR32SD32 32-TQFP / Curiosity Nano (C + libraries)", // Name
+        "AVR32SD32",                                // Target name (see buildArm.bat)
+        "AVR32SD32-CNANO",
+        "",
+        "",
+        'P',                                        // Port prefix
+        { 0x0408, 0, 0x0448, 0x0468, 0, 0x04A8, 0, 0, 0, 0, 0}, // In registers (PORTA, -, PORTC, PORTD, -, PORTF)
+        { 0x0404, 0, 0x0444, 0x0464, 0, 0x04A4, 0, 0, 0, 0, 0}, // Out registers
+        { 0x0400, 0, 0x0440, 0x0460, 0, 0x04A0, 0, 0, 0, 0, 0}, // Dir registers
+        16 * 1024,                                  // 32 KB Flash
+        { { 0x7000, 0x1000 } },                     // 4 KB RAM
+        AvrAVR32SD32IoPinInfo,                      // Pin info
+        arraylen(AvrAVR32SD32IoPinInfo),
+        AvrAVR32SD32AdcPinInfo,                     // Adc info
+        arraylen(AvrAVR32SD32AdcPinInfo),
+        1023,                                       // 10 bits ADC
+        {15, 14},                                   // UART RX + TX (USART0 = PD5 + PD4)
+        ISA_ARM,                                    // "C + libraries" target: see the note above the pin table
+        LibAvrSD,
+        32,
+        0,
+        AvrAVR32SD32PwmPinInfo,                     // Pwm info
+        arraylen(AvrAVR32SD32PwmPinInfo),
+        nullptr,                                    // ExtInt info
+        0,
+        AvrAVR32SD32McuSpiInfo,                     // SPI info
+        arraylen(AvrAVR32SD32McuSpiInfo),
+        AvrAVR32SD32McuI2cInfo,                     // I2C info
+        arraylen(AvrAVR32SD32McuI2cInfo),
+        {{0,0}}
     },
 
 //===========================================================================

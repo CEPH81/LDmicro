@@ -117,6 +117,7 @@ IF %4 == "stm32l432" goto STM32F1
 IF %4 == "stm32g431" goto STM32CUBEPROG
 IF %4 == "ra4m1" goto ARDUINO_DFU
 IF %4 == "pic32cm_ls00" goto CURIOSITY_NANO
+IF %4 == "avr32sd32" goto CURIOSITY_NANO
 goto NOT_SUPPORTED
 
 :STM32F4

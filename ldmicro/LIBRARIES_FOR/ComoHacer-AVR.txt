@@ -73,3 +73,6 @@ NB: 	Todas las frecuencias utilizadas por ADC, PWM o SPI se obtienen del
 NB:	Se utiliza la resolución máxima ADC disponible.
 	Se utiliza la resolución máxima de PWM y el parámetro es solo% entre 0 y 100
 
+NB:	El AVR32SD32 (placa Curiosity Nano) no usa este camino AVR: es un
+	destino "C + librerias" que se compila como las placas ARM.
+	Vea ComoHacer-ARM.txt.

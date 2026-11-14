@@ -78,3 +78,6 @@ NB:	All the frequencies used by ADC, PWM or SPI are obtained from CPU clock
 
 NB:	ADC max available resolution is used
 	PWM max resolution is used and parameter is only % between 0 and 100
+
+NB:	The AVR32SD32 (Curiosity Nano board) is not handled by this AVR path:
+	it is a "C + libraries" target built like the ARM boards. See HowTo-ARM.txt.

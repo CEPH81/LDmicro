@@ -64,12 +64,14 @@ static int  countpwm = 0;
 // header, Lib_mcu.h, replaces those of the ST Standard Peripheral Library.
 static bool ArmCmsisLib()
 {
-    return Prog.mcu() && ((Prog.mcu()->core == CortexL4) || (Prog.mcu()->core == CortexG4) || (Prog.mcu()->core == CortexRA4) || (Prog.mcu()->core == CortexM23LS));
+    return Prog.mcu() && ((Prog.mcu()->core == CortexL4) || (Prog.mcu()->core == CortexG4) || (Prog.mcu()->core == CortexRA4) || (Prog.mcu()->core == CortexM23LS) || (Prog.mcu()->core == LibAvrSD));
 }
 
 // Timer used for the PLC cycle on ARM targets
 static int ArmPlcTimer()
 {
+    if(Prog.mcu() && (Prog.mcu()->core == LibAvrSD))
+        return 1; // "TIM1" of the AVR32SD32 library = TCB0
     if(Prog.mcu() && (Prog.mcu()->core == CortexM23LS))
         return 4; // "TIM4" of the PIC32CM LS00 library = TC0
     if(Prog.mcu() && (Prog.mcu()->core == CortexRA4))

@@ -56,6 +56,7 @@ chdir %~pn1
 @IF %3 == "stm32g431" SET LIB_PATH=%EXE_PATH%LIBRARIES_FOR\ARM\STM32G4
 @IF %3 == "ra4m1" SET LIB_PATH=%EXE_PATH%LIBRARIES_FOR\ARM\RA4M1
 @IF %3 == "pic32cm_ls00" SET LIB_PATH=%EXE_PATH%LIBRARIES_FOR\ARM\PIC32CM_LS00
+@IF %3 == "avr32sd32" SET LIB_PATH=%EXE_PATH%LIBRARIES_FOR\AVR32SD32
 
 @rem Device options and linker script of each target
 @rem   stm32f40x   : STM32F40x/41x, default HSE_VALUE of the library
@@ -66,6 +67,7 @@ chdir %~pn1
 @rem   stm32g431   : STM32G431CB (WeAct Core Board), internal 16 MHz oscillator, 128 KB Flash
 @rem   ra4m1       : Renesas R7FA4M1AB (Arduino Nano R4), internal 48 MHz oscillator, program at 0x4000 (DFU bootloader)
 @rem   pic32cm_ls00: Microchip PIC32CM5164LS00048 (Curiosity Nano), Cortex-M23, internal 16 MHz oscillator
+@rem   avr32sd32   : Microchip AVR32SD32 (Curiosity Nano), 8 bits AVR built with avr-gcc, internal 16 MHz oscillator
 @SET MCU_DEFS=
 @SET LN_SCRIPT=
 @SET STARTUP=CortexM4.S
@@ -103,6 +105,7 @@ PATH %GCC_PATH%\BIN;%PATH%
 @IF %3 == "stm32g431" goto STM32F4
 @IF %3 == "ra4m1" goto STM32F4
 @IF %3 == "pic32cm_ls00" goto CORTEXM23
+@IF %3 == "avr32sd32" goto AVR32SD32
 goto NOT_SUPPORTED
 
 
@@ -153,6 +156,36 @@ arm-none-eabi-gcc.exe -o "ARMGCC\bin\%~nx2.elf" ARMGCC\obj\*.o -Wl,-Map -Wl,"ARM
 
 @rem Convert Elf to Hex
 arm-none-eabi-objcopy -O ihex "ARMGCC\bin\%~nx2.elf" "ARMGCC\bin\%~nx2.hex"
+
+@GOTO END
+
+
+@rem Microchip AVR32SD32: not an ARM, but a "C + libraries" target of LDmicro built the same way, with avr-gcc.
+@rem avr-gcc must know the device: either a recent toolchain (avr-libc with the AVR SD family), or the
+@rem device pack of Microchip for the AVR SD family. In the second case set AVR_DFP to the folder of the
+@rem pack that contains the "gcc" and "include" folders, for instance:
+@rem   SET AVR_DFP=C:\Program Files\Microchip\MPLABX\packs\Microchip\<pack of the AVR SD family>\<version>
+:AVR32SD32
+  SET AVR_GCC_PATH=%ProgramFiles(x86)%\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin
+::SET AVR_GCC_PATH=c:\avr-gcc\bin
+PATH %AVR_GCC_PATH%;%PATH%
+SET DFP_OPT=
+IF DEFINED AVR_DFP SET DFP_OPT=-B "%AVR_DFP%\gcc\dev\avr32sd32" -I "%AVR_DFP%\include"
+
+@rem Compile libraries
+CD ARMGCC\lib
+FOR %%F in (*.c) do avr-gcc.exe -mmcu=avr32sd32 %DFP_OPT% -Os -funsigned-char -funsigned-bitfields -fshort-enums -g2 -Wall -std=gnu99 -c %%F -o ..\obj\%%F.o
+CD ..\..
+
+@rem Compile main file
+avr-gcc.exe -mmcu=avr32sd32 %DFP_OPT% -Os -funsigned-char -funsigned-bitfields -fshort-enums -g2 -std=gnu99 -IARMGCC\lib\ -c "%~nx2.c" -o "ARMGCC\obj\%~n2.o"
+
+@rem Link object files
+avr-gcc.exe -mmcu=avr32sd32 %DFP_OPT% -o "ARMGCC\bin\%~nx2.elf" ARMGCC\obj\*.o -Wl,-Map="ARMGCC\bin\%~nx2.elf.map" -Wl,--gc-sections -Wl,--start-group -Wl,-lm -Wl,--end-group
+
+@rem Convert Elf to Hex
+avr-objcopy.exe -O ihex -R .eeprom -R .fuse -R .lock -R .signature -R .user_signatures "ARMGCC\bin\%~nx2.elf" "ARMGCC\bin\%~nx2.hex"
+avr-size.exe "ARMGCC\bin\%~nx2.elf"
 
 @GOTO END
 
