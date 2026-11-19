@@ -18,21 +18,28 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Build (EN and ES)
-        shell: cmd
+        shell: pwsh
         run: |
-          cd ldmicro
-          for %%L in (EN ES) do (
-            cmake -S . -B build-%%L -G "Visual Studio 17 2022" -A Win32 -DLDLANG=%%L -DCMAKE_POLICY_DEFAULT_CMP0091=NEW -DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreaded || exit /b 1
-            cmake --build build-%%L --config Release --parallel || exit /b 1
-          )
+          perl --version | Select-Object -First 2
+          cmake --version
+          foreach ($lang in "EN", "ES") {
+            cmake -S ldmicro -B "ldmicro/build-$lang" -G "Visual Studio 17 2022" -A Win32 "-DLDLANG=$lang" -DCMAKE_POLICY_DEFAULT_CMP0091=NEW -DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreaded
+            if ($LASTEXITCODE -ne 0) { throw "CMake configure failed ($lang)" }
+            cmake --build "ldmicro/build-$lang" --config Release --parallel
+            if ($LASTEXITCODE -ne 0) { throw "Build failed ($lang)" }
+          }
+          Get-ChildItem -Recurse ldmicro/build-EN, ldmicro/build-ES -Filter *.exe | Select-Object FullName, Length
 
       - name: Package
         shell: pwsh
         run: |
           $out = "LDmicro-win32"
           New-Item -ItemType Directory -Force $out | Out-Null
-          Copy-Item -Recurse -Force ldmicro/build-EN/bin/Release/* $out
-          Copy-Item -Force ldmicro/build-ES/bin/Release/ldmicro-es.exe $out
+          $en = Get-ChildItem -Recurse ldmicro/build-EN -Filter ldmicro.exe | Select-Object -First 1
+          $es = Get-ChildItem -Recurse ldmicro/build-ES -Filter ldmicro-es.exe | Select-Object -First 1
+          if (-not $en -or -not $es) { throw "Executables not found" }
+          Copy-Item -Recurse -Force (Join-Path $en.DirectoryName "*") $out
+          Copy-Item -Force $es.FullName $out
           Get-ChildItem $out | Format-Table Name, Length
           if (-not (Test-Path "$out/ldmicro.exe")) { throw "ldmicro.exe not built" }
           Compress-Archive -Path "$out/*" -DestinationPath "$out.zip" -Force
