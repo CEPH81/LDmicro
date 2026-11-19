@@ -1,0 +1,56 @@
+# Builds LDmicro for Windows (32 bits, English and Spanish) with Visual Studio 2022,
+# and publishes a zip with the executables, the helper scripts and LIBRARIES_FOR.
+name: Build Windows
+
+on:
+  push:
+    branches: [ master, fix/errores-revision ]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: windows-2022
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build (EN and ES)
+        shell: cmd
+        run: |
+          cd ldmicro
+          for %%L in (EN ES) do (
+            cmake -S . -B build-%%L -G "Visual Studio 17 2022" -A Win32 -DLDLANG=%%L -DCMAKE_POLICY_DEFAULT_CMP0091=NEW -DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreaded || exit /b 1
+            cmake --build build-%%L --config Release --parallel || exit /b 1
+          )
+
+      - name: Package
+        shell: pwsh
+        run: |
+          $out = "LDmicro-win32"
+          New-Item -ItemType Directory -Force $out | Out-Null
+          Copy-Item -Recurse -Force ldmicro/build-EN/bin/Release/* $out
+          Copy-Item -Force ldmicro/build-ES/bin/Release/ldmicro-es.exe $out
+          Get-ChildItem $out | Format-Table Name, Length
+          if (-not (Test-Path "$out/ldmicro.exe")) { throw "ldmicro.exe not built" }
+          Compress-Archive -Path "$out/*" -DestinationPath "$out.zip" -Force
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: LDmicro-win32
+          path: LDmicro-win32/
+
+      - name: Publish pre-release of the branch
+        if: github.event_name != 'pull_request'
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          tag="build-${GITHUB_REF_NAME//\//-}"
+          gh release delete "$tag" --yes --cleanup-tag 2>/dev/null || true
+          gh release create "$tag" LDmicro-win32.zip --prerelease --target "$GITHUB_SHA" \
+            --title "LDmicro Windows build ($GITHUB_REF_NAME)" \
+            --notes "Automatic build of ${GITHUB_SHA::7}. Unzip and run ldmicro.exe (English) or ldmicro-es.exe (Spanish). Not tested on hardware."
